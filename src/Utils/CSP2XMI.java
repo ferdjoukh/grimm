@@ -1,0 +1,405 @@
+package Utils;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.*;
+import org.eclipse.emf.ecore.impl.DynamicEObjectImpl;
+import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
+import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
+import org.eclipse.emf.ecore.xmi.impl.XMLResourceImpl;
+
+public class CSP2XMI extends ModelBuilder{
+
+	/**
+	 * 
+	 * @param ModelFile: .ecore file
+	 * @param root: root class name 
+	 * @param InstanceFile: CSP instance file .xml
+	 * @param Model: Result model file path .xmi
+	 * @param oclFilePath: ocl file path .ocl or empty string.
+	 */
+	public CSP2XMI(String ModelFile, String root,String InstanceFile,String oclFilePath){
+			
+		super(ModelFile, root, InstanceFile, oclFilePath);
+	}
+	
+	/***
+	 * 
+	 * @param lb: lower bound for class instances
+	 * @param ub: upper bound for class instances
+	 * @param rb: bound for unbounded references
+	 * @param sym: break or not symmetries  0,1 ?
+	 * @param sol: #solution to find 
+	 * @throws IOException 
+	 */
+	public void generateModel(int lb,int ub,int rb,int sym, int sol) throws IOException
+	{
+		ArrayList<Integer> vals=super.CallCSPGenrator(lb, ub, rb, sym, sol);	
+		
+		///////////////////////////////////////////////////////////////
+		//Build a valid model
+		/////////////////////////////////////////////////////////////
+		if(vals!=null)
+		{	
+			if(vals.size()!=0)
+			{
+				System.out.print("Model builder is running...");
+				EObject object= FindModel(vals);
+				ValidModel(object);
+			}
+		}
+	}
+	
+	/***
+	 * 
+	 * @param configFilePath: path for a configuration file
+	 * @param sym: break or not symmetries
+	 * @param sol: solution number
+	 * @throws IOException
+	 */
+	public void generateModel(String configFilePath, int sym, int sol) throws IOException
+	{
+		ArrayList<Integer> vals=super.CallCSPGenrator(configFilePath, sym, sol);
+		
+		///////////////////////////////////////////////////////////////
+		//Reconstruire une solution
+		/////////////////////////////////////////////////////////////
+		if(vals!=null)
+		{
+			if(vals.size()!=0)
+			{
+				System.out.print("Model builder is running...");
+				EObject object= FindModel(vals);
+				ValidModel(object);
+			}
+		}
+
+	}
+	
+	public EObject FindModel(ArrayList<Integer> values)
+	{	
+		ArrayList<Integer> vals= values;
+		int variable=0;
+		EPackage pack= super.r.getModelPackage();
+		List<EClass> cls= super.r.getClasses();
+	//	ArrayList<Integer> sizes= r.getClassSize();
+		EObject o = null;
+		int lb=0,ub=0;
+		
+		//Les instances de classes
+		ArrayList<ClassInstance> mesInst= new ArrayList<ClassInstance>(); 
+		ArrayList<ClassInstance> mesInstLiees= new ArrayList<ClassInstance>(); 
+		
+		
+		//Premier passage: Construire les instances
+		for(EClass c: cls)
+		{
+			if(sizes.get(r.getClassIndex(c)-1)==1)
+			{
+				//Instance de la racine
+				o= pack.getEFactoryInstance().create(c);
+			//	variable++;
+				
+				//ses attributs
+				for(EAttribute a:super.r.getAllAttributesFromClass(c))
+				{
+					if(a.getEType().getName()=="EString")
+						o.eSet(a, r.BasePackage.getName()+"_"+vals.get(variable).toString());
+				    else if (a.getEType().getName()=="EInt")
+					    o.eSet(a, vals.get(variable));	
+				    else
+					{
+						//C'est une Enumération !!!
+				    	EEnum enume= null;
+						try{enume=(EEnum) a.getEType();}catch(Exception e){}
+						EClass etype=null;
+						try{etype=(EClass) a.getEType();}catch(Exception e){}				
+						if(enume!=null)
+						{
+							o.eSet(a, enume.getEEnumLiteral(vals.get(variable)-1));
+						}
+						if(etype!=null)
+							System.out.println("Attention: L'attribut "+a.getName()+ " de la classe "+c.getName()+ " est de type objet("+a.getEType().getName()+") doit être remplacé par une référence !!");
+					}
+					variable++;
+				}
+				
+				//ses liens
+				//for (EReference ref: r.getAllReferencesFromClass(c))
+				for (EReference ref: r.getAllReferencesFromClasswithOpposite(c))	    		
+				{
+						int zz=ref.getUpperBound();
+    					if (zz==-1)
+    					{	//zz=5;
+    						if(!ref.getEReferenceType().isAbstract())
+    							zz=refB;
+    						else
+    							zz=refB;
+    					}
+    					EClass dst= ref.getEReferenceType();
+    					ArrayList<EObject> rr= new ArrayList<EObject>(); 
+    					for(int z=1;z<=zz;z++)
+    					{
+    						//ICI créer une variable pointeur du type dst
+    						variable++;
+    					}
+    			}
+			}
+			else
+			{
+				//Les autres classes
+			
+				lb=  domaineSum(r.getClassIndex(c)-1)+1;
+				ub=  domaineSum(r.getClassIndex(c)); 
+				
+				for(int j=lb;j<=ub;j++)
+				{
+					//int variablei=0;
+					EObject i;
+					i= pack.getEFactoryInstance().create(c);
+						
+					//ses attributs
+					for(EAttribute a:r.getAllAttributesFromClass(c))
+					{
+						if(a.getEType().getName()=="EString"){
+							System.out.println(c.getName());
+					 	i.eSet(a, c.getName()+"_"+j+"_"+a.getName()+"_"+ vals.get(variable).toString());
+					    }
+						else if (a.getEType().getName()=="EInt"){
+								i.eSet(a, vals.get(variable));
+					    }
+						else{
+							//C'est une Enumération !!!
+							EEnum enume= null;
+							try{enume=(EEnum) a.getEType();}catch(Exception e){}
+							EClass etype=null;
+							try{etype=(EClass) a.getEType();}catch(Exception e){}				
+							if(enume!=null)
+							{
+								i.eSet(a, enume.getEEnumLiteral(vals.get(variable)-1));
+							}
+							if(etype!=null)
+								System.out.println("Attention: L'attribut "+a.getName()+ " de la classe "+c.getName()+ " est de type objet("+a.getEType().getName()+") doit être remplacé par une référence !!");
+						}
+							variable++;
+					}
+					
+					//Ses références
+					for (EReference ref: r.getAllReferencesFromClasswithOpposite(c))
+		    		{
+						int zz=ref.getUpperBound();
+	    				if (zz==-1)
+	    				{	
+	    					if(ref.getEReferenceType().isAbstract())
+	    						zz=refB;
+	    					else
+	    						zz=refB;
+	    				}
+	    				
+	    				for(int z=1;z<=zz;z++) variable++;
+	    					
+					}
+					mesInst.add(new ClassInstance(j, i));
+					
+				}
+			}
+		} //Fin du premier passage
+		
+		///////////////////////////////////
+		//////////
+		//Deuxième passage: Construire les pointeurs des références
+		variable=0;		 
+		for(EClass c: cls)
+		{
+			int vari=0;
+			if(sizes.get(r.getClassIndex(c)-1)==1)
+			{
+				vari= variable;
+				//ses attributs
+				for(EAttribute a:r.getAllAttributesFromClass(c)) variable++;		
+				//ses liens
+				for (EReference ref: r.getAllReferencesFromClasswithOpposite(c))	
+				{
+					int zz=ref.getUpperBound();
+		    	    if (zz==-1){	
+						if(ref.getEReferenceType().isAbstract()) zz=refB;
+						else zz=refB;
+					}
+		   			
+		    	    for(int z=1;z<=zz;z++) variable++;
+		    	}
+				
+			}
+			else
+			{
+				//Les autres classes
+				lb=  domaineSum(r.getClassIndex(c)-1)+1;
+				ub=  domaineSum(r.getClassIndex(c)); 
+				
+				for(int j=lb;j<=ub;j++)
+				{
+					EObject i;
+					i=Utils.searchIns(mesInst, j);	
+					//ses attributs
+					for(EAttribute a:r.getAllAttributesFromClass(c)) variable++;
+					//Ses références
+					for (EReference ref: r.getAllReferencesFromClasswithOpposite(c))	
+					{
+					    int refUpperBound=ref.getUpperBound();
+			    		if (refUpperBound==-1) {
+	    					if(ref.getEReferenceType().isAbstract()) refUpperBound=refB;
+	    					else refUpperBound=refB;
+	    				}
+			    		EClass dst= ref.getEReferenceType();
+			    		List<EObject> objectsToLink= new ArrayList<EObject>(); 
+			    			
+			    		if(refUpperBound==1){
+			    			if(vals.get(variable)!=0)
+			    			{
+			    				try{
+			    					i.eSet(ref, Utils.searchIns(mesInst, vals.get(variable)));
+			    				}catch(Exception e){}
+			    			}
+			    				variable++;
+			    		}
+			    		else{
+			    			int z=0;
+			    			for(z=1;z<=refUpperBound;z++)
+			    			{
+			    				if(vals.get(variable)!=0)
+			    				{
+			    					objectsToLink.add(Utils.searchIns(mesInst, vals.get(variable)));
+			    					//System.out.println("je suis passé par la pour "+j+ " j'ai ajouté: "+ vals.get(variable));
+			    				}		
+			    				variable++;
+			    			}
+			    			//System.out.println("ref: " +ref.getName()+" z= "+z+" --- "+objectsToLink.toString());
+			    			try{
+			    				i.eSet(ref, objectsToLink);
+		    				}catch(Exception e){}
+			    			
+			    		}						
+			    	}
+					mesInstLiees.add(new ClassInstance(j, i));						
+				}					
+			}
+		}
+		//Fin du 2ème passage
+		
+		
+		///////////////////////////////////////////////////////////
+		//////////////////////////////////
+		/////////////////
+		//3ème passage : construire les relations de compartimentage
+		variable=0;	
+		for(EClass c: cls)
+		{
+			//Instance de la racine
+			if(sizes.get(r.getClassIndex(c)-1)==1)
+			{
+				//ses attributs
+				for(EAttribute a:r.getAllAttributesFromClass(c)) variable++;
+				//ses liens
+				for (EReference ref: r.getAllReferencesFromClasswithOpposite(c))	
+		    	{
+					int refUpperBound=ref.getUpperBound();
+					if (refUpperBound==-1){	
+						if(ref.getEReferenceType().isAbstract()) refUpperBound=refB;
+						else refUpperBound=refB;
+					}
+		   			List<EObject> objectstoCompose= new ArrayList<EObject>(); 
+		    		
+		   			if(refUpperBound==1){
+		   				if(vals.get(variable)!=0)
+	   						o.eSet(ref, Utils.searchIns(mesInstLiees, vals.get(variable)));
+		   				variable++;
+		   			}	
+		   			else{
+		   				for(int z=1;z<=refUpperBound;z++) variable++;
+		   				//Add all instances to root Class instance
+		   				for(ClassInstance clInst: mesInst)
+		   				{
+		   					EObject object= clInst.obj;
+		   					String cl =((DynamicEObjectImpl) object).eClass().getName();
+		   					
+		   					if(!cl.equals(c.getName()))
+		   					{
+		   					   	//Add this class instance to root instance
+		   						objectstoCompose.add(object);
+		   					}
+		   				}
+		   				try{
+		   					o.eSet(ref, objectstoCompose);
+		   				}
+		   				catch(Exception e){
+		   					System.out.println("Class:"+c.getName()+" Reference:"+ref.getName()+ "   Adding error !");
+		   				}
+		    		}
+		    	}
+			}
+			else
+			{
+				//Les autres classes
+				lb=  domaineSum(r.getClassIndex(c)-1)+1;
+				ub=  domaineSum(r.getClassIndex(c)); 
+				
+				for(int j=lb;j<=ub;j++)
+				{	
+						//ses attributs
+						for(EAttribute a:r.getAllAttributesFromClass(c)) variable++;
+						//Ses références
+						for (EReference ref: r.getAllReferencesFromClasswithOpposite(c))
+			    		{
+						    int zz=ref.getUpperBound();
+			    			if (zz==-1){
+	    						if(ref.getEReferenceType().isAbstract()) zz=refB;
+	    						else zz=refB;
+	    					}
+			    			for(int z=1;z<=zz;z++) variable++;
+			    		}						
+			    	}
+			}
+		}
+		//Fin du 3ème passage
+	    
+		return o;
+	}
+	
+	 public void ValidModel(EObject o)
+	 {
+		 new File(root).mkdir();
+		 ResourceSet resourceSet=new ResourceSetImpl();
+		 //Resource resource= r.getModelResource();
+		 EPackage pack= r.getModelPackage();
+		 Resource resource;
+		 try
+		 {
+			 resourceSet = new ResourceSetImpl();
+			 resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put("xmi",new XMIResourceFactoryImpl());
+			 URI uri=URI.createURI(root+"/"+this.Model+".xmi");
+			 resource=resourceSet.createResource(uri);
+			 resource.getContents().add(o);
+			 Map<String,Boolean> opts= new HashMap<String,Boolean>();
+			 //Important to get an XMI readable in EMF
+			 opts.put(XMLResourceImpl.OPTION_SCHEMA_LOCATION, Boolean.TRUE);
+			 resource.save(opts); 
+			 System.out.println(" OK");
+			 System.out.println("\tSuccess, A model found :D");
+			 System.out.println("\t"+root+"/"+this.Model+".xmi is the generated model");
+		 }
+		 catch(Exception e)
+		 {
+			 //e.printStackTrace();
+			 System.out.println(" Not OK");
+			 System.out.println("\tProblem when building the model");
+		 }
+	 }
+}
