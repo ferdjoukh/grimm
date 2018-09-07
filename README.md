@@ -52,9 +52,9 @@ grimm is the centerpiece of more other works (papers and tools) done by the same
 
 		`currentfolder/Compo/`	
 
-10. Install **graphviz** if you want to generate object diagrams for your generated models.
+10. Install **graphviz** if you want to crteate object diagrams for your generated models.
 
-	'apt-get install graphivz' (on ubuntu for example)
+	`apt-get install graphivz` (on ubuntu for example)
 
 11. Run this 2nd quick start command to verify that **graphviz** is running whithout:
 
