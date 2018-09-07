@@ -42,9 +42,27 @@ grimm is the centerpiece of more other works (papers and tools) done by the same
 7. Show help by running this command in a terminal:
 
 	`java -jar grimm.jar`
-	
-8. The quick start commands are shown in the help page of grimm.	
 
+8. The quick start commands are shown in the help page of grimm.
+9. Run this quick start command to verify that everything is okay:
+
+	`java -jar grimm.jar -mm=test.ecore -root=Compo -lb=2 -ub=2 -rb=4 -xmi`
+
+	1. If everything worked well, a first model is generated and stored in the following folder:
+
+		`currentfolder/Compo/`	
+
+10. Install **graphviz** if you want to generate object diagrams for your generated models.
+
+	'apt-get install graphivz' (on ubuntu for example)
+
+11. Run this 2nd quick start command to verify that **graphviz** is running whithout:
+
+	`java -jar grimm.jar -mm=test.ecore -root=Compo -lb=2 -ub=2 -rb=4 -dot`
+
+	1. Again a model is generated and stored in:
+
+	`currentfolder/Compo/`
 ## Documentation
 
 
