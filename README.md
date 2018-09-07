@@ -62,8 +62,8 @@ grimm is the centerpiece of more other works (papers and tools) done by the same
 
 	1. Again a model is generated and stored in:
 
-	`currentfolder/Compo/`
-	
+		`currentfolder/Compo/`
+
 ## Documentation
 
 
