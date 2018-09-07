@@ -1,0 +1,22 @@
+	      % -- -- -- -- -- -- -- -- -- -- -- -- --
+	      %Number of instances for Classes 
+	      Street=1
+   	      Boulevard=2
+	      Pedestrian=1
+	      Garden=2
+	      Square=1
+	      % -- -- -- -- -- -- -- -- -- -- -- -- --
+	      %Domains of the features 
+	      map/name=1 2
+	      Street/name=1 2 3 4 5 6
+	      Street/length=-10 200 400 500 150
+	      Boulevard/name=10 12 14 15 18
+	      Boulevard/length=1000 2000 3000 4000
+	      Pedestrian/name=1 2 3 4 5 6
+	      Pedestrian/length=600 700 900
+	      Garden/name=4 6 7 8 9 
+	      Square/name=21 22 23 24 25
+	      % -- -- -- -- -- -- -- -- -- -- -- -- --
+	      %Some others 
+	      RefsBound=3
+	      FeaturesBound=2
