@@ -25,7 +25,7 @@ grimm is the centerpiece of more other works (papers and tools) done by the same
 ## Releases
 
 
-- [v1.0-d792018](https://github.com/ferdjoukh/grimm/releases/tag/v1.0-d792018) (sep 7th 2018). This version contains all the code that was written between 2013 and 2017 on grimm. This means it is a classic version of grimm (Ecore meta-model, partial OCL support and 1-solution generation).    
+- [v1.0-d792018](https://github.com/ferdjoukh/grimm/releases/tag/v1.0-d792018) (September 7th 2018). This version contains all the code that was written between 2013 and 2017 on grimm. This means it is a classic version of grimm (Ecore meta-model, partial OCL support and 1-solution generation).    
 
 # Overview
 
@@ -36,7 +36,7 @@ grimm is the centerpiece of more other works (papers and tools) done by the same
 1. Go to the release page [here](https://github.com/ferdjoukh/grimm/releases)
 2. Choose the desired release and download it (zip file).
 3. Unpack the zip file.
-4. Inside the obtained folder, another zip called **grimm-executable.zip** contains: the runnable jar and the CSP solver (abbsol.jar), and some example meta-models.
+4. Inside the obtained folder, another zip called **grimm-executable.zip** contains: the runnable jar and the CSP solver (*abssol.jar*), and some example meta-models.
 5. Unpack this zip.
 6. Now you are ready to start using **grimm**.
 7. Show help by running this command in a terminal:
@@ -52,17 +52,18 @@ grimm is the centerpiece of more other works (papers and tools) done by the same
 
 		`currentfolder/Compo/`	
 
-10. Install **graphviz** if you want to crteate object diagrams for your generated models.
+10. Install **graphviz** if you want to create object diagrams for your generated models.
 
-	`apt-get install graphivz` (on ubuntu for example)
+	`sudo apt-get install graphivz` (on ubuntu for example)
 
-11. Run this 2nd quick start command to verify that **graphviz** is running whithout:
+11. Run this 2nd quick start command to verify that **graphviz** is running without problems:
 
 	`java -jar grimm.jar -mm=test.ecore -root=Compo -lb=2 -ub=2 -rb=4 -dot`
 
 	1. Again a model is generated and stored in:
 
 	`currentfolder/Compo/`
+	
 ## Documentation
 
 
