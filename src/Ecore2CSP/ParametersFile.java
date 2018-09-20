@@ -29,8 +29,17 @@ public class ParametersFile {
 	public String getMetamodel() {
 		return metamodel;
 	}
-
-
+	
+	public void setMetamodel(String mm) {
+		try {
+			if(metamodelExists(mm)) {
+				this.metamodel=mm;
+			}
+		} catch (MetaModelNotFoundException e) {
+			// TODO Auto-generated catch block
+			System.out.println(e.getMessage());
+		}
+	}
 
 	/**
 	 * 
@@ -79,7 +88,7 @@ public class ParametersFile {
 		}
 	}
 	
-	public void readParamFile() throws MetaModelNotFoundException {
+	public void readParamFile(){
 		
 		try {
 			InputStream in= new FileInputStream(new File(filePath));
@@ -91,10 +100,7 @@ public class ParametersFile {
 				if(!line.startsWith("#")) {
 					if(line.startsWith("+meta-model")) {
 						String mm= line.substring(line.lastIndexOf("=")+1);
-						System.out.println(mm);
-						if(metamodelExists(mm)) {
-							this.metamodel=mm;
-						}
+						setMetamodel(mm);
 					}
 				}
 			}

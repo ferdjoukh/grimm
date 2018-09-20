@@ -7,7 +7,6 @@ import Ecore2CSP.ParametersFile;
 import exceptions.MetaModelNotFoundException;
 
 public class testGrimmParametersFile {
-
 	
 	@Test
 	public void createAFirstFile() {
