@@ -11,6 +11,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 
 import exceptions.MetaModelNotFoundException;
+import exceptions.OCLFileNotFoundException;
 
 /**
 * @author: Adel Ferdjoukh
@@ -21,6 +22,8 @@ import exceptions.MetaModelNotFoundException;
 public class ParametersFile {
 	private String filePath;
 	private String metamodel;
+	private String rootClass;
+	private String oclFile;
 	
 	public ParametersFile(String filePath) {
 		this.filePath= filePath;
@@ -36,6 +39,29 @@ public class ParametersFile {
 				this.metamodel=mm;
 			}
 		} catch (MetaModelNotFoundException e) {
+			// TODO Auto-generated catch block
+			System.out.println(e.getMessage());
+		}
+	}
+	
+	public String getRootClass() {
+		return rootClass;
+	}
+
+	public void setRootClass(String rootClass) {
+		this.rootClass = rootClass;
+	}
+
+	public String getOclFile() {
+		return oclFile;
+	}
+
+	public void setOclFile(String oclFile) {
+		try {
+			if(oclFileExists(oclFile)) {
+				this.oclFile=oclFile;
+			}
+		} catch (OCLFileNotFoundException e) {
 			// TODO Auto-generated catch block
 			System.out.println(e.getMessage());
 		}
@@ -56,13 +82,14 @@ public class ParametersFile {
 			pw.write("# This file contains all the generation parameters of GRIMM tool\n");
 			pw.write("#\n");
 			pw.write("# Fill the file with your own information\n");
-			pw.write("# + are mondatory\n");
-			pw.write("# Choose (1) or (2), then remove the other lines\n");
+			pw.write("#   + are mondatory\n");
+			pw.write("#   - must be filled or removed\n");
+			pw.write("#   (1) and (2) block must not appear at the same time\n");
 			pw.write("#\n");
 			
 			pw.write("+meta-model =tests/test.ecore\n");
 			pw.write("+rootClass =map\n");
-			pw.write("ocl file =tests/maps.ocl\n");
+			pw.write("-ocl file =tests/maps.ocl\n");
 			
 			pw.write("#(1)\n");
 			pw.write("lowerBound for classes =2\n");
@@ -88,6 +115,9 @@ public class ParametersFile {
 		}
 	}
 	
+	/**
+	 * This method reads an existing parameters file
+	 */
 	public void readParamFile(){
 		
 		try {
@@ -98,9 +128,23 @@ public class ParametersFile {
 			String line;
 			while( (line=br.readLine())!=null  ) {
 				if(!line.startsWith("#")) {
+					
+					//Meta-model
 					if(line.startsWith("+meta-model")) {
 						String mm= line.substring(line.lastIndexOf("=")+1);
 						setMetamodel(mm);
+					}
+					
+					//RootClass
+					if(line.startsWith("+rootClass")) {
+						String root= line.substring(line.lastIndexOf("=")+1);
+						setRootClass(root);
+					}
+					
+					//OCL file
+					if(line.startsWith("-ocl ")) {
+						String ocl= line.substring(line.lastIndexOf("=")+1);
+						setOclFile(ocl);
 					}
 				}
 			}
@@ -112,8 +156,6 @@ public class ParametersFile {
 	}
 	
 	public boolean metamodelExists(String metamodel) throws MetaModelNotFoundException {
-		boolean found=false;
-		
 		File mm= new File(metamodel);
 		
 		if(mm.exists()) {
@@ -121,5 +163,16 @@ public class ParametersFile {
 		}else {
 			throw new MetaModelNotFoundException(metamodel);
 		}
+	}
+	
+	public boolean oclFileExists(String oclFile) throws OCLFileNotFoundException{
+		File ocl= new File(oclFile);
+		
+		if(ocl.exists()) {
+			return true;
+		}else {
+			throw new OCLFileNotFoundException(oclFile);
+		}
+		
 	}
 }
