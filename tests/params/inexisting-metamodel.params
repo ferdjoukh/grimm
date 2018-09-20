@@ -1,0 +1,21 @@
+# This file contains all the generation parameters of GRIMM tool
+#
+# Fill the file with your own information
+# + are mondatory
+# Choose (1) or (2), then remove the other lines
+#
++meta-model =tests/false.ecore
++rootClass =map
+ocl file =tests/maps.ocl
+#(1)
+lowerBound for classes =2
+upperBound for classes =4
+upperBound for references =2
+#(2)
+configuration file =tests/test.grimm
+#
+#
+number of solutions =1
+#
+output format =xmi or dot
+CSP solver =abscon

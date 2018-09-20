@@ -10,6 +10,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 
+import exceptions.MetaModelNotFoundException;
+
 /**
 * @author: Adel Ferdjoukh
 * @email: ferdjoukh@gmail.com
@@ -18,10 +20,18 @@ import java.io.PrintWriter;
 
 public class ParametersFile {
 	private String filePath;
+	private String metamodel;
 	
 	public ParametersFile(String filePath) {
 		this.filePath= filePath;
 	}
+		
+	public String getMetamodel() {
+		return metamodel;
+	}
+
+
+
 	/**
 	 * 
 	 * This method creates an empty parameters file to fill
@@ -38,7 +48,7 @@ public class ParametersFile {
 			pw.write("#\n");
 			pw.write("# Fill the file with your own information\n");
 			pw.write("# + are mondatory\n");
-			pw.write("# Choose (1),(2) or (3) and remove the other lines\n");
+			pw.write("# Choose (1) or (2), then remove the other lines\n");
 			pw.write("#\n");
 			
 			pw.write("+meta-model =tests/test.ecore\n");
@@ -46,14 +56,11 @@ public class ParametersFile {
 			pw.write("ocl file =tests/maps.ocl\n");
 			
 			pw.write("#(1)\n");
-			pw.write("quick mode\n");
-			
-			pw.write("#(2)\n");
 			pw.write("lowerBound for classes =2\n");
 			pw.write("upperBound for classes =4\n");
 			pw.write("upperBound for references =2\n");
 			
-			pw.write("#(3)\n");
+			pw.write("#(2)\n");
 			pw.write("configuration file =tests/test.grimm\n");
 			
 			pw.write("#\n");
@@ -72,7 +79,7 @@ public class ParametersFile {
 		}
 	}
 	
-	public void readParamFile() {
+	public void readParamFile() throws MetaModelNotFoundException {
 		
 		try {
 			InputStream in= new FileInputStream(new File(filePath));
@@ -81,7 +88,15 @@ public class ParametersFile {
 			
 			String line;
 			while( (line=br.readLine())!=null  ) {
-				System.out.println(line);
+				if(!line.startsWith("#")) {
+					if(line.startsWith("+meta-model")) {
+						String mm= line.substring(line.lastIndexOf("=")+1);
+						System.out.println(mm);
+						if(metamodelExists(mm)) {
+							this.metamodel=mm;
+						}
+					}
+				}
 			}
 			
 		} catch (IOException e) {
@@ -90,4 +105,15 @@ public class ParametersFile {
 		}
 	}
 	
+	public boolean metamodelExists(String metamodel) throws MetaModelNotFoundException {
+		boolean found=false;
+		
+		File mm= new File(metamodel);
+		
+		if(mm.exists()) {
+			return true;
+		}else {
+			throw new MetaModelNotFoundException(metamodel);
+		}
+	}
 }
