@@ -13,7 +13,7 @@ import Utils.OCL.OclConstraints;
 
 public abstract class ModelBuilder {
 
-	protected ModelReader r;
+	protected MetaModelReader r;
 	protected String ModelFile;
 	protected String root;
 	protected String InstanceFile;
@@ -51,7 +51,7 @@ public abstract class ModelBuilder {
 	 */
 	public ArrayList<Integer> CallCSPGenrator(int lb, int ub, int rb, int sym, int sol) throws IOException
 	{
-		this.r= new ModelReader(ModelFile, root,lb,ub);
+		this.r= new MetaModelReader(ModelFile, root,lb,ub);
 		this.refB=rb;
 		this.sizes=r.getClassSize();
 		this.sizesMin=r.getClassSizeMin();
@@ -121,7 +121,7 @@ public abstract class ModelBuilder {
 		cfr.read();
 		
 		
-		this.r= new ModelReader(ModelFile, root, cfr);
+		this.r= new MetaModelReader(ModelFile, root, cfr);
 		sizes= r.getClassSize();
 		sizesMin= r.getClassSizeMin();
 		this.refB= cfr.getRefsBound();

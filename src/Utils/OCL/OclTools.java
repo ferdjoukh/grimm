@@ -39,7 +39,7 @@ import org.jdom2.Document;
 import org.jdom2.Element;
 
 import Utils.GrimmLogger;
-import Utils.ModelReader;
+import Utils.MetaModelReader;
 import Utils.OCL.exceptions.VariableNotFoundException;
 
 public class OclTools {
@@ -184,7 +184,7 @@ public class OclTools {
 	 * @param className nom de la classe m�re
 	 * @return les classes filles ou {@code null} si la classe m�re n'a pas �t� trouv�e ou qu'elle n'a pas de classe fille
 	 */
-	public static ArrayList<EClass> getSubClasses(ModelReader modelReader, String className) {
+	public static ArrayList<EClass> getSubClasses(MetaModelReader modelReader, String className) {
 		ArrayList<EClass> allClass = (ArrayList<EClass>) modelReader.getClasses();
 		ArrayList<EClass> allAbtractClass = (ArrayList<EClass>) modelReader.getAbtractClasses();
 
@@ -209,7 +209,7 @@ public class OclTools {
 	 * @param className nom de la classe m�re
 	 * @return le nom des classes filles ou {@code null} si la classe m�re n'a pas �t� trouv�e ou qu'elle n'a pas de classe fille
 	 */
-	public static List<String> getSubClassesNames(ModelReader modelReader, String className){
+	public static List<String> getSubClassesNames(MetaModelReader modelReader, String className){
 		ArrayList<String> classNameResult = new ArrayList<>();
 		ArrayList<EClass> subClasses = getSubClasses(modelReader, className);
 
@@ -230,7 +230,7 @@ public class OclTools {
 	 * @param attributName Nom de l'attribut
 	 * @return Le type de l'attribut souhait� ou {@code null} s'il n'a pas �t� trouv�
 	 */
-	public static String getTypeOfAttribute(ModelReader modelReader, String className, String attributeName) {
+	public static String getTypeOfAttribute(MetaModelReader modelReader, String className, String attributeName) {
 		EClass classToTreat = getClassFromName(modelReader, className);
 		if(classToTreat == null)
 			classToTreat = getAbstractClassFromName(modelReader, className);
@@ -247,7 +247,7 @@ public class OclTools {
 		return null;
 	}
 
-	private static EClass getClassFromName(ModelReader modelReader, String className) {
+	private static EClass getClassFromName(MetaModelReader modelReader, String className) {
 		for (EClass currentClass : modelReader.getClasses()) {
 			if(currentClass.getName().equals(className))
 				return currentClass;
@@ -255,7 +255,7 @@ public class OclTools {
 		return null;
 	}
 
-	private static EClass getAbstractClassFromName(ModelReader modelReader, String className) {
+	private static EClass getAbstractClassFromName(MetaModelReader modelReader, String className) {
 		for (EClass currentClass : modelReader.getAbtractClasses()) {
 			if(currentClass.getName().equals(className))
 				return currentClass;
@@ -283,7 +283,7 @@ public class OclTools {
 		return toReturn;
 	}
 
-	public static ArrayList<Element> getDomainsOfClass(ModelReader modelReader, Document xcspDocument, String className) {
+	public static ArrayList<Element> getDomainsOfClass(MetaModelReader modelReader, Document xcspDocument, String className) {
 		ArrayList<Element> toReturn = new ArrayList<>();
 
 		List<String> subClassesNames = getSubClassesNames(modelReader, className);
@@ -407,7 +407,7 @@ public class OclTools {
 	/**
 	 * Renvoi les elements correspondant au domaine recherch� sous forme de liste d'entier.
 	 */
-	public static ArrayList<ArrayList<Integer>> getDomainsArrayOf(ModelReader modelReader, Document xcspDocument, String className, String attributeName){
+	public static ArrayList<ArrayList<Integer>> getDomainsArrayOf(MetaModelReader modelReader, Document xcspDocument, String className, String attributeName){
 		return getElementDomainToArrayOfInteger(getDomainsOf(modelReader, xcspDocument, className, attributeName));
 	}
 
@@ -419,7 +419,7 @@ public class OclTools {
 	 * @param attributeName Nom de l'attribut
 	 * @return Les �l�ments XML correspondant au domaine recherch�
 	 */
-	public static ArrayList<Element> getDomainsOf(ModelReader modelReader, Document xcspDocument, String className, String attributeName) {
+	public static ArrayList<Element> getDomainsOf(MetaModelReader modelReader, Document xcspDocument, String className, String attributeName) {
 		ArrayList<Element> domainsResult = new ArrayList<>();
 
 		List<String> allClassName = OclTools.getSubClassesNames(modelReader, className);
@@ -693,7 +693,7 @@ public class OclTools {
 		return toReturn;
 	}
 
-	public static EClass getClassWithName(ModelReader modelReader,
+	public static EClass getClassWithName(MetaModelReader modelReader,
 			String concernedClassName) {
 		List<EClass> concernedClasses = modelReader.getClasses();
 

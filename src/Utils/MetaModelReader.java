@@ -11,7 +11,7 @@ import org.eclipse.emf.ecore.resource.impl.*;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 import org.eclipse.emf.ecore.xmi.impl.XMLResourceFactoryImpl;
 
-public class ModelReader {
+public class MetaModelReader {
 
 	/**
 	 * @param args
@@ -24,7 +24,7 @@ public class ModelReader {
 	ConfigFileReader cfr;
 	
 	
-	public ModelReader(String str,String racine,int lb,int ub){
+	public MetaModelReader(String str,String racine,int lb,int ub){
 		
 		 Resource.Factory.Registry reg=Resource.Factory.Registry.INSTANCE;
 		 Map<String,Object> m = reg.getExtensionToFactoryMap();
@@ -44,7 +44,7 @@ public class ModelReader {
 		sizeClassMinInit(1,lb);
 	}
 	
-	public ModelReader(String str,String racine, ConfigFileReader cfr){
+	public MetaModelReader(String str,String racine, ConfigFileReader cfr){
 		
 		
 		 this.cfr=cfr;

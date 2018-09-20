@@ -13,7 +13,7 @@ import org.jdom2.Document;
 import org.jdom2.Element;
 
 import Utils.GrimmLogger;
-import Utils.ModelReader;
+import Utils.MetaModelReader;
 
 /**
  * Classe repr�sentant un ou plusieurs domaines. Elle permet de les manipuler depuis et vers le fichier XCSP.
@@ -21,7 +21,7 @@ import Utils.ModelReader;
  */
 public class OclDomain {
 
-	private ModelReader _modelReader;
+	private MetaModelReader _modelReader;
 	private Document _xcspDocument;
 	private String _className;
 	private String _variableName;
@@ -35,7 +35,7 @@ public class OclDomain {
 	 * @param className Nom de la classe concern�e
 	 * @param variableName Nom de la variable concern�e
 	 */
-	public OclDomain(ModelReader modelReader, Document xcspDocument, String className, String variableName) {
+	public OclDomain(MetaModelReader modelReader, Document xcspDocument, String className, String variableName) {
 		this._modelReader = modelReader;
 		_xcspDocument = xcspDocument;
 		_className = className;

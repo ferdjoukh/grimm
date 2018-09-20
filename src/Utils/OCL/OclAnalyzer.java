@@ -23,12 +23,12 @@ import org.jdom2.Document;
 import org.jdom2.Element;
 
 import Utils.GrimmLogger;
-import Utils.ModelReader;
+import Utils.MetaModelReader;
 import Utils.OCL.exceptions.VariableNotFoundException;
 
 public class OclAnalyzer {
 
-	private ModelReader modelReader;
+	private MetaModelReader modelReader;
 	private Document documentXCSP;
 	private CSTNode _node;
 	private List<Element> _constraintsElements;
@@ -47,7 +47,7 @@ public class OclAnalyzer {
 	 * @param documentXCSP Document XCSP � modifier
 	 * @param node Noeud contenant l'arbre syntaxique du fichier OCL
 	 */
-	public OclAnalyzer(ModelReader modeleReader, Document documentXCSP, CSTNode node) {
+	public OclAnalyzer(MetaModelReader modeleReader, Document documentXCSP, CSTNode node) {
 		this.modelReader = modeleReader;
 		this.documentXCSP = documentXCSP;
 		_node = node;

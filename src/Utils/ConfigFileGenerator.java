@@ -16,14 +16,14 @@ public class ConfigFileGenerator {
 	
 	private String mm;
 	private String rootClass;
-	private ModelReader modelReader;
+	private MetaModelReader modelReader;
 	
 	
 	public ConfigFileGenerator(String mm, String rootClass)
 	{
 		this.mm = mm;
 		this.rootClass = rootClass;
-		modelReader = new ModelReader(mm, rootClass, 2, 2);
+		modelReader = new MetaModelReader(mm, rootClass, 2, 2);
 	}
 	
 	public void generate() throws IOException

@@ -14,7 +14,7 @@ import org.jdom2.output.XMLOutputter;
 
 import Utils.GenXCSP;
 import Utils.GrimmLogger;
-import Utils.ModelReader;
+import Utils.MetaModelReader;
 
 public class OclConstraints {
 
@@ -22,7 +22,7 @@ public class OclConstraints {
 	public static String XCSPFile = null;
 	
 	private Document _documentXCSP;
-	private ModelReader _modelReader;
+	private MetaModelReader _modelReader;
 	private String _oclFilePath;
 	private CSTNode _constraintsTree;
 	private OclAnalyzer _analyzer;
@@ -33,7 +33,7 @@ public class OclConstraints {
 	 * @param oclFilePath Chemin vers le fichier OCL
 	 * @param xcspDocument Chemin vers le fichier XCSP
 	 */
-	public OclConstraints(ModelReader modeleReader, String oclFilePath, Document xcspDocument) {
+	public OclConstraints(MetaModelReader modeleReader, String oclFilePath, Document xcspDocument) {
 		this._documentXCSP = xcspDocument;
 		_modelReader = modeleReader;
 		_oclFilePath = oclFilePath;
@@ -169,7 +169,7 @@ public class OclConstraints {
 //		String racine = "Navigation";
 //		XCSPFile = "Navigation/" + racine + ".xml";
 
-		ModelReader modelReader = new ModelReader(ecoreFile, racine, 2, 2);
+		MetaModelReader modelReader = new MetaModelReader(ecoreFile, racine, 2, 2);
 		
 	    GenXCSP generation = new GenXCSP(ecoreFile, racine, modelReader, 2, 4, 1);
 		generation.GenerateXCSP(OclConstraints.XCSPFile);

@@ -19,7 +19,7 @@ import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 
 public class Reconstruct {
 
-	ModelReader r;
+	MetaModelReader r;
 	String ModelFile;
 	String racine;
 	String InstanceFile;
@@ -40,7 +40,7 @@ public class Reconstruct {
 	
 	public void CallCSPGenrator(int lb,int ub,int rb,int sym)
 	{
-		r= new ModelReader(ModelFile, racine,lb,ub);
+		r= new MetaModelReader(ModelFile, racine,lb,ub);
 		this.refB=rb;
 		
 		this.sizes=r.getClassSize();

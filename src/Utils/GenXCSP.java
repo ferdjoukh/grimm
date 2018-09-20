@@ -19,7 +19,7 @@ import org.jdom2.output.XMLOutputter;
 
 public class GenXCSP {
 
-	static ModelReader r;
+	static MetaModelReader r;
 	static Element instance= new Element("instance");
 	private static org.jdom2.Document XCSPinstance;
     
@@ -51,7 +51,7 @@ public class GenXCSP {
 	String alldiffnames="";
 	
 	
-	public GenXCSP(String modelFile,String racine,ModelReader re,int FeatureBound,int RefsBound, int sym)
+	public GenXCSP(String modelFile,String racine,MetaModelReader re,int FeatureBound,int RefsBound, int sym)
 	{
 		this.r=re;
 		Document document= new Document(instance);
@@ -80,7 +80,7 @@ public class GenXCSP {
 		this.Symmetries=sym;
 	}
 	
-	public GenXCSP(String modelFile,String racine,ModelReader re, ConfigFileReader cfr, int sym)
+	public GenXCSP(String modelFile,String racine,MetaModelReader re, ConfigFileReader cfr, int sym)
 	{
 		this.r=re;
 		setXCSPinstance(new Document(instance));

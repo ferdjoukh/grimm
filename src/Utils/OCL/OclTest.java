@@ -9,14 +9,14 @@ import org.eclipse.ocl.ParserException;
 import org.junit.Test;
 
 import Utils.GenXCSP;
-import Utils.ModelReader;
+import Utils.MetaModelReader;
 
 public class OclTest extends TestCase{
 
 	String ecoreFile = "model/Simple.ecore";
 	String racine = "Root";
 	
-	ModelReader _modelReader;
+	MetaModelReader _modelReader;
 	GenXCSP _generation;
 	
 	public OclTest(String name) {
@@ -27,7 +27,7 @@ public class OclTest extends TestCase{
 		super.setUp();
 		OclConstraints.XCSPFile = "model/" + racine + ".xml";
 
-		_modelReader = new ModelReader(ecoreFile, racine, 2, 2);
+		_modelReader = new MetaModelReader(ecoreFile, racine, 2, 2);
 	    _generation = new GenXCSP(ecoreFile, racine, _modelReader, 2, 4, 1);
 		_generation.GenerateXCSP(OclConstraints.XCSPFile);
 	}

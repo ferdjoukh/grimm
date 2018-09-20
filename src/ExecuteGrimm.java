@@ -8,7 +8,7 @@ import org.eclipse.emf.ecore.resource.Resource;
 import Utils.ConfigFileGenerator;
 import Utils.GenXCSP;
 import Utils.ModelBuilder;
-import Utils.ModelReader;
+import Utils.MetaModelReader;
 import Utils.CSP2XMI;
 import Utils.CSP2dot;
 
