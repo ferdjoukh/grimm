@@ -16,6 +16,7 @@ import exceptions.ConfigurationFileNotFoundException;
 import exceptions.InputValueIsNotAnIntegerException;
 import exceptions.MetaModelNotFoundException;
 import exceptions.OCLFileNotFoundException;
+import exceptions.ParameterFileDoesNotFileException;
 
 /**
 * @author: Adel Ferdjoukh
@@ -180,6 +181,7 @@ public class ParametersFile {
 	 *  
 	 */
 	public void createNewFile(){
+		
 		File file= new File(filePath);
 		
 		try {
@@ -226,10 +228,14 @@ public class ParametersFile {
 	 * @throws OCLFileNotFoundException 
 	 * @throws ConfigurationFileNotFoundException 
 	 * @throws InputValueIsNotAnIntegerException 
+	 * @throws ParameterFileDoesNotFileException 
 	 */
-	public void readParamFile() throws MetaModelNotFoundException, OCLFileNotFoundException, ConfigurationFileNotFoundException, InputValueIsNotAnIntegerException{
+	public void readParamFile() throws MetaModelNotFoundException, OCLFileNotFoundException, ConfigurationFileNotFoundException, InputValueIsNotAnIntegerException, ParameterFileDoesNotFileException{
 		
 		try {
+			File file;
+			file= parameterFileExist();
+			
 			InputStream in= new FileInputStream(new File(filePath));
 			InputStreamReader isr= new InputStreamReader(in);
 			BufferedReader br= new BufferedReader(isr);
@@ -272,12 +278,19 @@ public class ParametersFile {
 			
 			br.close();
 			
+		}catch(ParameterFileDoesNotFileException e) {
+			System.out.println(e.getMessage());
+			throw e;
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.out.println(e.getMessage());
 		}
 	}
 	
+	////////////////////////////////////////////
+	//
+	// Existence of files and throw exceptions
+	//
+	////////////////////////////////////////////
 	public boolean metamodelExists(String metamodel) throws MetaModelNotFoundException {
 		File mm= new File(metamodel);
 		
@@ -314,6 +327,16 @@ public class ParametersFile {
 			return res;
 		}catch(Exception e) {
 			throw new InputValueIsNotAnIntegerException(value, forwhat);
+		}
+	}
+	
+	public File parameterFileExist() throws ParameterFileDoesNotFileException{
+		File param= new File(this.filePath);
+		
+		if(param.exists()) {
+			return param;
+		}else {
+			throw new ParameterFileDoesNotFileException(this.filePath);
 		}
 	}
 }
