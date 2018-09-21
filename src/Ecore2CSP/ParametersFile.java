@@ -15,6 +15,7 @@ import com.sun.corba.se.spi.orbutil.fsm.InputImpl;
 import exceptions.ConfigurationFileNotFoundException;
 import exceptions.InputValueIsNotAnIntegerException;
 import exceptions.MetaModelNotFoundException;
+import exceptions.MissingInputValueException;
 import exceptions.OCLFileNotFoundException;
 import exceptions.ParameterFileDoesNotFileException;
 
@@ -229,8 +230,9 @@ public class ParametersFile {
 	 * @throws ConfigurationFileNotFoundException 
 	 * @throws InputValueIsNotAnIntegerException 
 	 * @throws ParameterFileDoesNotFileException 
+	 * @throws MissingInputValueException 
 	 */
-	public void readParamFile() throws MetaModelNotFoundException, OCLFileNotFoundException, ConfigurationFileNotFoundException, InputValueIsNotAnIntegerException, ParameterFileDoesNotFileException{
+	public void readParamFile() throws MetaModelNotFoundException, OCLFileNotFoundException, ConfigurationFileNotFoundException, InputValueIsNotAnIntegerException, ParameterFileDoesNotFileException, MissingInputValueException{
 		
 		try {
 			File file;
@@ -278,12 +280,38 @@ public class ParametersFile {
 			
 			br.close();
 			
+			//Check is there is any missing information
+			try {
+				parameterFileIsComplete();
+			}
+			catch(MissingInputValueException e) {
+				System.out.println(e.getMessage());
+				throw e;
+			}
+			
 		}catch(ParameterFileDoesNotFileException e) {
 			System.out.println(e.getMessage());
 			throw e;
 		} catch (IOException e) {
 			System.out.println(e.getMessage());
 		}
+	}
+	
+	////////////////////////////////////////////
+	//
+	// Missing value
+	//
+	////////////////////////////////////////////
+	public boolean parameterFileIsComplete() throws MissingInputValueException {
+		if(this.metamodel == null) {
+			throw new MissingInputValueException("meta-model");
+		}
+		
+		if(this.rootClass == null) {
+			throw new MissingInputValueException("root Class");
+		}
+		
+		return true;
 	}
 	
 	////////////////////////////////////////////

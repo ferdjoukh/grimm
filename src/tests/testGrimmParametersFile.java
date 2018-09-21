@@ -9,6 +9,7 @@ import Ecore2CSP.ParametersFile;
 import exceptions.ConfigurationFileNotFoundException;
 import exceptions.InputValueIsNotAnIntegerException;
 import exceptions.MetaModelNotFoundException;
+import exceptions.MissingInputValueException;
 import exceptions.OCLFileNotFoundException;
 import exceptions.ParameterFileDoesNotFileException;
 
@@ -21,39 +22,39 @@ public class testGrimmParametersFile {
 	}
 	
 	@Test(expected = ParameterFileDoesNotFileException.class)
-	public void readNonExisitingFile() throws MetaModelNotFoundException, OCLFileNotFoundException, ConfigurationFileNotFoundException, InputValueIsNotAnIntegerException, ParameterFileDoesNotFileException {
+	public void readNonExisitingFile() throws MetaModelNotFoundException, OCLFileNotFoundException, ConfigurationFileNotFoundException, InputValueIsNotAnIntegerException, ParameterFileDoesNotFileException, MissingInputValueException {
 		ParametersFile params= new ParametersFile("tests/params/false.params");
 		params.readParamFile();
 	}
 	
-	@Test
-	public void metamodelExist() throws MetaModelNotFoundException, OCLFileNotFoundException, ConfigurationFileNotFoundException, InputValueIsNotAnIntegerException, ParameterFileDoesNotFileException{
+	@Test(expected = MissingInputValueException.class)
+	public void metamodelExist() throws MetaModelNotFoundException, OCLFileNotFoundException, ConfigurationFileNotFoundException, InputValueIsNotAnIntegerException, ParameterFileDoesNotFileException, MissingInputValueException{
 		ParametersFile params= new ParametersFile("tests/params/existing-metamodel.params");
 		params.readParamFile();
 		assertEquals("tests/test.ecore", params.getMetamodel());
 	}
 	
 	@Test(expected = MetaModelNotFoundException.class)
-	public void metamodelDoesNotExist() throws MetaModelNotFoundException, OCLFileNotFoundException, ConfigurationFileNotFoundException, InputValueIsNotAnIntegerException, ParameterFileDoesNotFileException{
+	public void metamodelDoesNotExist() throws MetaModelNotFoundException, OCLFileNotFoundException, ConfigurationFileNotFoundException, InputValueIsNotAnIntegerException, ParameterFileDoesNotFileException, MissingInputValueException{
 		ParametersFile params= new ParametersFile("tests/params/inexisting-metamodel.params");
 		params.readParamFile();	
 	}
 	
-	@Test
-	public void OCLFileExists() throws MetaModelNotFoundException, OCLFileNotFoundException, ConfigurationFileNotFoundException, InputValueIsNotAnIntegerException, ParameterFileDoesNotFileException {
+	@Test(expected = MissingInputValueException.class)
+	public void OCLFileExists() throws MetaModelNotFoundException, OCLFileNotFoundException, ConfigurationFileNotFoundException, InputValueIsNotAnIntegerException, ParameterFileDoesNotFileException, MissingInputValueException {
 		ParametersFile params= new ParametersFile("tests/params/existing-ocl.params");
 		params.readParamFile();
 		assertEquals("tests/maps.ocl", params.getOclFile());
 	}
 	
 	@Test(expected = OCLFileNotFoundException.class)
-	public void OCLFileDoesNotExist() throws MetaModelNotFoundException, OCLFileNotFoundException, ConfigurationFileNotFoundException, InputValueIsNotAnIntegerException, ParameterFileDoesNotFileException {
+	public void OCLFileDoesNotExist() throws MetaModelNotFoundException, OCLFileNotFoundException, ConfigurationFileNotFoundException, InputValueIsNotAnIntegerException, ParameterFileDoesNotFileException, MissingInputValueException {
 		ParametersFile params= new ParametersFile("tests/params/inexisting-ocl.params");
 		params.readParamFile();	
 	}
 	
-	@Test
-	public void ConfFileExists() throws MetaModelNotFoundException, OCLFileNotFoundException, ConfigurationFileNotFoundException, InputValueIsNotAnIntegerException, ParameterFileDoesNotFileException {
+	@Test(expected = MissingInputValueException.class)
+	public void ConfFileExists() throws MetaModelNotFoundException, OCLFileNotFoundException, ConfigurationFileNotFoundException, InputValueIsNotAnIntegerException, ParameterFileDoesNotFileException, MissingInputValueException {
 		ParametersFile params= new ParametersFile("tests/params/existingConfFile.params");
 		params.readParamFile();
 		assertEquals("tests/Project.grimm", params.getConfFile());
@@ -61,14 +62,27 @@ public class testGrimmParametersFile {
 	}
 	
 	@Test(expected = ConfigurationFileNotFoundException.class)
-	public void ConfFileDoesNotExists() throws MetaModelNotFoundException, OCLFileNotFoundException, ConfigurationFileNotFoundException, InputValueIsNotAnIntegerException, ParameterFileDoesNotFileException {
+	public void ConfFileDoesNotExists() throws MetaModelNotFoundException, OCLFileNotFoundException, ConfigurationFileNotFoundException, InputValueIsNotAnIntegerException, ParameterFileDoesNotFileException, MissingInputValueException {
 		ParametersFile params= new ParametersFile("tests/params/inexistingConfFile.params");
 		params.readParamFile();		
 	}
 	
 	@Test(expected = InputValueIsNotAnIntegerException.class)
-	public void stringInputForClassBound() throws MetaModelNotFoundException, OCLFileNotFoundException, ConfigurationFileNotFoundException, InputValueIsNotAnIntegerException, ParameterFileDoesNotFileException {
+	public void stringInputForClassBound() throws MetaModelNotFoundException, OCLFileNotFoundException, ConfigurationFileNotFoundException, InputValueIsNotAnIntegerException, ParameterFileDoesNotFileException, MissingInputValueException {
 		ParametersFile params= new ParametersFile("tests/params/stringInputForBounds.params");
 		params.readParamFile();
+	}
+	
+	@Test(expected = MissingInputValueException.class)
+	public void missingMetamodel() throws MetaModelNotFoundException, OCLFileNotFoundException, ConfigurationFileNotFoundException, InputValueIsNotAnIntegerException, ParameterFileDoesNotFileException, MissingInputValueException {
+		ParametersFile params= new ParametersFile("tests/params/existingConfFile.params");
+		params.readParamFile();
+	}
+	
+	@Test
+	public void FileIsComplete() throws MetaModelNotFoundException, OCLFileNotFoundException, ConfigurationFileNotFoundException, InputValueIsNotAnIntegerException, ParameterFileDoesNotFileException, MissingInputValueException {
+		ParametersFile params= new ParametersFile("tests/params/info-complete.params");
+		params.readParamFile();
+		assertEquals(true, params.parameterFileIsComplete());
 	}
 }
