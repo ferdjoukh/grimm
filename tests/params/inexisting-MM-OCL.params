@@ -1,0 +1,2 @@
++meta-model =tests/false1.ecore
+-ocl file =tests/false1.ocl
