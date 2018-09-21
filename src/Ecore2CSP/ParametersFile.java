@@ -13,7 +13,7 @@ import java.io.PrintWriter;
 import com.sun.corba.se.spi.orbutil.fsm.InputImpl;
 
 import exceptions.ConfigurationFileNotFoundException;
-import exceptions.InputValueIsNotAnIntegerException;
+import exceptions.PositiveIntegerInputException;
 import exceptions.MetaModelNotFoundException;
 import exceptions.MissingInputValueException;
 import exceptions.OCLFileNotFoundException;
@@ -114,31 +114,31 @@ public class ParametersFile {
 		return referenceUpperBound;
 	}
 	
-	public void setClassLowerBound(String value) throws InputValueIsNotAnIntegerException {
+	public void setClassLowerBound(String value) throws PositiveIntegerInputException {
 		try {
 			this.classLowerBound = isIntegerValue(value, "ClassLowerBound");
 			this.inputMode= "quick";
-		}catch(InputValueIsNotAnIntegerException e) {
+		}catch(PositiveIntegerInputException e) {
 			System.out.println(e.getMessage());
 			throw e;
 		}
 	}
 
-	public void setClassUpperBound(String value) throws InputValueIsNotAnIntegerException {
+	public void setClassUpperBound(String value) throws PositiveIntegerInputException {
 		try {
 			this.classUpperBound = isIntegerValue(value, "ClassUpperBound");
 			this.inputMode= "quick";
-		}catch(InputValueIsNotAnIntegerException e) {
+		}catch(PositiveIntegerInputException e) {
 			System.out.println(e.getMessage());
 			throw e;
 		}
 	}
 	
-	public void setReferenceUpperBound(String value) throws InputValueIsNotAnIntegerException {
+	public void setReferenceUpperBound(String value) throws PositiveIntegerInputException {
 		try {
 			this.referenceUpperBound = isIntegerValue(value, "referenceUpperBound");
 			this.inputMode= "quick";
-		}catch(InputValueIsNotAnIntegerException e) {
+		}catch(PositiveIntegerInputException e) {
 			System.out.println(e.getMessage());
 			throw e;
 		}
@@ -156,8 +156,14 @@ public class ParametersFile {
 		return numberOfSolutions;
 	}
 
-	public void setNumberOfSolutions(int numberOfSolutions) {
-		this.numberOfSolutions = numberOfSolutions;
+	public void setNumberOfSolutions(String value) throws PositiveIntegerInputException {
+		try {
+			this.numberOfSolutions = isIntegerValue(value, "numberOfSolutions");
+
+		}catch(PositiveIntegerInputException e) {
+			System.out.println(e.getMessage());
+			throw e;
+		}
 	}
 
 	public String getOutputFormat() {
@@ -228,11 +234,11 @@ public class ParametersFile {
 	 * @throws MetaModelNotFoundException 
 	 * @throws OCLFileNotFoundException 
 	 * @throws ConfigurationFileNotFoundException 
-	 * @throws InputValueIsNotAnIntegerException 
+	 * @throws PositiveIntegerInputException 
 	 * @throws ParameterFileDoesNotFileException 
 	 * @throws MissingInputValueException 
 	 */
-	public void readParamFile() throws MetaModelNotFoundException, OCLFileNotFoundException, ConfigurationFileNotFoundException, InputValueIsNotAnIntegerException, ParameterFileDoesNotFileException, MissingInputValueException{
+	public void readParamFile() throws MetaModelNotFoundException, OCLFileNotFoundException, ConfigurationFileNotFoundException, PositiveIntegerInputException, ParameterFileDoesNotFileException, MissingInputValueException{
 		
 		try {
 			File file;
@@ -274,6 +280,12 @@ public class ParametersFile {
 					if(line.startsWith("lowerBound for classes")) {
 						String value=line.substring(line.lastIndexOf("=")+1);
 						setClassLowerBound(value);
+					}
+					
+					//lower, upper bounds
+					if(line.startsWith("number of solutions")) {
+						String value=line.substring(line.lastIndexOf("=")+1);
+						setNumberOfSolutions(value);
 					}
 				}
 			}
@@ -349,12 +361,15 @@ public class ParametersFile {
 		}	
 	}
 	
-	public int isIntegerValue(String value, String forwhat) throws InputValueIsNotAnIntegerException{
+	public int isIntegerValue(String value, String forwhat) throws PositiveIntegerInputException{
 		try {
 			int res= Integer.parseInt(value);
+			if(res<0) {
+				throw new PositiveIntegerInputException(value, forwhat);
+			}
 			return res;
 		}catch(Exception e) {
-			throw new InputValueIsNotAnIntegerException(value, forwhat);
+			throw new PositiveIntegerInputException(value, forwhat);
 		}
 	}
 	
@@ -366,5 +381,36 @@ public class ParametersFile {
 		}else {
 			throw new ParameterFileDoesNotFileException(this.filePath);
 		}
+	}
+	
+	/***********
+	 * 
+	 * 
+	 * toString method
+	 * 
+	 */
+	public String toString(){
+		String result="These are the information collected from ParamatersFile: "+ filePath;
+		result=result+"\n  metamodel: "+metamodel;
+		result=result+"\n  rootClass: "+rootClass;
+		
+		if(this.oclFile!=null) {
+			result=result+"\n  OCLFile: "+oclFile;
+		}
+		
+		if(this.confFile!=null) {
+			result=result+"\n  configFile: "+confFile;
+		}else {
+			result=result+"\n  classLowerBound: "+classLowerBound;
+			result=result+"\n  classUpperBound: "+classUpperBound;
+			result=result+"\n  referenceUpperBound: "+referenceUpperBound;
+		}
+		
+		result=result+"\n  numberOfSolutions: "+numberOfSolutions;
+		result=result+"\n  outputFormat: "+outputFormat;
+		result=result+"\n  CSP solver: "+CSPSolver;
+		
+		return result;
+		
 	}
 }

@@ -16,7 +16,7 @@ upperBound for references =2
 configuration file =tests/Project.grimm
 #
 #
-number of solutions =1
+number of solutions =5
 #
 output format =xmi
 CSP solver =abscon
