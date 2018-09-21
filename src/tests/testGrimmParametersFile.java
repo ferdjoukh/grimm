@@ -61,4 +61,10 @@ public class testGrimmParametersFile {
 		ParametersFile params= new ParametersFile("tests/params/inexistingConfFile.params");
 		params.readParamFile();		
 	}
+	
+	@Test(expected = InputValueIsNotAnIntegerException.class)
+	public void stringInputForClassBound() throws MetaModelNotFoundException, OCLFileNotFoundException, ConfigurationFileNotFoundException, InputValueIsNotAnIntegerException {
+		ParametersFile params= new ParametersFile("tests/params/stringInputForBounds.params");
+		params.readParamFile();
+	}
 }
