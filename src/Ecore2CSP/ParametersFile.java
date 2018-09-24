@@ -15,6 +15,7 @@ import com.sun.corba.se.spi.orbutil.fsm.InputImpl;
 import exceptions.ConfigurationFileNotFoundException;
 import exceptions.IncorrectOutputFormatException;
 import exceptions.PositiveIntegerInputException;
+import exceptions.UnknownCSPSolverException;
 import exceptions.MetaModelNotFoundException;
 import exceptions.MissingInputValueException;
 import exceptions.OCLFileNotFoundException;
@@ -87,9 +88,7 @@ public class ParametersFile {
 		}
 	}
 	
-	public String getConfFile() {
-		return confFile;
-	}
+	
 
 	public void setConfFile(String confFile) throws ConfigurationFileNotFoundException {
 		try {
@@ -132,19 +131,11 @@ public class ParametersFile {
 			throw e;
 		}
 	}
-
-	public String getInputMode() {
-		return inputMode;
-	}
-
+	
 	public void setInputMode(String inputMode) {
 		this.inputMode = inputMode;
 	}
-
-	public int getNumberOfSolutions() {
-		return numberOfSolutions;
-	}
-
+	
 	public void setNumberOfSolutions(String value) throws PositiveIntegerInputException {
 		try {
 			this.numberOfSolutions = isIntegerValue(value, "numberOfSolutions");
@@ -158,7 +149,7 @@ public class ParametersFile {
 	public void setOutputFormat(String value) throws IncorrectOutputFormatException {
 		try {
 			if(formatIsCorrect(value))
-			this.outputFormat = value;
+				this.outputFormat = value;
 			
 		}catch(IncorrectOutputFormatException e) {
 			System.out.println(e.getMessage());
@@ -166,15 +157,33 @@ public class ParametersFile {
 		}
 	}
 
-	public void setCSPSolver(String cSPSolver) {
-		CSPSolver = cSPSolver;
+	public void setCSPSolver(String value) throws UnknownCSPSolverException {
+		try {
+			if(CSPSolverIsCorrect(value))
+				this.CSPSolver = value;
+		}catch(UnknownCSPSolverException e) {
+			System.out.println(e.getMessage());
+			throw e;
+		}
 	}
-
+	
 	/////////////////////////////////////////////
 	//
 	// getters
 	//
 	/////////////////////////////////////////////
+	public String getConfFile() {
+		return confFile;
+	}
+
+	public String getInputMode() {
+		return inputMode;
+	}
+
+	public int getNumberOfSolutions() {
+		return numberOfSolutions;
+	}
+	
 	public String getOutputFormat() {
 		return outputFormat;
 	}
@@ -252,8 +261,9 @@ public class ParametersFile {
 	 * @throws ParameterFileDoesNotFileException 
 	 * @throws MissingInputValueException 
 	 * @throws IncorrectOutputFormatException 
+	 * @throws UnknownCSPSolverException 
 	 */
-	public void readParamFile() throws MetaModelNotFoundException, OCLFileNotFoundException, ConfigurationFileNotFoundException, PositiveIntegerInputException, ParameterFileDoesNotFileException, MissingInputValueException, IncorrectOutputFormatException{
+	public void readParamFile() throws MetaModelNotFoundException, OCLFileNotFoundException, ConfigurationFileNotFoundException, PositiveIntegerInputException, ParameterFileDoesNotFileException, MissingInputValueException, IncorrectOutputFormatException, UnknownCSPSolverException{
 		
 		try {
 			File file;
@@ -320,6 +330,14 @@ public class ParametersFile {
 						String value=line.substring(line.lastIndexOf("=")+1);
 						setOutputFormat(value);
 					}
+					
+					//solver
+					if(line.startsWith("CSP solver")) {
+						String value=line.substring(line.lastIndexOf("=")+1);
+						setCSPSolver(value);
+					}
+					
+					
 				}
 			}
 			
@@ -422,6 +440,17 @@ public class ParametersFile {
 			return true;
 		else
 			throw new IncorrectOutputFormatException(value);
+	}
+	
+	private boolean CSPSolverIsCorrect(String value) throws UnknownCSPSolverException {
+		
+		if(value.toLowerCase().equals("abscon")) {
+			return true;
+		}else {
+			throw new UnknownCSPSolverException(value);
+		}
+			
+		
 	}
 	
 	/***********
