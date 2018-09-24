@@ -13,6 +13,7 @@ import java.io.PrintWriter;
 import com.sun.corba.se.spi.orbutil.fsm.InputImpl;
 
 import exceptions.ConfigurationFileNotFoundException;
+import exceptions.IncorrectOutputFormatException;
 import exceptions.PositiveIntegerInputException;
 import exceptions.MetaModelNotFoundException;
 import exceptions.MissingInputValueException;
@@ -101,18 +102,6 @@ public class ParametersFile {
 			throw e;
 		}
 	}
-
-	public int getClassLowerBound() {
-		return classLowerBound;
-	}
-	
-	public int getClassUpperBound() {
-		return classUpperBound;
-	}
-
-	public int getReferenceUpperBound() {
-		return referenceUpperBound;
-	}
 	
 	public void setClassLowerBound(String value) throws PositiveIntegerInputException {
 		try {
@@ -166,21 +155,46 @@ public class ParametersFile {
 		}
 	}
 
-	public String getOutputFormat() {
-		return outputFormat;
-	}
-
-	public void setOutputFormat(String outputFormat) {
-		this.outputFormat = outputFormat;
-	}
-
-	public String getCSPSolver() {
-		return CSPSolver;
+	public void setOutputFormat(String value) throws IncorrectOutputFormatException {
+		try {
+			if(formatIsCorrect(value))
+			this.outputFormat = value;
+			
+		}catch(IncorrectOutputFormatException e) {
+			System.out.println(e.getMessage());
+			throw e;
+		}
 	}
 
 	public void setCSPSolver(String cSPSolver) {
 		CSPSolver = cSPSolver;
 	}
+
+	/////////////////////////////////////////////
+	//
+	// getters
+	//
+	/////////////////////////////////////////////
+	public String getOutputFormat() {
+		return outputFormat;
+	}
+	
+	public String getCSPSolver() {
+		return CSPSolver;
+	}
+	
+	public int getClassLowerBound() {
+		return classLowerBound;
+	}
+	
+	public int getClassUpperBound() {
+		return classUpperBound;
+	}
+
+	public int getReferenceUpperBound() {
+		return referenceUpperBound;
+	}
+	
 
 	/**
 	 * 
@@ -237,8 +251,9 @@ public class ParametersFile {
 	 * @throws PositiveIntegerInputException 
 	 * @throws ParameterFileDoesNotFileException 
 	 * @throws MissingInputValueException 
+	 * @throws IncorrectOutputFormatException 
 	 */
-	public void readParamFile() throws MetaModelNotFoundException, OCLFileNotFoundException, ConfigurationFileNotFoundException, PositiveIntegerInputException, ParameterFileDoesNotFileException, MissingInputValueException{
+	public void readParamFile() throws MetaModelNotFoundException, OCLFileNotFoundException, ConfigurationFileNotFoundException, PositiveIntegerInputException, ParameterFileDoesNotFileException, MissingInputValueException, IncorrectOutputFormatException{
 		
 		try {
 			File file;
@@ -277,15 +292,33 @@ public class ParametersFile {
 					}
 					
 					//lower, upper bounds
+					//
+					//
 					if(line.startsWith("lowerBound for classes")) {
 						String value=line.substring(line.lastIndexOf("=")+1);
 						setClassLowerBound(value);
 					}
 					
-					//lower, upper bounds
+					if(line.startsWith("upperBound for classes")) {
+						String value=line.substring(line.lastIndexOf("=")+1);
+						setClassUpperBound(value);
+					}
+					
+					if(line.startsWith("upperBound for references")) {
+						String value=line.substring(line.lastIndexOf("=")+1);
+						setReferenceUpperBound(value);
+					}
+					
+					//number of solutions
 					if(line.startsWith("number of solutions")) {
 						String value=line.substring(line.lastIndexOf("=")+1);
 						setNumberOfSolutions(value);
+					}
+					
+					//output format
+					if(line.startsWith("output format")) {
+						String value=line.substring(line.lastIndexOf("=")+1);
+						setOutputFormat(value);
 					}
 				}
 			}
@@ -381,6 +414,14 @@ public class ParametersFile {
 		}else {
 			throw new ParameterFileDoesNotFileException(this.filePath);
 		}
+	}
+	
+	public boolean formatIsCorrect(String value) throws IncorrectOutputFormatException {
+		
+		if(value.equals("xmi") || value.equals("dot"))
+			return true;
+		else
+			throw new IncorrectOutputFormatException(value);
 	}
 	
 	/***********
