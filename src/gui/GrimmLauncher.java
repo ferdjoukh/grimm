@@ -4,7 +4,10 @@ import java.io.File;
 import java.io.IOException;
 
 import Ecore2CSP.ParametersFile;
+import Utils.CSP2XMI;
+import Utils.CSP2dot;
 import Utils.ConfigFileGenerator;
+import Utils.ModelBuilder;
 import exceptions.ConfigurationFileNotFoundException;
 import exceptions.IncorrectOutputFormatException;
 import exceptions.MetaModelNotFoundException;
@@ -164,21 +167,75 @@ public class GrimmLauncher {
 	 * @throws ConfigurationFileNotFoundException 
 	 * @throws OCLFileNotFoundException 
 	 * @throws MetaModelNotFoundException 
+	 * @throws IOException 
 	 */
-	private static void generateModels(String[] args) throws MissingGrimmParameterException, MetaModelNotFoundException, OCLFileNotFoundException, ConfigurationFileNotFoundException, PositiveIntegerInputException, ParameterFileDoesNotFileException, MissingInputValueException, IncorrectOutputFormatException, UnknownCSPSolverException {
+	private static void generateModels(String[] args) throws MissingGrimmParameterException, MetaModelNotFoundException, OCLFileNotFoundException, ConfigurationFileNotFoundException, PositiveIntegerInputException, ParameterFileDoesNotFileException, MissingInputValueException, IncorrectOutputFormatException, UnknownCSPSolverException, IOException {
 		
 		if(args.length != 2) {
 			throw new MissingGrimmParameterException("generation of models requires a parameters file");
 		}else {
 			//read the params file
-			ParametersFile params= new ParametersFile(args[1]);
-			params.readParamFile();
 			System.out.println("GENERATION of MODELS");
 			System.out.println("");
+			
+			ParametersFile params= new ParametersFile(args[1]);
+			params.readParamFile();
 			System.out.println(params.toString());
 			
 			System.out.println("");
 			System.out.println("Start generation...");
+			
+			//Start generation
+			ModelBuilder modelbuilder;
+			
+			//////////////////////////////////////////////////////
+			//
+			//input mode: quick (lb,ub,rb)
+			//
+			//////////////////////////////////////////////////////
+			if(params.getInputMode().equals("quick")) {
+				if(params.getOutputFormat().equals("xmi")) {
+					
+					modelbuilder= new CSP2XMI(params.getMetamodel(), params.getRootClass(),
+							params.getRootClass()+"/"+params.getRootClass()+".xml", 
+							params.getOclFile());
+					
+					modelbuilder.generateModel(params.getClassLowerBound(), params.getClassUpperBound(), 
+							params.getReferenceUpperBound(), 1, params.getNumberOfSolutions());
+					
+				}else if (params.getOutputFormat().equals("dot")) {
+					
+					modelbuilder= new CSP2dot(params.getMetamodel(), params.getRootClass(),
+							params.getRootClass()+"/"+params.getRootClass()+".xml", 
+							params.getOclFile());
+					
+					modelbuilder.generateModel(params.getClassLowerBound(), params.getClassUpperBound(), 
+							params.getReferenceUpperBound(), 1, params.getNumberOfSolutions());
+				}
+			
+			//////////////////////////////////////////////////////
+			//
+			//input mode: config (detailed)
+			//
+			//////////////////////////////////////////////////////
+			}else if (params.getInputMode().equals("config")) {
+				if(params.getOutputFormat().equals("xmi")) {
+					
+					modelbuilder= new CSP2XMI(params.getMetamodel(), params.getRootClass(),
+							params.getRootClass()+"/"+params.getRootClass()+".xml", 
+							params.getOclFile());
+					
+					modelbuilder.generateModel(params.getConfFile(), 1, params.getNumberOfSolutions());
+					
+				}else if (params.getOutputFormat().equals("dot")) {
+					
+					modelbuilder= new CSP2dot(params.getMetamodel(), params.getRootClass(),
+							params.getRootClass()+"/"+params.getRootClass()+".xml", 
+							params.getOclFile());
+					
+					modelbuilder.generateModel(params.getConfFile(), 1, params.getNumberOfSolutions());
+				}
+			}
 		}	
 	}
 	

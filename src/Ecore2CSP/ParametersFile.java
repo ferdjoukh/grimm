@@ -31,7 +31,7 @@ public class ParametersFile {
 	private String filePath;
 	private String metamodel;
 	private String rootClass;
-	private String oclFile;
+	private String oclFile="";
 	private String confFile;
 	private int classLowerBound=2;
 	private int classUpperBound=3;
@@ -52,33 +52,33 @@ public class ParametersFile {
 	// Setters
 	//
 	//////////////////////////////////////////
-	public void setMetamodel(String mm) throws MetaModelNotFoundException {
+	private void setMetamodel(String mm) throws MetaModelNotFoundException {
 		try {
 			if(metamodelExists(mm)) {
 				this.metamodel=mm;
 			}
 		} catch (MetaModelNotFoundException e) {
-			System.out.println(e.getMessage());
+			//System.out.println(e.getMessage());
 			throw e;
 		}
 	}
 	
-	public void setRootClass(String rootClass) {
+	private void setRootClass(String rootClass) {
 		this.rootClass = rootClass;
 	}
 	
-	public void setOclFile(String oclFile) throws OCLFileNotFoundException {
+	private void setOclFile(String oclFile) throws OCLFileNotFoundException {
 		try {
 			if(oclFileExists(oclFile)) {
 				this.oclFile=oclFile;
 			}
 		} catch (OCLFileNotFoundException e) {
-			System.out.println(e.getMessage());
+			//System.out.println(e.getMessage());
 			throw e;
 		}
 	}
 	
-	public void setConfFile(String confFile) throws ConfigurationFileNotFoundException {
+	private void setConfFile(String confFile) throws ConfigurationFileNotFoundException {
 		try {
 			if(confFileExists(confFile)) {
 				this.confFile = confFile;
@@ -90,67 +90,63 @@ public class ParametersFile {
 		}
 	}
 	
-	public void setClassLowerBound(String value) throws PositiveIntegerInputException {
+	private void setClassLowerBound(String value) throws PositiveIntegerInputException {
 		try {
 			this.classLowerBound = isIntegerValue(value, "ClassLowerBound");
 			this.inputMode= "quick";
 		}catch(PositiveIntegerInputException e) {
-			System.out.println(e.getMessage());
+			//System.out.println(e.getMessage());
 			throw e;
 		}
 	}
 
-	public void setClassUpperBound(String value) throws PositiveIntegerInputException {
+	private void setClassUpperBound(String value) throws PositiveIntegerInputException {
 		try {
 			this.classUpperBound = isIntegerValue(value, "ClassUpperBound");
 			this.inputMode= "quick";
 		}catch(PositiveIntegerInputException e) {
-			System.out.println(e.getMessage());
+			//System.out.println(e.getMessage());
 			throw e;
 		}
 	}
 	
-	public void setReferenceUpperBound(String value) throws PositiveIntegerInputException {
+	private void setReferenceUpperBound(String value) throws PositiveIntegerInputException {
 		try {
 			this.referenceUpperBound = isIntegerValue(value, "referenceUpperBound");
 			this.inputMode= "quick";
 		}catch(PositiveIntegerInputException e) {
-			System.out.println(e.getMessage());
+			//System.out.println(e.getMessage());
 			throw e;
 		}
 	}
 	
-	public void setInputMode(String inputMode) {
-		this.inputMode = inputMode;
-	}
-	
-	public void setNumberOfSolutions(String value) throws PositiveIntegerInputException {
+	private void setNumberOfSolutions(String value) throws PositiveIntegerInputException {
 		try {
 			this.numberOfSolutions = isIntegerValue(value, "numberOfSolutions");
 
 		}catch(PositiveIntegerInputException e) {
-			System.out.println(e.getMessage());
+			//System.out.println(e.getMessage());
 			throw e;
 		}
 	}
 
-	public void setOutputFormat(String value) throws IncorrectOutputFormatException {
+	private void setOutputFormat(String value) throws IncorrectOutputFormatException {
 		try {
 			if(formatIsCorrect(value))
 				this.outputFormat = value;
 			
 		}catch(IncorrectOutputFormatException e) {
-			System.out.println(e.getMessage());
+			//System.out.println(e.getMessage());
 			throw e;
 		}
 	}
 
-	public void setCSPSolver(String value) throws UnknownCSPSolverException {
+	private void setCSPSolver(String value) throws UnknownCSPSolverException {
 		try {
 			if(CSPSolverIsCorrect(value))
 				this.CSPSolver = value;
 		}catch(UnknownCSPSolverException e) {
-			System.out.println(e.getMessage());
+			//System.out.println(e.getMessage());
 			throw e;
 		}
 	}
@@ -177,6 +173,10 @@ public class ParametersFile {
 		return confFile;
 	}
 	
+	/**
+	 * 
+	 * @return the input mode of a generation process: quick or config
+	 */
 	public String getInputMode() {
 		return inputMode;
 	}
@@ -185,6 +185,10 @@ public class ParametersFile {
 		return numberOfSolutions;
 	}
 	
+	/**
+	 * 
+	 * @return The format for generated models: xmi or dot
+	 */
 	public String getOutputFormat() {
 		return outputFormat;
 	}
@@ -267,10 +271,10 @@ public class ParametersFile {
 	public void readParamFile() throws MetaModelNotFoundException, OCLFileNotFoundException, ConfigurationFileNotFoundException, PositiveIntegerInputException, ParameterFileDoesNotFileException, MissingInputValueException, IncorrectOutputFormatException, UnknownCSPSolverException{
 		
 		try {
-			File file;
-			file= parameterFileExist();
 			
-			InputStream in= new FileInputStream(new File(filePath));
+			File file= parameterFileExist();
+			
+			InputStream in= new FileInputStream(file);
 			InputStreamReader isr= new InputStreamReader(in);
 			BufferedReader br= new BufferedReader(isr);
 			
@@ -467,6 +471,8 @@ public class ParametersFile {
 		if(this.oclFile!=null) {
 			result=result+"\n  OCLFile: "+oclFile;
 		}
+		
+		result=result+"\n  Input mode: "+inputMode;
 		
 		if(this.confFile!=null) {
 			result=result+"\n  configFile: "+confFile;
