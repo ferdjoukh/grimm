@@ -8,6 +8,7 @@ import org.eclipse.emf.ecore.resource.Resource;
 import Utils.ConfigFileGenerator;
 import Utils.GenXCSP;
 import Utils.ModelBuilder;
+import exceptions.MetaModelNotFoundException;
 import Utils.MetaModelReader;
 import Utils.CSP2XMI;
 import Utils.CSP2dot;
@@ -18,8 +19,9 @@ public class ExecuteGrimm {
 	/**
 	 * @param args
 	 * @throws IOException 
+	 * @throws MetaModelNotFoundException 
 	 */
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args) throws IOException, MetaModelNotFoundException {
 		// TODO Auto-generated method stub
       		
 		String mm = "";
@@ -224,7 +226,7 @@ public class ExecuteGrimm {
 			    case 3: {//Generate the config File
 			    	System.out.print("Generation of a configuration file for meta-model "+mm +"...");
 			    	ConfigFileGenerator gcf= new ConfigFileGenerator(mm,root);
-			    	gcf.generate();
+			    	gcf.createConfigFile();
 			    	
 			    	
 			    }

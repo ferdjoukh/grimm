@@ -1,12 +1,17 @@
 package gui;
 
+import java.io.File;
+import java.io.IOException;
+
 import Ecore2CSP.ParametersFile;
+import Utils.ConfigFileGenerator;
+import exceptions.MetaModelNotFoundException;
 import exceptions.MissingGrimmParameterException;
 import exceptions.UnknownParameterException;
 
 public class GrimmLauncher {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
 		
 		if(args.length==0) {
 			Help.printHelp();
@@ -46,6 +51,8 @@ public class GrimmLauncher {
 						createConfigFile(args);
 					}catch(MissingGrimmParameterException e) {
 						System.out.println(e.getMessage());
+					}catch (MetaModelNotFoundException e) {						
+						System.out.println(e.getMessage());
 					}
 				}
 				break;
@@ -54,6 +61,8 @@ public class GrimmLauncher {
 					try {
 						createConfigFile(args);
 					}catch(MissingGrimmParameterException e) {
+						System.out.println(e.getMessage());
+					}catch (MetaModelNotFoundException e) {						
 						System.out.println(e.getMessage());
 					}			
 				}
@@ -98,7 +107,7 @@ public class GrimmLauncher {
 	 */
 	private static void createParameterFile(String[] args) throws MissingGrimmParameterException {
 		
-		if(args.length<2) {
+		if(args.length != 2) {
 			throw new MissingGrimmParameterException("creation of parameters file requires a filePath");
 		}else {
 			System.out.print("Creation of Parameters file: ["+args[1]+"] ... ");
@@ -113,11 +122,23 @@ public class GrimmLauncher {
 	 * 
 	 * @param args
 	 * @throws MissingGrimmParameterException
+	 * @throws MetaModelNotFoundException 
+	 * @throws IOException 
 	 */
-	private static void createConfigFile(String[] args) throws MissingGrimmParameterException {
+	private static void createConfigFile(String[] args) throws MissingGrimmParameterException, MetaModelNotFoundException, IOException {
 		
-		if(args.length<3) {
-			throw new MissingGrimmParameterException("creation of configuration file requires a meta-model and a root class");
+		if(args.length != 4) {
+			throw new MissingGrimmParameterException("creation of configuration file requires: (1) file path, (2) meta-model and (3) root class");
+		}else{
+			File metamodelFile= new File(args[2]);
+			if(metamodelFile.exists()) {
+				ConfigFileGenerator cfg= new ConfigFileGenerator(args[1], args[2], args[3]);
+				System.out.print("creation of Configuration file: ["+cfg.getFilePath()+"] ... ");
+				cfg.createConfigFile();
+				System.out.println("DONE");
+			}else {
+				throw new MetaModelNotFoundException(args[2]);
+			}
 		}
 	}
 	
@@ -129,7 +150,7 @@ public class GrimmLauncher {
 	 */
 	private static void generateModels(String[] args) throws MissingGrimmParameterException {
 		
-		if(args.length<2) {
+		if(args.length != 2) {
 			throw new MissingGrimmParameterException("generation of models requires a parameters file");
 		}	
 	}
