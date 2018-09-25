@@ -85,7 +85,7 @@ public class ParametersFile {
 				this.inputMode= "config";
 			}
 		}catch(ConfigurationFileNotFoundException e) {
-			System.out.println(e.getMessage());
+			//System.out.println(e.getMessage());
 			throw e;
 		}
 	}
@@ -354,7 +354,6 @@ public class ParametersFile {
 			}
 			
 		}catch(ParameterFileDoesNotFileException e) {
-			System.out.println(e.getMessage());
 			throw e;
 		} catch (IOException e) {
 			System.out.println(e.getMessage());

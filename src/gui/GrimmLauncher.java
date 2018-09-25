@@ -5,8 +5,15 @@ import java.io.IOException;
 
 import Ecore2CSP.ParametersFile;
 import Utils.ConfigFileGenerator;
+import exceptions.ConfigurationFileNotFoundException;
+import exceptions.IncorrectOutputFormatException;
 import exceptions.MetaModelNotFoundException;
 import exceptions.MissingGrimmParameterException;
+import exceptions.MissingInputValueException;
+import exceptions.OCLFileNotFoundException;
+import exceptions.ParameterFileDoesNotFileException;
+import exceptions.PositiveIntegerInputException;
+import exceptions.UnknownCSPSolverException;
 import exceptions.UnknownParameterException;
 
 public class GrimmLauncher {
@@ -60,9 +67,7 @@ public class GrimmLauncher {
 				case "c":{
 					try {
 						createConfigFile(args);
-					}catch(MissingGrimmParameterException e) {
-						System.out.println(e.getMessage());
-					}catch (MetaModelNotFoundException e) {						
+					}catch(Exception e) {
 						System.out.println(e.getMessage());
 					}			
 				}
@@ -71,7 +76,7 @@ public class GrimmLauncher {
 				case "generate":{
 					try {
 						generateModels(args);
-					}catch(MissingGrimmParameterException e) {
+					} catch (Exception e) {
 						System.out.println(e.getMessage());
 					}
 				}
@@ -80,7 +85,7 @@ public class GrimmLauncher {
 				case "g":{
 					try {
 						generateModels(args);
-					}catch(MissingGrimmParameterException e) {
+					}catch(Exception e) {
 						System.out.println(e.getMessage());
 					}
 				}
@@ -110,6 +115,8 @@ public class GrimmLauncher {
 		if(args.length != 2) {
 			throw new MissingGrimmParameterException("creation of parameters file requires a filePath");
 		}else {
+			System.out.println("PARAMETERS files");
+			System.out.println("");
 			System.out.print("Creation of Parameters file: ["+args[1]+"] ... ");
 			ParametersFile params= new ParametersFile(args[1]);
 			params.createNewFile();
@@ -133,6 +140,8 @@ public class GrimmLauncher {
 			File metamodelFile= new File(args[2]);
 			if(metamodelFile.exists()) {
 				ConfigFileGenerator cfg= new ConfigFileGenerator(args[1], args[2], args[3]);
+				System.out.println("CONFIGURATION file");
+				System.out.println("");
 				System.out.print("creation of Configuration file: ["+cfg.getFilePath()+"] ... ");
 				cfg.createConfigFile();
 				System.out.println("DONE");
@@ -147,11 +156,29 @@ public class GrimmLauncher {
 	 * 
 	 * @param args
 	 * @throws MissingGrimmParameterException
+	 * @throws UnknownCSPSolverException 
+	 * @throws IncorrectOutputFormatException 
+	 * @throws MissingInputValueException 
+	 * @throws ParameterFileDoesNotFileException 
+	 * @throws PositiveIntegerInputException 
+	 * @throws ConfigurationFileNotFoundException 
+	 * @throws OCLFileNotFoundException 
+	 * @throws MetaModelNotFoundException 
 	 */
-	private static void generateModels(String[] args) throws MissingGrimmParameterException {
+	private static void generateModels(String[] args) throws MissingGrimmParameterException, MetaModelNotFoundException, OCLFileNotFoundException, ConfigurationFileNotFoundException, PositiveIntegerInputException, ParameterFileDoesNotFileException, MissingInputValueException, IncorrectOutputFormatException, UnknownCSPSolverException {
 		
 		if(args.length != 2) {
 			throw new MissingGrimmParameterException("generation of models requires a parameters file");
+		}else {
+			//read the params file
+			ParametersFile params= new ParametersFile(args[1]);
+			params.readParamFile();
+			System.out.println("GENERATION of MODELS");
+			System.out.println("");
+			System.out.println(params.toString());
+			
+			System.out.println("");
+			System.out.println("Start generation...");
 		}	
 	}
 	
