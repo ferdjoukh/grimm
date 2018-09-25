@@ -46,7 +46,10 @@ public class Help {
 		
 		System.out.println("");
 		System.out.println(" a quick start example is included in the version of GRIMM you downloaded");
-		System.out.println("     java -jar grimm.jar g test.params");
+		System.out.println("     java -jar grimm.jar g examples/testMM1.params");
+		System.out.println("");
+		System.out.println("     The results of execution are stored in Compo folder (named after rootClass)");
+		
 		
 		System.out.println("");
 		System.out.println("EXAMPLES");

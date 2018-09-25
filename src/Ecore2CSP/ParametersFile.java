@@ -231,9 +231,9 @@ public class ParametersFile {
 			pw.write("#   (1) and (2) block must not appear at the same time\n");
 			pw.write("#\n");
 			
-			pw.write("+meta-model =tests/test.ecore\n");
-			pw.write("+rootClass =map\n");
-			pw.write("-ocl file =tests/maps.ocl\n");
+			pw.write("+meta-model =examples/test.ecore\n");
+			pw.write("+rootClass =Compo\n");
+			pw.write("-ocl file =examples/test.ocl\n");
 			
 			pw.write("#(1)\n");
 			pw.write("lowerBound for classes =2\n");
@@ -241,11 +241,11 @@ public class ParametersFile {
 			pw.write("upperBound for references =2\n");
 			
 			pw.write("#(2)\n");
-			pw.write("configuration file =tests/test.grimm\n");
+			pw.write("configuration file =examples/testMM1.grimm\n");
 			
 			pw.write("#\n");
 			pw.write("#\n");
-			pw.write("number of solutions =1\n");
+			pw.write("number of solutions =5\n");
 			pw.write("#\n");
 			pw.write("output format =xmi or dot\n");
 			pw.write("CSP solver =abscon\n");
