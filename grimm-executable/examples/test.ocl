@@ -1,0 +1,8 @@
+package test
+
+context A
+inv: listen > 5
+
+endpackage
+
+
