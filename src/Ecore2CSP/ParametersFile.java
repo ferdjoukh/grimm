@@ -41,19 +41,17 @@ public class ParametersFile {
 	private String outputFormat="xmi";
 	private String CSPSolver="abscon";
 	
-	///////////////////////////////////////////
-	// 
-	// Getters and Setters
-	//
-	///////////////////////////////////////////
+	
 	public ParametersFile(String filePath) {
 		this.filePath= filePath;
 	}
-		
-	public String getMetamodel() {
-		return metamodel;
-	}
 	
+	
+	///////////////////////////////////////////
+	// 
+	// Setters
+	//
+	//////////////////////////////////////////
 	public void setMetamodel(String mm) throws MetaModelNotFoundException {
 		try {
 			if(metamodelExists(mm)) {
@@ -65,18 +63,10 @@ public class ParametersFile {
 		}
 	}
 	
-	public String getRootClass() {
-		return rootClass;
-	}
-
 	public void setRootClass(String rootClass) {
 		this.rootClass = rootClass;
 	}
-
-	public String getOclFile() {
-		return oclFile;
-	}
-
+	
 	public void setOclFile(String oclFile) throws OCLFileNotFoundException {
 		try {
 			if(oclFileExists(oclFile)) {
@@ -88,8 +78,6 @@ public class ParametersFile {
 		}
 	}
 	
-	
-
 	public void setConfFile(String confFile) throws ConfigurationFileNotFoundException {
 		try {
 			if(confFileExists(confFile)) {
@@ -172,10 +160,23 @@ public class ParametersFile {
 	// getters
 	//
 	/////////////////////////////////////////////
+	
+	public String getMetamodel() {
+		return metamodel;
+	}
+	
+	public String getRootClass() {
+		return rootClass;
+	}
+	
+	public String getOclFile() {
+		return oclFile;
+	}
+	
 	public String getConfFile() {
 		return confFile;
 	}
-
+	
 	public String getInputMode() {
 		return inputMode;
 	}

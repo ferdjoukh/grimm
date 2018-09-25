@@ -1,5 +1,6 @@
 package gui;
 
+import Ecore2CSP.ParametersFile;
 import exceptions.MissingGrimmParameterException;
 import exceptions.UnknownParameterException;
 
@@ -99,6 +100,11 @@ public class GrimmLauncher {
 		
 		if(args.length<2) {
 			throw new MissingGrimmParameterException("creation of parameters file requires a filePath");
+		}else {
+			System.out.print("Creation of Parameters file: ["+args[1]+"] ... ");
+			ParametersFile params= new ParametersFile(args[1]);
+			params.createNewFile();
+			System.out.println("DONE");
 		}		
 	}
 		
