@@ -1,4 +1,4 @@
-package Utils;
+package CSP2Model;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -7,8 +7,12 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Date;
 
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.ocl.ParserException;
 
+import Ecore.MetaModelReader;
+import Ecore2CSP.ConfigFileReader;
+import Ecore2CSP.GenXCSP;
 import Utils.OCL.OclConstraints;
 
 public abstract class ModelBuilder {
@@ -23,6 +27,7 @@ public abstract class ModelBuilder {
 	protected ArrayList<Integer> sizesMin;
 	protected String oclFilePath;
 	protected int maxDomains;
+	protected ArrayList<FoundSolution> foundSolutions= new ArrayList<FoundSolution>();
 	
 	/***
 	 * 
@@ -40,6 +45,12 @@ public abstract class ModelBuilder {
 		
 	}
 	
+	
+	
+	public ArrayList<FoundSolution> getFoundSolutions() {
+		return foundSolutions;
+	}
+
 	/***
 	 * 
 	 * @param lb: Class instance number lower bound
@@ -49,7 +60,7 @@ public abstract class ModelBuilder {
 	 * @param sol: Solutions number ?
 	 * @throws IOException
 	 */
-	public ArrayList<Integer> CallCSPGenrator(int lb, int ub, int rb, int sym, int sol) throws IOException
+	public void CallCSPGenrator(int lb, int ub, int rb, int sym, int sol) throws IOException
 	{
 		this.r= new MetaModelReader(ModelFile, root,lb,ub);
 		this.refB=rb;
@@ -93,11 +104,8 @@ public abstract class ModelBuilder {
 		//Excuter le solveur
 		////////////////////////////////////////////////////////////
 		System.out.print("CSP Solver is running...");
-		BufferedReader r;
-		r=Execute(InstanceFile, sol);
-		ArrayList<Integer> vals= new ArrayList<Integer>();
-		vals=RValues(r);
-		return(vals);
+		BufferedReader bufferedreader=executeAbsconSolver(InstanceFile, sol);
+		findAllSolutions(bufferedreader);
 	}
 	
 	/***
@@ -108,7 +116,7 @@ public abstract class ModelBuilder {
 	 * @return 
 	 * @throws IOException
 	 */
-	public ArrayList<Integer> CallCSPGenrator(String configFilePath, int sym, int sol) throws IOException
+	public void CallCSPGenrator(String configFilePath, int sym, int sol) throws IOException
 	{
 		/*
 		 * 
@@ -119,7 +127,6 @@ public abstract class ModelBuilder {
 		 */
 		ConfigFileReader cfr= new ConfigFileReader(configFilePath);
 		cfr.read();
-		
 		
 		this.r= new MetaModelReader(ModelFile, root, cfr);
 		sizes= r.getClassSize();
@@ -161,16 +168,11 @@ public abstract class ModelBuilder {
 		////////////////////////////////////////////////////////////
 		System.out.print("CSP Solver is running...");
 		BufferedReader r;
-		r=Execute(InstanceFile,sol);
-		ArrayList<Integer> vals= new ArrayList<Integer>();
-		vals=RValues(r);
-		
-		return vals;
-		
-		
+		r=executeAbsconSolver(InstanceFile,sol);
+		findAllSolutions(r);
 	}
 	
-	public BufferedReader Execute(String Instancefile, int sol){
+	public BufferedReader executeAbsconSolver(String Instancefile, int sol){
 			
 			String cmd = "java -jar abssol.jar " + Instancefile +" -s="+ sol;
 	
@@ -182,58 +184,48 @@ public abstract class ModelBuilder {
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
-					
 				}
 		        return null;
 		}
 	
-	public ArrayList<Integer> RValues(BufferedReader reader){
-		ArrayList<Integer> vals= new ArrayList<Integer>();
+	/**
+	 * This method reads the output of execution of Abscon solver 
+	 * and finds all the returned solutions
+	 * 
+	 * @param reader
+	 */
+	public void findAllSolutions(BufferedReader reader){
 		String line;
-		String du = null;
+		String du = "";
 		int found=0;
 		
 		try {
 			while((line = reader.readLine()) != null) {
-			//	System.out.println(line);
 				if(line.startsWith("s SATISFIABLE")) {	        
-			    	
 			    	found=1;
 			    }
-			    else  if(line.startsWith("v ")){
-			    	int i=2;int varl=0;
-			    	while(i<line.length())
-			    	{
-			    		varl=line.indexOf(" ", i);
-			    		vals.add(Integer.parseInt((line.substring(i, varl))));
-			    		i= varl+1;
-			    	}
-			    } 
 			    else if(line.startsWith("   totalWckTime"))
 			    {
 			    	int kk=line.indexOf("CpuTime=");
 			    	du="= "+line.subSequence(kk+8, line.length())+" CPUtime";
+			    
+			    }else if(line.startsWith("    solution  #")) {
+			    	String solutionLine= line.substring(line.indexOf("#")+4);
+			    	FoundSolution foundsolution= new FoundSolution(solutionLine);
+			    	foundSolutions.add(foundsolution);
 			    }
 			}
-			if(found==0)
-			{
+			if(found==0) {
 				System.out.println(" Not OK :(");
 				System.out.println("\tCSP instance is unsatisfiable :(");
-				return null;
 			}
-			else
-			{
+			else{
 				System.out.println(" OK");
 				System.out.println("\tResolutuon time" +du);
-				return vals;
-				
 			}
 			
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return null;
-		    	
+			System.out.println(e.getMessage());	
 		}
 	}
 	
@@ -261,13 +253,30 @@ public abstract class ModelBuilder {
 		return s;
 	}
 
-	public void generateModel(String string, int i, int j) throws IOException {
-		// TODO Auto-generated method stub
-		
-	}
+	/**
+	 * This method generate models using a detailed configuration file
+	 * 
+	 * @param string
+	 * @param sym
+	 * @param numberOfSolutions
+	 * @throws IOException
+	 */
+	public void generateModel(String string, int sym, int numberOfSolutions) throws IOException {}
 	
-	public void generateModel(int lb,int ub,int rb,int sym, int sol) throws IOException {
-		// TODO Auto-generated method stub
-		
-	}
+	/**
+	 * This method is called for generating model using the quick launch mode
+	 * 
+	 * @param lb
+	 * @param ub
+	 * @param rb
+	 * @param sym
+	 * @param numberOfSolutions
+	 * @throws IOException
+	 */
+	public void generateModel(int lb,int ub,int rb,int sym, int numberOfSolutions) throws IOException {}
+	
+	/**
+	 * This method generates all the models that were found by the solver
+	 */
+	public void Solutions2Models() {}
 }

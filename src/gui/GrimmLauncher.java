@@ -3,11 +3,11 @@ package gui;
 import java.io.File;
 import java.io.IOException;
 
+import CSP2Model.CSP2XMI;
+import CSP2Model.CSP2dot;
+import CSP2Model.ModelBuilder;
+import Ecore2CSP.ConfigFileGenerator;
 import Ecore2CSP.ParametersFile;
-import Utils.CSP2XMI;
-import Utils.CSP2dot;
-import Utils.ConfigFileGenerator;
-import Utils.ModelBuilder;
 import exceptions.ConfigurationFileNotFoundException;
 import exceptions.IncorrectOutputFormatException;
 import exceptions.MetaModelNotFoundException;

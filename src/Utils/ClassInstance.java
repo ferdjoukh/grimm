@@ -11,4 +11,12 @@ public class ClassInstance {
 		this.Id=Id;
 		this.obj=o;
 	}
+
+	public int getId() {
+		return Id;
+	}
+
+	public EObject getObj() {
+		return obj;
+	}	
 }

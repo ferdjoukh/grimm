@@ -1,4 +1,4 @@
-package Utils;
+package CSP2Model;
 
 import java.io.File;
 import java.io.IOException;
@@ -15,6 +15,9 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 import org.eclipse.emf.ecore.xmi.impl.XMLResourceImpl;
+
+import Utils.ClassInstance;
+import Utils.Utils;
 
 public class CSP2XMI extends ModelBuilder{
 
@@ -42,20 +45,8 @@ public class CSP2XMI extends ModelBuilder{
 	 */
 	public void generateModel(int lb,int ub,int rb,int sym, int sol) throws IOException
 	{
-		ArrayList<Integer> vals=super.CallCSPGenrator(lb, ub, rb, sym, sol);	
-		
-		///////////////////////////////////////////////////////////////
-		//Build a valid model
-		/////////////////////////////////////////////////////////////
-		if(vals!=null)
-		{	
-			if(vals.size()!=0)
-			{
-				System.out.print("Model builder is running...");
-				EObject object= FindModel(vals);
-				ValidModel(object);
-			}
-		}
+		super.CallCSPGenrator(lb, ub, rb, sym, sol);	
+		Solutions2Models();
 	}
 	
 	/***
@@ -65,23 +56,23 @@ public class CSP2XMI extends ModelBuilder{
 	 * @param sol: solution number
 	 * @throws IOException
 	 */
-	public void generateModel(String configFilePath, int sym, int sol) throws IOException
+	public void generateModel(String configFilePath, int sym, int numberOfSolutions) throws IOException
 	{
-		ArrayList<Integer> vals=super.CallCSPGenrator(configFilePath, sym, sol);
-		
-		///////////////////////////////////////////////////////////////
-		//Reconstruire une solution
-		/////////////////////////////////////////////////////////////
-		if(vals!=null)
-		{
-			if(vals.size()!=0)
-			{
-				System.out.print("Model builder is running...");
-				EObject object= FindModel(vals);
-				ValidModel(object);
-			}
-		}
+		super.CallCSPGenrator(configFilePath, sym, numberOfSolutions);
+		Solutions2Models();
 
+	}
+	
+	public void Solutions2Models() {
+		System.out.println("Model Builder is running...");
+		
+		int ID=0;
+		
+		for(FoundSolution solution: foundSolutions) {
+			ID++;
+			EObject object= FindModel(solution.getValues());
+			ValidModel(object,ID);
+		}
 	}
 	
 	public EObject FindModel(ArrayList<Integer> values)
@@ -112,7 +103,7 @@ public class CSP2XMI extends ModelBuilder{
 				for(EAttribute a:super.r.getAllAttributesFromClass(c))
 				{
 					if(a.getEType().getName()=="EString")
-						o.eSet(a, r.BasePackage.getName()+"_"+vals.get(variable).toString());
+						o.eSet(a, r.getBasePackage().getName()+"_"+vals.get(variable).toString());
 				    else if (a.getEType().getName()=="EInt")
 					    o.eSet(a, vals.get(variable));	
 				    else
@@ -170,11 +161,10 @@ public class CSP2XMI extends ModelBuilder{
 					for(EAttribute a:r.getAllAttributesFromClass(c))
 					{
 						if(a.getEType().getName()=="EString"){
-							System.out.println(c.getName());
-					 	i.eSet(a, c.getName()+"_"+j+"_"+a.getName()+"_"+ vals.get(variable).toString());
+							i.eSet(a, c.getName()+"_"+j+"_"+a.getName()+"_"+ vals.get(variable).toString());
 					    }
 						else if (a.getEType().getName()=="EInt"){
-								i.eSet(a, vals.get(variable));
+							i.eSet(a, vals.get(variable));
 					    }
 						else{
 							//C'est une Enumération !!!
@@ -327,7 +317,7 @@ public class CSP2XMI extends ModelBuilder{
 		   				//Add all instances to root Class instance
 		   				for(ClassInstance clInst: mesInst)
 		   				{
-		   					EObject object= clInst.obj;
+		   					EObject object= clInst.getObj();
 		   					String cl =((DynamicEObjectImpl) object).eClass().getName();
 		   					
 		   					if(!cl.equals(c.getName()))
@@ -373,7 +363,7 @@ public class CSP2XMI extends ModelBuilder{
 		return o;
 	}
 	
-	 public void ValidModel(EObject o)
+	 public void ValidModel(EObject o, int ID)
 	 {
 		 new File(root).mkdir();
 		 ResourceSet resourceSet=new ResourceSetImpl();
@@ -384,22 +374,17 @@ public class CSP2XMI extends ModelBuilder{
 		 {
 			 resourceSet = new ResourceSetImpl();
 			 resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put("xmi",new XMIResourceFactoryImpl());
-			 URI uri=URI.createURI(root+"/"+this.Model+".xmi");
+			 URI uri=URI.createURI(root+"/"+this.Model+ID+".xmi");
 			 resource=resourceSet.createResource(uri);
 			 resource.getContents().add(o);
 			 Map<String,Boolean> opts= new HashMap<String,Boolean>();
 			 //Important to get an XMI readable in EMF
 			 opts.put(XMLResourceImpl.OPTION_SCHEMA_LOCATION, Boolean.TRUE);
 			 resource.save(opts); 
-			 System.out.println(" OK");
-			 System.out.println("\tSuccess, A model found :D");
-			 System.out.println("\t"+root+"/"+this.Model+".xmi is the generated model");
+			 System.out.println(" Model: "+root+"/"+this.Model+ID+".xmi was generated");
 		 }
-		 catch(Exception e)
-		 {
-			 //e.printStackTrace();
-			 System.out.println(" Not OK");
-			 System.out.println("\tProblem when building the model");
+		 catch(Exception e){
+			 System.out.println(" Problem when building the model");
 		 }
 	 }
 }

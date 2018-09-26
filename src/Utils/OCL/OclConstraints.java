@@ -12,9 +12,9 @@ import org.jdom2.Element;
 import org.jdom2.output.Format;
 import org.jdom2.output.XMLOutputter;
 
-import Utils.GenXCSP;
+import Ecore.MetaModelReader;
+import Ecore2CSP.GenXCSP;
 import Utils.GrimmLogger;
-import Utils.MetaModelReader;
 
 public class OclConstraints {
 

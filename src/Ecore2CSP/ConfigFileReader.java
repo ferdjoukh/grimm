@@ -1,4 +1,4 @@
-package Utils;
+package Ecore2CSP;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;

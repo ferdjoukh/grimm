@@ -14,5 +14,5 @@ configuration file =examples/testMM1.grimm
 #
 number of solutions =10
 #
-output format =xmi
+output format =dot
 CSP solver =abscon

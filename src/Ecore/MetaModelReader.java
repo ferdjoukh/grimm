@@ -1,4 +1,4 @@
-package Utils;
+package Ecore;
 
 import java.util.*;
 
@@ -10,6 +10,8 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.*;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 import org.eclipse.emf.ecore.xmi.impl.XMLResourceFactoryImpl;
+
+import Ecore2CSP.ConfigFileReader;
 
 public class MetaModelReader {
 
@@ -323,7 +325,8 @@ public class MetaModelReader {
 			}
 			return cls;
 	}
-	
-		
-	
+
+	public EPackage getBasePackage() {
+		return BasePackage;
+	}		
 }

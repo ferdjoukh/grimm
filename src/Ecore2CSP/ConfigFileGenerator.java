@@ -1,4 +1,4 @@
-package Utils;
+package Ecore2CSP;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -11,6 +11,7 @@ import java.util.Date;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 
+import Ecore.MetaModelReader;
 import exceptions.MetaModelNotFoundException;
 
 public class ConfigFileGenerator {

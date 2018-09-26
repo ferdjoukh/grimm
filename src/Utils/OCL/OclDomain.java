@@ -12,8 +12,8 @@ import org.eclipse.ocl.cst.VariableExpCS;
 import org.jdom2.Document;
 import org.jdom2.Element;
 
+import Ecore.MetaModelReader;
 import Utils.GrimmLogger;
-import Utils.MetaModelReader;
 
 /**
  * Classe repr�sentant un ou plusieurs domaines. Elle permet de les manipuler depuis et vers le fichier XCSP.

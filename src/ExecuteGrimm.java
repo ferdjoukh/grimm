@@ -5,13 +5,13 @@ import java.util.*;
 import org.eclipse.emf.ecore.*;
 import org.eclipse.emf.ecore.resource.Resource;
 
-import Utils.ConfigFileGenerator;
-import Utils.GenXCSP;
-import Utils.ModelBuilder;
+import CSP2Model.CSP2XMI;
+import CSP2Model.CSP2dot;
+import CSP2Model.ModelBuilder;
+import Ecore.MetaModelReader;
+import Ecore2CSP.ConfigFileGenerator;
+import Ecore2CSP.GenXCSP;
 import exceptions.MetaModelNotFoundException;
-import Utils.MetaModelReader;
-import Utils.CSP2XMI;
-import Utils.CSP2dot;
 
 
 public class ExecuteGrimm {

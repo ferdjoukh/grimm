@@ -17,6 +17,9 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 
+import Ecore.MetaModelReader;
+import Ecore2CSP.GenXCSP;
+
 public class Reconstruct {
 
 	MetaModelReader r;
@@ -200,7 +203,7 @@ public class Reconstruct {
 				for(EAttribute a:r.getAllAttributesFromClass(c))
 				{
 					if(a.getEType().getName()=="EString")
-						o.eSet(a, r.BasePackage.getName()+"_"+vals.get(variable).toString());
+						o.eSet(a, r.getBasePackage().getName()+"_"+vals.get(variable).toString());
 				    else if (a.getEType().getName()=="EInt")
 					    o.eSet(a, vals.get(variable));	
 				    else

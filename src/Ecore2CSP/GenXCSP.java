@@ -1,4 +1,4 @@
-package Utils;
+package Ecore2CSP;
 import java.io.*;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -16,6 +16,8 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.jdom2.*;
 import org.jdom2.output.Format;
 import org.jdom2.output.XMLOutputter;
+
+import Ecore.MetaModelReader;
 
 public class GenXCSP {
 

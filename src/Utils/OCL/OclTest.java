@@ -8,8 +8,8 @@ import junit.framework.TestCase;
 import org.eclipse.ocl.ParserException;
 import org.junit.Test;
 
-import Utils.GenXCSP;
-import Utils.MetaModelReader;
+import Ecore.MetaModelReader;
+import Ecore2CSP.GenXCSP;
 
 public class OclTest extends TestCase{
 

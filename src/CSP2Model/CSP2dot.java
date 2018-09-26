@@ -1,4 +1,4 @@
-package Utils;
+package CSP2Model;
 
 
 import java.io.BufferedWriter;
@@ -39,21 +39,10 @@ public class CSP2dot extends ModelBuilder{
 	 * @param sol: Solutions number ?
 	 * @throws IOException
 	 */
-	public void generateModel(int lb, int ub, int rb, int sym, int sol) throws IOException
+	public void generateModel(int lb, int ub, int rb, int sym, int sol) throws IOException 
 	{
-		ArrayList<Integer> vals= super.CallCSPGenrator(lb, ub, rb, sym, sol);
-		
-		///////////////////////////////////////////////////////////////
-		//Reconstruire une solution
-		/////////////////////////////////////////////////////////////
-		if(vals!=null)
-		{	
-			if(vals.size()!=0)
-			{
-				System.out.println("Model builder is running...");
-				generateDot(vals);
-			}
-		}
+		super.CallCSPGenrator(lb, ub, rb, sym, sol);
+		Solutions2Models();
 	}
 	
 	/***
@@ -65,23 +54,27 @@ public class CSP2dot extends ModelBuilder{
 	 */
 	public void generateModel(String configFilePath, int sym, int sol) throws IOException
 	{
+		super.CallCSPGenrator(configFilePath, sym, sol);
+		Solutions2Models();
+	}
+	
+	public void Solutions2Models() {
+		System.out.println("Model Builder is running...");
 		
-		ArrayList<Integer> vals=super.CallCSPGenrator(configFilePath, sym, sol);
+		int ID=0;
 		
-		///////////////////////////////////////////////////////////////
-		//Reconstruire une solution
-		/////////////////////////////////////////////////////////////
-		if(vals!=null)
-		{	
-			if(vals.size()!=0)
-			{
-				System.out.print("Model builder is running...");
-				generateDot(vals);
+		for(FoundSolution solution: foundSolutions) {
+			ID++;
+			try {
+				generateDot(solution.getValues(),ID);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 		}
 	}
 		
-	public void generateDot(ArrayList<Integer> values) throws IOException
+	public void generateDot(ArrayList<Integer> values, int ID) throws IOException
 	{
 		ArrayList<Integer> vals= values;
 		int variable=0;
@@ -92,7 +85,7 @@ public class CSP2dot extends ModelBuilder{
 		ArrayList<String> references= new ArrayList<String>();
 				
 		new File(root).mkdir();
-		ecrivain =  new PrintWriter(new BufferedWriter(new FileWriter(root+"/"+this.Model+".dot")));
+		ecrivain =  new PrintWriter(new BufferedWriter(new FileWriter(root+"/"+this.Model+ID+".dot")));
 		
 		ecrivain.write("Graph g{ \n");
 		
@@ -250,27 +243,24 @@ public class CSP2dot extends ModelBuilder{
 		}
 		ecrivain.write("} \n");
 		ecrivain.close();
+				
 		
-		System.out.println(" OK");
-		
-		////////////////////////////////////////////////
-		/////////////////////////
-		//////////
-		////        Générer le pdf...
-		
-		String cmd = "dot -Tpdf "+root+"/"+this.Model+".dot -o "+root+ "/"+ this.Model+".pdf";
+		/////////////////////////////////////////////////////
+		// Call graphViz in order to generate 
+		// an object diagram in pdf file
+		/////////////////////////////////////////////////////
+		String cmd = "dot -Tpdf "+root+"/"+this.Model+ID+".dot -o "+root+ "/"+ this.Model+ID+".pdf";
 		
 		Process p = null;
 		try {
 			p = Runtime.getRuntime().exec(cmd);
 			
-			System.out.println("\tSuccess, A model found :D");
-		    System.out.println("\t"+root+"/"+this.Model+".pdf is the generated model");
+			System.out.println("  model :"+root+"/"+this.Model+ID+".pdf was generated");
 		  
 		}
 		catch(Exception e)
 		{
-			System.out.println("\tGraphViz Software is not installed. \n\t"+root+"/"+this.Model+".dot is the generated model");
+			System.out.println(" model :"+root+"/"+this.Model+ID+".dot was generated");
 		}
 		
 	}

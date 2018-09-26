@@ -38,8 +38,8 @@ import org.eclipse.ocl.ecore.parser.OCLAnalyzer;
 import org.jdom2.Document;
 import org.jdom2.Element;
 
+import Ecore.MetaModelReader;
 import Utils.GrimmLogger;
-import Utils.MetaModelReader;
 import Utils.OCL.exceptions.VariableNotFoundException;
 
 public class OclTools {

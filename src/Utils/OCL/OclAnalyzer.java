@@ -22,8 +22,8 @@ import org.eclipse.ocl.cst.SimpleTypeEnum;
 import org.jdom2.Document;
 import org.jdom2.Element;
 
+import Ecore.MetaModelReader;
 import Utils.GrimmLogger;
-import Utils.MetaModelReader;
 import Utils.OCL.exceptions.VariableNotFoundException;
 
 public class OclAnalyzer {
