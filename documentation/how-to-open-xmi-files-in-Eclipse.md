@@ -8,18 +8,18 @@ Here we explain you what to do when you face a problem while opening an xmi file
 
 ## Why can't I open my xmi file ?
 
-<img src="img/problem-open-xmi-model-in-Eclipse.png" alt="Problem while opening an XMI file in Eclipse" width="50%" />
+<img src="img/problem-open-xmi-model-in-Eclipse.png" alt="Problem while opening an XMI file in Eclipse" width="70%" />
 
 The problem is that Eclipse is incapable to localize the Ecore meta-model to use in order to open you xmi file. This frequently happens when the Ecore meta-model and the xmi files are not in the same folder.
 
-<img src="img/error-message-xmi-file.png" alt="Error message while opening an XMI file in Eclipse" width="50%" />
+<img src="img/error-message-xmi-file.png" alt="Error message while opening an XMI file in Eclipse" width="70%" />
 
 ## Solution
 
 1. Open your xmi file in a text editor
 2. Modify the **xsi**:*schemaLocation* attribute of the xmi file
 
-<img src="img/xmi-file-text-editor1.png" alt="Modify the xsi:schemaLocation attribute of xmi files" width="50%" />
+<img src="img/xmi-file-text-editor1.png" alt="Modify the xsi:schemaLocation attribute of xmi files" width="70%" />
 
 3. In my case, grimm generated the following value:
 
@@ -33,5 +33,5 @@ My xmi file is in folder ./Compo/ and the .ecore file is in folder ./examples/
 
 5. Try to open the xmi file with Sample Reflective Ecore Model Editor
 
-<img src="img/xmi-opened-in-eclipse.png" alt="XMI file opened with Sample Reflective Ecore Model Editor" width="50%" />
+<img src="img/xmi-opened-in-eclipse.png" alt="XMI file opened with Sample Reflective Ecore Model Editor" width="70%" />
 
