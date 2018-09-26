@@ -71,6 +71,6 @@ grimm is the centerpiece of more other works (papers and tools) done by the same
 
 ## Help and tutorials
 
-Here you can find some points to help you while using grimm.
+Here you can find additional tutorials to help you while using grimm.
 
 1. [How to open xmi files with Sample Reflective Ecore Model Editor](https://github.com/ferdjoukh/grimm/blob/master/documentation/how-to-open-xmi-files-in-Eclipse.md)
