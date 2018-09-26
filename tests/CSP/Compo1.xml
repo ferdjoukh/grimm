@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<instance>
+  <presentation name="?" maxConstraintArity="2" format="XCSP 2.0" />
+  <domains nbDomains="14">
+    <domain name="DC1" nbValues="1">1</domain>
+    <domain name="DC1_2" nbValues="2">0 1</domain>
+    <domain name="DC_Compo" nbValues="1">1</domain>
+    <domain name="DC2" nbValues="1">2</domain>
+    <domain name="DC2_2" nbValues="4">0 3..5</domain>
+    <domain name="DC_A" nbValues="4">2..5</domain>
+    <domain name="DC3" nbValues="1">6</domain>
+    <domain name="DC3_2" nbValues="6">0 7..11</domain>
+    <domain name="DC_B" nbValues="6">6..11</domain>
+    <domain name="DF2_1" nbValues="15">6..20</domain>
+    <domain name="DF3_1" nbValues="21">1 2 3 4 5 6 7 8 9</domain>
+    <domain name="DCRJ_1_1" nbValues="6">6..11</domain>
+    <domain name="DCRJ2_1_1" nbValues="12">6..11 12..18</domain>
+    <domain name="DCRJ_2_1" nbValues="4">2..5</domain>
+    <domain name="DCRJ2_2_1" nbValues="10">2..5 12..18</domain>
+    <domain name="DCRJ_1_2" nbValues="6">6..11</domain>
+    <domain name="DCRJ2_1_2" nbValues="12">6..11 12..18</domain>
+  </domains>
+  <variables nbVariables="46">
+    <variable domain="DCRJ2_1_1" name="Id_Compo_1_Bs_1" />
+    <variable domain="DCRJ2_1_1" name="Id_Compo_1_Bs_2" />
+    <variable domain="DCRJ2_1_1" name="Id_Compo_1_Bs_3" />
+    <variable domain="DCRJ2_1_1" name="Id_Compo_1_Bs_4" />
+    <variable domain="DCRJ2_1_1" name="Id_Compo_1_Bs_5" />
+    <variable domain="DCRJ2_1_1" name="Id_Compo_1_Bs_6" />
+    <variable domain="DCRJ2_2_1" name="Id_Compo_1_As_1" />
+    <variable domain="DCRJ2_2_1" name="Id_Compo_1_As_2" />
+    <variable domain="DCRJ2_2_1" name="Id_Compo_1_As_3" />
+    <variable domain="DCRJ2_2_1" name="Id_Compo_1_As_4" />
+    <variable domain="DCRJ2_2_1" name="Id_Compo_1_As_5" />
+    <variable domain="DCRJ2_2_1" name="Id_Compo_1_As_6" />
+    <variable domain="DF2_1" name="F_A_2_listen" />
+    <variable domain="DCRJ2_1_2" name="Id_A_2_Ab_1" />
+    <variable domain="DCRJ2_1_2" name="Id_A_2_Ab_2" />
+    <variable domain="DCRJ2_1_2" name="Id_A_2_Ab_3" />
+    <variable domain="DCRJ2_1_2" name="Id_A_2_Ab_4" />
+    <variable domain="DCRJ2_1_2" name="Id_A_2_Ab_5" />
+    <variable domain="DCRJ2_1_2" name="Id_A_2_Ab_6" />
+    <variable domain="DF2_1" name="F_A_3_listen" />
+    <variable domain="DCRJ2_1_2" name="Id_A_3_Ab_1" />
+    <variable domain="DCRJ2_1_2" name="Id_A_3_Ab_2" />
+    <variable domain="DCRJ2_1_2" name="Id_A_3_Ab_3" />
+    <variable domain="DCRJ2_1_2" name="Id_A_3_Ab_4" />
+    <variable domain="DCRJ2_1_2" name="Id_A_3_Ab_5" />
+    <variable domain="DCRJ2_1_2" name="Id_A_3_Ab_6" />
+    <variable domain="DF2_1" name="F_A_4_listen" />
+    <variable domain="DCRJ2_1_2" name="Id_A_4_Ab_1" />
+    <variable domain="DCRJ2_1_2" name="Id_A_4_Ab_2" />
+    <variable domain="DCRJ2_1_2" name="Id_A_4_Ab_3" />
+    <variable domain="DCRJ2_1_2" name="Id_A_4_Ab_4" />
+    <variable domain="DCRJ2_1_2" name="Id_A_4_Ab_5" />
+    <variable domain="DCRJ2_1_2" name="Id_A_4_Ab_6" />
+    <variable domain="DF2_1" name="F_A_5_listen" />
+    <variable domain="DCRJ2_1_2" name="Id_A_5_Ab_1" />
+    <variable domain="DCRJ2_1_2" name="Id_A_5_Ab_2" />
+    <variable domain="DCRJ2_1_2" name="Id_A_5_Ab_3" />
+    <variable domain="DCRJ2_1_2" name="Id_A_5_Ab_4" />
+    <variable domain="DCRJ2_1_2" name="Id_A_5_Ab_5" />
+    <variable domain="DCRJ2_1_2" name="Id_A_5_Ab_6" />
+    <variable domain="DF3_1" name="F_B_6_name" />
+    <variable domain="DF3_1" name="F_B_7_name" />
+    <variable domain="DF3_1" name="F_B_8_name" />
+    <variable domain="DF3_1" name="F_B_9_name" />
+    <variable domain="DF3_1" name="F_B_10_name" />
+    <variable domain="DF3_1" name="F_B_11_name" />
+  </variables>
+  <predicates nbPredicates="1">
+    <predicate name="inf">
+      <parameters>int v1 int v2</parameters>
+      <expression>
+        <functional>lt(v1,v2)</functional>
+      </expression>
+    </predicate>
+  </predicates>
+  <constraints nbConstraints="30">
+    <constraint name="ConsId_Compo_1_Bs_2Id_Compo_1_Bs_1" arity="2" scope="Id_Compo_1_Bs_2 Id_Compo_1_Bs_1" reference="inf">
+      <parameters>Id_Compo_1_Bs_1 Id_Compo_1_Bs_2</parameters>
+    </constraint>
+    <constraint name="ConsId_Compo_1_Bs_3Id_Compo_1_Bs_2" arity="2" scope="Id_Compo_1_Bs_3 Id_Compo_1_Bs_2" reference="inf">
+      <parameters>Id_Compo_1_Bs_2 Id_Compo_1_Bs_3</parameters>
+    </constraint>
+    <constraint name="ConsId_Compo_1_Bs_4Id_Compo_1_Bs_3" arity="2" scope="Id_Compo_1_Bs_4 Id_Compo_1_Bs_3" reference="inf">
+      <parameters>Id_Compo_1_Bs_3 Id_Compo_1_Bs_4</parameters>
+    </constraint>
+    <constraint name="ConsId_Compo_1_Bs_5Id_Compo_1_Bs_4" arity="2" scope="Id_Compo_1_Bs_5 Id_Compo_1_Bs_4" reference="inf">
+      <parameters>Id_Compo_1_Bs_4 Id_Compo_1_Bs_5</parameters>
+    </constraint>
+    <constraint name="ConsId_Compo_1_Bs_6Id_Compo_1_Bs_5" arity="2" scope="Id_Compo_1_Bs_6 Id_Compo_1_Bs_5" reference="inf">
+      <parameters>Id_Compo_1_Bs_5 Id_Compo_1_Bs_6</parameters>
+    </constraint>
+    <constraint name="ConsId_Compo_1_As_2Id_Compo_1_As_1" arity="2" scope="Id_Compo_1_As_2 Id_Compo_1_As_1" reference="inf">
+      <parameters>Id_Compo_1_As_1 Id_Compo_1_As_2</parameters>
+    </constraint>
+    <constraint name="ConsId_Compo_1_As_3Id_Compo_1_As_2" arity="2" scope="Id_Compo_1_As_3 Id_Compo_1_As_2" reference="inf">
+      <parameters>Id_Compo_1_As_2 Id_Compo_1_As_3</parameters>
+    </constraint>
+    <constraint name="ConsId_Compo_1_As_4Id_Compo_1_As_3" arity="2" scope="Id_Compo_1_As_4 Id_Compo_1_As_3" reference="inf">
+      <parameters>Id_Compo_1_As_3 Id_Compo_1_As_4</parameters>
+    </constraint>
+    <constraint name="ConsId_Compo_1_As_5Id_Compo_1_As_4" arity="2" scope="Id_Compo_1_As_5 Id_Compo_1_As_4" reference="inf">
+      <parameters>Id_Compo_1_As_4 Id_Compo_1_As_5</parameters>
+    </constraint>
+    <constraint name="ConsId_Compo_1_As_6Id_Compo_1_As_5" arity="2" scope="Id_Compo_1_As_6 Id_Compo_1_As_5" reference="inf">
+      <parameters>Id_Compo_1_As_5 Id_Compo_1_As_6</parameters>
+    </constraint>
+    <constraint name="ConsId_A_2_Ab_2Id_A_2_Ab_1" arity="2" scope="Id_A_2_Ab_2 Id_A_2_Ab_1" reference="inf">
+      <parameters>Id_A_2_Ab_1 Id_A_2_Ab_2</parameters>
+    </constraint>
+    <constraint name="ConsId_A_2_Ab_3Id_A_2_Ab_2" arity="2" scope="Id_A_2_Ab_3 Id_A_2_Ab_2" reference="inf">
+      <parameters>Id_A_2_Ab_2 Id_A_2_Ab_3</parameters>
+    </constraint>
+    <constraint name="ConsId_A_2_Ab_4Id_A_2_Ab_3" arity="2" scope="Id_A_2_Ab_4 Id_A_2_Ab_3" reference="inf">
+      <parameters>Id_A_2_Ab_3 Id_A_2_Ab_4</parameters>
+    </constraint>
+    <constraint name="ConsId_A_2_Ab_5Id_A_2_Ab_4" arity="2" scope="Id_A_2_Ab_5 Id_A_2_Ab_4" reference="inf">
+      <parameters>Id_A_2_Ab_4 Id_A_2_Ab_5</parameters>
+    </constraint>
+    <constraint name="ConsId_A_2_Ab_6Id_A_2_Ab_5" arity="2" scope="Id_A_2_Ab_6 Id_A_2_Ab_5" reference="inf">
+      <parameters>Id_A_2_Ab_5 Id_A_2_Ab_6</parameters>
+    </constraint>
+    <constraint name="ConsId_A_3_Ab_2Id_A_3_Ab_1" arity="2" scope="Id_A_3_Ab_2 Id_A_3_Ab_1" reference="inf">
+      <parameters>Id_A_3_Ab_1 Id_A_3_Ab_2</parameters>
+    </constraint>
+    <constraint name="ConsId_A_3_Ab_3Id_A_3_Ab_2" arity="2" scope="Id_A_3_Ab_3 Id_A_3_Ab_2" reference="inf">
+      <parameters>Id_A_3_Ab_2 Id_A_3_Ab_3</parameters>
+    </constraint>
+    <constraint name="ConsId_A_3_Ab_4Id_A_3_Ab_3" arity="2" scope="Id_A_3_Ab_4 Id_A_3_Ab_3" reference="inf">
+      <parameters>Id_A_3_Ab_3 Id_A_3_Ab_4</parameters>
+    </constraint>
+    <constraint name="ConsId_A_3_Ab_5Id_A_3_Ab_4" arity="2" scope="Id_A_3_Ab_5 Id_A_3_Ab_4" reference="inf">
+      <parameters>Id_A_3_Ab_4 Id_A_3_Ab_5</parameters>
+    </constraint>
+    <constraint name="ConsId_A_3_Ab_6Id_A_3_Ab_5" arity="2" scope="Id_A_3_Ab_6 Id_A_3_Ab_5" reference="inf">
+      <parameters>Id_A_3_Ab_5 Id_A_3_Ab_6</parameters>
+    </constraint>
+    <constraint name="ConsId_A_4_Ab_2Id_A_4_Ab_1" arity="2" scope="Id_A_4_Ab_2 Id_A_4_Ab_1" reference="inf">
+      <parameters>Id_A_4_Ab_1 Id_A_4_Ab_2</parameters>
+    </constraint>
+    <constraint name="ConsId_A_4_Ab_3Id_A_4_Ab_2" arity="2" scope="Id_A_4_Ab_3 Id_A_4_Ab_2" reference="inf">
+      <parameters>Id_A_4_Ab_2 Id_A_4_Ab_3</parameters>
+    </constraint>
+    <constraint name="ConsId_A_4_Ab_4Id_A_4_Ab_3" arity="2" scope="Id_A_4_Ab_4 Id_A_4_Ab_3" reference="inf">
+      <parameters>Id_A_4_Ab_3 Id_A_4_Ab_4</parameters>
+    </constraint>
+    <constraint name="ConsId_A_4_Ab_5Id_A_4_Ab_4" arity="2" scope="Id_A_4_Ab_5 Id_A_4_Ab_4" reference="inf">
+      <parameters>Id_A_4_Ab_4 Id_A_4_Ab_5</parameters>
+    </constraint>
+    <constraint name="ConsId_A_4_Ab_6Id_A_4_Ab_5" arity="2" scope="Id_A_4_Ab_6 Id_A_4_Ab_5" reference="inf">
+      <parameters>Id_A_4_Ab_5 Id_A_4_Ab_6</parameters>
+    </constraint>
+    <constraint name="ConsId_A_5_Ab_2Id_A_5_Ab_1" arity="2" scope="Id_A_5_Ab_2 Id_A_5_Ab_1" reference="inf">
+      <parameters>Id_A_5_Ab_1 Id_A_5_Ab_2</parameters>
+    </constraint>
+    <constraint name="ConsId_A_5_Ab_3Id_A_5_Ab_2" arity="2" scope="Id_A_5_Ab_3 Id_A_5_Ab_2" reference="inf">
+      <parameters>Id_A_5_Ab_2 Id_A_5_Ab_3</parameters>
+    </constraint>
+    <constraint name="ConsId_A_5_Ab_4Id_A_5_Ab_3" arity="2" scope="Id_A_5_Ab_4 Id_A_5_Ab_3" reference="inf">
+      <parameters>Id_A_5_Ab_3 Id_A_5_Ab_4</parameters>
+    </constraint>
+    <constraint name="ConsId_A_5_Ab_5Id_A_5_Ab_4" arity="2" scope="Id_A_5_Ab_5 Id_A_5_Ab_4" reference="inf">
+      <parameters>Id_A_5_Ab_4 Id_A_5_Ab_5</parameters>
+    </constraint>
+    <constraint name="ConsId_A_5_Ab_6Id_A_5_Ab_5" arity="2" scope="Id_A_5_Ab_6 Id_A_5_Ab_5" reference="inf">
+      <parameters>Id_A_5_Ab_5 Id_A_5_Ab_6</parameters>
+    </constraint>
+  </constraints>
+</instance>
