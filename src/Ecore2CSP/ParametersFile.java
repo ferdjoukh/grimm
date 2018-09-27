@@ -65,6 +65,7 @@ public class ParametersFile {
 	
 	private void setRootClass(String rootClass) {
 		this.rootClass = rootClass;
+		new File(rootClass).mkdir();
 	}
 	
 	private void setOclFile(String oclFile) throws OCLFileNotFoundException {

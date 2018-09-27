@@ -6,8 +6,9 @@
 2. [Overview](#overview)
 3. [Use grimm](#use-grimm)
 	1. [Quick start](#quick-start)	
-	2. [Documentation](#documentation)
-	3. [Help and tutorials](#help-and-tutorials)
+	2. [Parameters files](#parameters-file)
+	3. [Configuration file](#configuration-file)
+	4. [More help and tutorials](#more-help-and-tutorials)
 
 # grimm
 
@@ -40,44 +41,46 @@ grimm is the centerpiece of more other works (papers and tools) done by the same
 
 # Use grimm
 
-## Quick start
+## start grimm in 10 steps
 
 1. Go to the release page [here](https://github.com/ferdjoukh/grimm/releases)
-2. Choose the desired release and download it (zip file).
-3. Unpack the zip file.
-4. Inside the obtained folder, another zip called **grimm-executable.zip** contains: the runnable jar and the CSP solver (*abssol.jar*), and some example meta-models.
-5. Unpack this zip.
-6. Now you are ready to start using **grimm**.
-7. Show help by running this command in a terminal:
+2. Choose the desired release (*the last release is recommended*) and download it (zip file).Unpack the zip file.
+
+3. Inside the folder, another zip called **grimm-executable.zip** contains: **a runnable jar**, **the CSP solver** (*abssol.jar*), and **examples**: Meta-models (.ecore, .ocl files), Parameters files (.params) and Configuration files (.grimm).
+
+4. Unpack this zip.
+5. Now you are ready to start using **grimm**.
+6. Show help by running this command in a terminal:
 
 	`java -jar grimm.jar`
 
-8. The quick start commands are shown in the help page of grimm.
-9. Run this quick start command to verify that everything is okay:
+8. Run this quick start command to verify that everything is okay:
 
-	`java -jar grimm.jar -mm=test.ecore -root=Compo -lb=2 -ub=2 -rb=4 -xmi`
+	`java -jar grimm.jar g examples/testMM1.params`
 
-	1. If everything worked well, a first model is generated and stored in the following folder:
+	1. If everything worked well, two first models are generated and stored in the following folder:
 
 		`currentfolder/Compo/`	
 
-10. Install **graphviz** if you want to create object diagrams for your generated models.
+9. Install **graphviz** if you want to create object diagrams for your generated models.
 
 	`sudo apt-get install graphivz` (on ubuntu for example)
 
-11. Run this 2nd quick start command to verify that **graphviz** is running without problems:
+10. Run this 2nd quick start command to verify that **graphviz** is running without problems:
 
-	`java -jar grimm.jar -mm=test.ecore -root=Compo -lb=2 -ub=2 -rb=4 -dot`
+	`java -jar grimm.jar g examples/testMM2.params`
 
 	1. Again a model is generated and stored in:
 
 		`currentfolder/Compo/`
 
-## Documentation
+Now you are ready to use grimm. If you have your own meta-model, you can creates you own [Parameters file](#parameters-file) and a [Configuration File](#configuration-file) in order to start generation.
 
+## Parameters File
 
+## Configuration File
 
-## Help and tutorials
+## More help and tutorials
 
 Here you can find additional tutorials to help you while using grimm.
 

@@ -8,6 +8,7 @@ import CSP2Model.CSP2dot;
 import CSP2Model.ModelBuilder;
 import Ecore2CSP.ConfigFileGenerator;
 import Ecore2CSP.ParametersFile;
+import exceptions.CSPSolverNotFoundException;
 import exceptions.ConfigurationFileNotFoundException;
 import exceptions.IncorrectOutputFormatException;
 import exceptions.MetaModelNotFoundException;
@@ -21,7 +22,19 @@ import exceptions.UnknownParameterException;
 
 public class GrimmLauncher {
 
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args) throws IOException, CSPSolverNotFoundException {
+		
+		///////////////////////////////////////
+		//Check is abscon solver is available
+		///////////////////////////////////////
+		try {
+			isSolverExisting("abssol.jar");
+		}
+		catch(CSPSolverNotFoundException e) {
+			System.out.println(e.getMessage());
+			return;
+		}
+		
 		
 		if(args.length==0) {
 			Help.printHelp();
@@ -236,6 +249,13 @@ public class GrimmLauncher {
 					modelbuilder.generateModel(params.getConfFile(), 1, params.getNumberOfSolutions());
 				}
 			}
+		}	
+	}
+	
+	private static void isSolverExisting(String filePath) throws CSPSolverNotFoundException {
+		File abscon= new File(filePath);
+		if(!abscon.exists()) {
+			throw new CSPSolverNotFoundException(filePath);
 		}	
 	}
 	
