@@ -34,7 +34,7 @@ grimm is the centerpiece of more other works (papers and tools) done by the same
 	- Changing the way of giving input parameters: now grimm creates a pre-filled *.params* file in which you give: meta-model, root class, OCL file, generation parameters (quick mode or configuration file), number of desired solutions, output format type (xmi or dot).
 	- 4 simple command line options: help **(h or help)**, parameters File creation **(p or parameter)**, configuration file creation **(c or config)** and generation of models **(g or generation)**.
 	- Generation of several solutions in one solver call (number of solutions is specified in *.params* file)
-	- Basic Fault Localization based on a system of Exceptions (not found meta-model, config file, OCl file ,...)
+	- Basic Fault Localization based on a system of Exceptions (not found meta-model, config file, OCl file , CSP solver, etc)
 	- Reorganization of the source code: javadoc, creation of new packages. 
 
 # Overview
@@ -82,12 +82,19 @@ It is a type of file that grimm needs to generate models. It contains the main i
 
 These are the list of information that are needed:
 
-1. 
-
+1. meta-model (mandatory)
+2. root Class (mandatory)
+3. OCL file (optional)
+4. Size parameters mode:
+	1. Quick mode: give lower bound and upper bound for classes and an upper bound for unbounded references. This is the default mode. 
+	2. Config mode: in this case, you need to specify a [configuration file](#configuration-file) that contains more detailed information.
+5. Number of wished solutions (default 1)
+6. Output format: *xmi* models or *dot* graphical object diagrams.
+7. CSP solver (*currently only abscon solver is possible*). 	
 
 ### Create a pre-filled Parameter file
 
-Using grimm, you can create a pre-filled Parameters file:
+You can create a pre-filled Parameters file:
 
 	`java -jar grimm.jar p your-file.params`
 
