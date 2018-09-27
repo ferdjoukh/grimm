@@ -30,16 +30,16 @@ grimm is the centerpiece of more other works (papers and tools) done by the same
 
 ## Releases
 
-
-- [v1.0-d792018](https://github.com/ferdjoukh/grimm/releases/tag/v1.0-d792018) (September 7th 2018). This version contains all the code that was written between 2013 and 2017 on grimm. This means it is a classic version of grimm (Ecore meta-model, partial OCL support and 1-solution generation).    
-
-- This version adds the following features to grimm:
+- [v2.0-d2792018](https://github.com/ferdjoukh/grimm/releases/tag/v2.0-d2792018) This version adds the following features to grimm:
 
 	- Changing the way of giving input parameters: now grimm creates a pre-filled *.params* file in which you give: meta-model, root class, OCL file, generation parameters (quick mode or configuration file), number of desired solutions, output format type (xmi or dot).
 	- 4 simple command line options: help **(h or help)**, parameters File creation **(p or parameter)**, configuration file creation **(c or config)** and generation of models **(g or generation)**.
 	- Generation of several solutions in one solver call (number of solutions is specified in *.params* file)
 	- Basic Fault Localization based on a system of Exceptions (not found meta-model, config file, OCl file , CSP solver, etc)
 	- Reorganization of the source code: javadoc, creation of new packages. 
+
+- [v1.0-d792018](https://github.com/ferdjoukh/grimm/releases/tag/v1.0-d792018) (September 7th 2018). This version contains all the code that was written between 2013 and 2017 on grimm. This means it is a classic version of grimm (Ecore meta-model, partial OCL support and 1-solution generation).    
+
 
 # Overview
 
