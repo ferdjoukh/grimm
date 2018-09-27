@@ -96,7 +96,7 @@ These are the list of information that are needed:
 6. Output format: *xmi* models or *dot* graphical object diagrams.
 7. CSP solver (*currently only abscon solver is possible*). 	
 
-### Create a pre-filled Parameter file
+### Create a pre-filled Parameters file
 
 You can create a pre-filled Parameters file:
 
@@ -106,7 +106,7 @@ You can create a pre-filled Parameters file:
 
 ### Example of Parameters file
 
-```tex
+```matlab
 # This file contains all the generation parameters of GRIMM tool
 #
 # Fill the file with your own information
