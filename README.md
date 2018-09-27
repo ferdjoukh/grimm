@@ -7,6 +7,7 @@
 3. [Use grimm](#use-grimm)
 	1. [Quick start](#start-grimm-in-10-steps)	
 	2. [Parameters files](#parameters-file)
+		1. [Example](#example-of-parameters-file) 
 	3. [Configuration file](#configuration-file)
 	4. [More help and tutorials](#more-help-and-tutorials)
 
@@ -97,6 +98,8 @@ These are the list of information that are needed:
 You can create a pre-filled Parameters file:
 
 	`java -jar grimm.jar p your-file.params`
+
+### Example of Parameters file
 
 ```tex
 # This file contains all the generation parameters of GRIMM tool
