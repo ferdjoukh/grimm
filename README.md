@@ -100,7 +100,7 @@ These are the list of information that are needed:
 
 You can create a pre-filled Parameters file:
 
-	`java -jar grimm.jar p your-file.params`
+	java -jar grimm.jar p your-file.params
 
 **Remark** It is preferable to name your Parameters file: *file.params* but this is not mandatory.
 
@@ -142,7 +142,7 @@ These information are:
 
 You can create a pre-filled Configuration file:
 
-	`java -jar grimm.jar c config-file.grimm metamodel.ecore rootClass`
+	java -jar grimm.jar c config-file.grimm metamodel.ecore rootClass
 
 ### Example of Configuration file
 
