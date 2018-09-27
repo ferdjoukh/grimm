@@ -98,6 +98,28 @@ You can create a pre-filled Parameters file:
 
 	`java -jar grimm.jar p your-file.params`
 
+```tex
+# This file contains all the generation parameters of GRIMM tool
+#
+# Fill the file with your own information
+#   + are mondatory
+#   - must be filled or removed
+#   (1) and (2) block must not appear at the same time
+#
++meta-model =examples/test.ecore
++rootClass =Compo
+#(1)
+lowerBound for classes =2
+upperBound for classes =4
+upperBound for references =2
+#
+#
+number of solutions =1
+#
+output format =dot
+CSP solver =abscon
+```	
+
 **Remark** It is preferable to name your Parameters file: *file.params* but this is not mandatory.
 
 ## Configuration File
