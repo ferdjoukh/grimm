@@ -7,8 +7,11 @@
 3. [Use grimm](#use-grimm)
 	1. [Quick start](#start-grimm-in-10-steps)	
 	2. [Parameters files](#parameters-file)
-		1. [Example](#example-of-parameters-file) 
+		1. [Create](Create-a-pre-filled-parameters-file)
+		2. [Example](#example-of-parameters-file) 
 	3. [Configuration file](#configuration-file)
+		1. [Create](Create-a-pre-filled-Configuration-file)
+		2. [Example](#example-of-configuration-file)
 	4. [More help and tutorials](#more-help-and-tutorials)
 
 # grimm
@@ -99,6 +102,8 @@ You can create a pre-filled Parameters file:
 
 	`java -jar grimm.jar p your-file.params`
 
+**Remark** It is preferable to name your Parameters file: *file.params* but this is not mandatory.
+
 ### Example of Parameters file
 
 ```tex
@@ -123,9 +128,53 @@ output format =dot
 CSP solver =abscon
 ```	
 
-**Remark** It is preferable to name your Parameters file: *file.params* but this is not mandatory.
-
 ## Configuration File
+
+Configuration files contain detailed information about the size of desired models.
+
+These information are:
+
+1. number of instances for each class
+2. domain of values for each attribute
+3. bound for unbounded references
+
+### Create a pre-filled Configuration file
+
+You can create a pre-filled Configuration file:
+
+	`java -jar grimm.jar c config-file.grimm metamodel.ecore rootClass`
+
+### Example of Configuration file
+
+```matlab
+%This is a configuration file for Grimm Tool 
+%Please do not change the ordering or the name of any element !
+%Put a numerical value instead of 0, lower, upper, a and z 
+% 
+% 
+%-------------------------------------------------------------
+% Number of instances for Classes 
+%-------------------------------------------------------------
+%-------------------------------------------------------------
+A=4
+B=6
+%-------------------------------------------------------------
+%-------------------------------------------------------------
+%Domains of the features 
+%-------------------------------------------------------------
+%-------------------------------------------------------------
+A/listen=1..20
+B/name=1 2 3 4 5 6 7 8 9
+%-------------------------------------------------------------
+%-------------------------------------------------------------
+%Some others 
+%-------------------------------------------------------------
+%-------------------------------------------------------------
+RefsBound=6
+FeaturesBound=10
+%-------------------------------------------------------------
+```
+
 
 ## More help and tutorials
 
