@@ -7,10 +7,10 @@
 3. [Use grimm](#use-grimm)
 	1. [Quick start](#start-grimm-in-10-steps)	
 	2. [Parameters files](#parameters-file)
-		1. [Create](Create-a-pre-filled-parameters-file)
+		1. [Create](#create-a-pre-filled-parameters-file)
 		2. [Example](#example-of-parameters-file) 
 	3. [Configuration file](#configuration-file)
-		1. [Create](Create-a-pre-filled-Configuration-file)
+		1. [Create](#create-a-pre-filled-configuration-file)
 		2. [Example](#example-of-configuration-file)
 	4. [More help and tutorials](#more-help-and-tutorials)
 
