@@ -5,7 +5,7 @@
 	2. [Releases](#releases)
 2. [Overview](#overview)
 3. [Use grimm](#use-grimm)
-	1. [Quick start](#quick-start)	
+	1. [Quick start](#start-grimm-in-10-steps)	
 	2. [Parameters files](#parameters-file)
 	3. [Configuration file](#configuration-file)
 	4. [More help and tutorials](#more-help-and-tutorials)
@@ -77,6 +77,21 @@ grimm is the centerpiece of more other works (papers and tools) done by the same
 Now you are ready to use grimm. If you have your own meta-model, you can creates you own [Parameters file](#parameters-file) and a [Configuration File](#configuration-file) in order to start generation.
 
 ## Parameters File
+
+It is a type of file that grimm needs to generate models. It contains the main information on the meta-model and the wished output format.
+
+These are the list of information that are needed:
+
+1. 
+
+
+### Create a pre-filled Parameter file
+
+Using grimm, you can create a pre-filled Parameters file:
+
+	`java -jar grimm.jar p your-file.params`
+
+**Remark** It is preferable to name your Parameters file: *file.params* but this is not mandatory.
 
 ## Configuration File
 
