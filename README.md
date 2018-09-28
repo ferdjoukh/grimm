@@ -30,7 +30,7 @@ grimm is the centerpiece of more other works (papers and tools) done by the same
 
 ## Releases
 
-- [v2.0-d2792018](https://github.com/ferdjoukh/grimm/releases/tag/v2.0-d2792018) This version adds the following features to grimm:
+- [v2.0-d2792018](https://github.com/ferdjoukh/grimm/releases/tag/v2.0-d2792018) (September 27th 2018). This version adds the following features to grimm:
 
 	- Changing the way of giving input parameters: now grimm creates a pre-filled *.params* file in which you give: meta-model, root class, OCL file, generation parameters (quick mode or configuration file), number of desired solutions, output format type (xmi or dot).
 	- 4 simple command line options: help **(h or help)**, parameters File creation **(p or parameter)**, configuration file creation **(c or config)** and generation of models **(g or generation)**.
