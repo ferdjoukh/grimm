@@ -40,7 +40,6 @@ grimm is the centerpiece of more other works (papers and tools) done by the same
 
 - [v1.0-d792018](https://github.com/ferdjoukh/grimm/releases/tag/v1.0-d792018) (September 7th 2018). This version contains all the code that was written between 2013 and 2017 on grimm. This means it is a classic version of grimm (Ecore meta-model, partial OCL support and 1-solution generation).    
 
-
 # Overview
 
 # Use grimm

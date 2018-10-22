@@ -5,8 +5,23 @@ import java.util.ArrayList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
+import org.eclipse.emf.ecore.impl.DynamicEObjectImpl;
 
 public class Utils {
+	
+	public static EObject searchInstanceByClass(ArrayList<ClassInstance> instances, String className) {
+		
+		EObject object=null;
+		
+		for(ClassInstance instance: instances){
+			
+			String currentObjectClassName =((DynamicEObjectImpl) instance.getObj()).eClass().getName();
+			System.out.println(currentObjectClassName);
+			if(currentObjectClassName.equals(className))
+				object=instance.getObj();
+		}
+		return object;
+	}
 
 	public static EObject searchIns(ArrayList<ClassInstance> a,int oid)
 	{

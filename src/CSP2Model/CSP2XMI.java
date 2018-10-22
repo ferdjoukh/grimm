@@ -68,10 +68,20 @@ public class CSP2XMI extends ModelBuilder{
 		
 		int ID=0;
 		
+		System.out.println("step1");
+		
 		for(FoundSolution solution: foundSolutions) {
 			ID++;
+			
+			System.out.println("step2");
+			
 			EObject object= FindModel(solution.getValues());
+			
+			System.out.println("step3");
+			
 			ValidModel(object,ID);
+			
+			System.out.println("step4");
 		}
 	}
 	
@@ -82,7 +92,7 @@ public class CSP2XMI extends ModelBuilder{
 		EPackage pack= super.r.getModelPackage();
 		List<EClass> cls= super.r.getClasses();
 	//	ArrayList<Integer> sizes= r.getClassSize();
-		EObject o = null;
+		EObject rootObject = null;
 		int lb=0,ub=0;
 		
 		//Les instances de classes
@@ -93,19 +103,20 @@ public class CSP2XMI extends ModelBuilder{
 		//Premier passage: Construire les instances
 		for(EClass c: cls)
 		{
-			if(sizes.get(r.getClassIndex(c)-1)==1)
+			if(c.getName().equals(root))		
 			{
-				//Instance de la racine
-				o= pack.getEFactoryInstance().create(c);
-			//	variable++;
+				//Create instance of rootClass
+				rootObject= pack.getEFactoryInstance().create(c);
 				
 				//ses attributs
 				for(EAttribute a:super.r.getAllAttributesFromClass(c))
 				{
+					System.out.println(a.getName());
+					
 					if(a.getEType().getName()=="EString")
-						o.eSet(a, r.getBasePackage().getName()+"_"+vals.get(variable).toString());
+						rootObject.eSet(a, r.getBasePackage().getName()+"_"+vals.get(variable).toString());
 				    else if (a.getEType().getName()=="EInt")
-					    o.eSet(a, vals.get(variable));	
+					    rootObject.eSet(a, vals.get(variable));	
 				    else
 					{
 						//C'est une Enumération !!!
@@ -115,7 +126,7 @@ public class CSP2XMI extends ModelBuilder{
 						try{etype=(EClass) a.getEType();}catch(Exception e){}				
 						if(enume!=null)
 						{
-							o.eSet(a, enume.getEEnumLiteral(vals.get(variable)-1));
+							rootObject.eSet(a, enume.getEEnumLiteral(vals.get(variable)-1));
 						}
 						if(etype!=null)
 							System.out.println("Attention: L'attribut "+a.getName()+ " de la classe "+c.getName()+ " est de type objet("+a.getEType().getName()+") doit être remplacé par une référence !!");
@@ -125,7 +136,7 @@ public class CSP2XMI extends ModelBuilder{
 				
 				//ses liens
 				//for (EReference ref: r.getAllReferencesFromClass(c))
-				for (EReference ref: r.getAllReferencesFromClasswithOpposite(c))	    		
+				for (EReference ref: super.r.getAllReferencesFromClasswithOpposite(c))	    		
 				{
 						int zz=ref.getUpperBound();
     					if (zz==-1)
@@ -156,10 +167,10 @@ public class CSP2XMI extends ModelBuilder{
 					//int variablei=0;
 					EObject i;
 					i= pack.getEFactoryInstance().create(c);
-						
 					//ses attributs
-					for(EAttribute a:r.getAllAttributesFromClass(c))
+					for(EAttribute a:super.r.getAllAttributesFromClass(c))
 					{
+						
 						if(a.getEType().getName()=="EString"){
 							i.eSet(a, c.getName()+"_"+j+"_"+a.getName()+"_"+ vals.get(variable).toString());
 					    }
@@ -169,9 +180,9 @@ public class CSP2XMI extends ModelBuilder{
 						else{
 							//C'est une Enumération !!!
 							EEnum enume= null;
-							try{enume=(EEnum) a.getEType();}catch(Exception e){}
+							try{enume=(EEnum) a.getEType();} catch(Exception e){}
 							EClass etype=null;
-							try{etype=(EClass) a.getEType();}catch(Exception e){}				
+							try{etype=(EClass) a.getEType();} catch(Exception e){}				
 							if(enume!=null)
 							{
 								i.eSet(a, enume.getEEnumLiteral(vals.get(variable)-1));
@@ -198,11 +209,10 @@ public class CSP2XMI extends ModelBuilder{
 	    					
 					}
 					mesInst.add(new ClassInstance(j, i));
-					
 				}
 			}
-		} //Fin du premier passage
-		
+		} 
+		//Fin du premier passage
 		///////////////////////////////////
 		//////////
 		//Deuxième passage: Construire les pointeurs des références
@@ -210,7 +220,7 @@ public class CSP2XMI extends ModelBuilder{
 		for(EClass c: cls)
 		{
 			int vari=0;
-			if(sizes.get(r.getClassIndex(c)-1)==1)
+			if(c.getName().equals(root))
 			{
 				vari= variable;
 				//ses attributs
@@ -284,7 +294,6 @@ public class CSP2XMI extends ModelBuilder{
 		}
 		//Fin du 2ème passage
 		
-		
 		///////////////////////////////////////////////////////////
 		//////////////////////////////////
 		/////////////////
@@ -293,13 +302,15 @@ public class CSP2XMI extends ModelBuilder{
 		for(EClass c: cls)
 		{
 			//Instance de la racine
-			if(sizes.get(r.getClassIndex(c)-1)==1)
+			if(c.getName().equals(root))
 			{
 				//ses attributs
-				for(EAttribute a:r.getAllAttributesFromClass(c)) variable++;
+				for(EAttribute a:super.r.getAllAttributesFromClass(c)) variable++;
+				
 				//ses liens
-				for (EReference ref: r.getAllReferencesFromClasswithOpposite(c))	
+				for (EReference ref: super.r.getAllReferencesFromClass(c))	
 		    	{
+					System.out.println(ref.getName());
 					int refUpperBound=ref.getUpperBound();
 					if (refUpperBound==-1){	
 						if(ref.getEReferenceType().isAbstract()) refUpperBound=refB;
@@ -308,29 +319,43 @@ public class CSP2XMI extends ModelBuilder{
 		   			List<EObject> objectstoCompose= new ArrayList<EObject>(); 
 		    		
 		   			if(refUpperBound==1){
-		   				if(vals.get(variable)!=0)
-	   						o.eSet(ref, Utils.searchIns(mesInstLiees, vals.get(variable)));
+		   				if(vals.get(variable)!=0) {
+		   					try {
+		   						
+		   						String targetedClassName=ref.getEType().getName();
+		   						EObject target = Utils.searchInstanceByClass(mesInst, targetedClassName);
+		   						
+		   						System.out.println(" "+targetedClassName);
+		   						System.out.println(" "+target);
+		   						
+		   						if(target!=null) {
+		   							rootObject.eSet(ref, target);
+		   						}
+		   					}
+		   					catch(Exception e) {
+		   						System.out.println("Class:"+c.getName()+" Ref:"+ref.getName()+ " 1 component add error !");
+		   					}
+		   				}
 		   				variable++;
 		   			}	
 		   			else{
 		   				for(int z=1;z<=refUpperBound;z++) variable++;
-		   				//Add all instances to root Class instance
+		   				
+		   				//Add the appropriate instances for each reference of rootClass
 		   				for(ClassInstance clInst: mesInst)
 		   				{
 		   					EObject object= clInst.getObj();
 		   					String cl =((DynamicEObjectImpl) object).eClass().getName();
 		   					
-		   					if(!cl.equals(c.getName()))
-		   					{
-		   					   	//Add this class instance to root instance
+		   					if(cl.equals(ref.getEType().getName())){
 		   						objectstoCompose.add(object);
 		   					}
 		   				}
 		   				try{
-		   					o.eSet(ref, objectstoCompose);
+		   					rootObject.eSet(ref, objectstoCompose);
 		   				}
 		   				catch(Exception e){
-		   					System.out.println("Class:"+c.getName()+" Reference:"+ref.getName()+ "   Adding error !");
+		   					System.out.println("Class:"+c.getName()+" Ref:"+ref.getName()+ " n component add error !");
 		   				}
 		    		}
 		    	}
@@ -359,8 +384,10 @@ public class CSP2XMI extends ModelBuilder{
 			}
 		}
 		//Fin du 3ème passage
+		
+		System.out.println("3eme passage");
 	    
-		return o;
+		return rootObject;
 	}
 	
 	 public void ValidModel(EObject o, int ID)
