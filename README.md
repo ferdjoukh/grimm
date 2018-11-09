@@ -30,6 +30,12 @@ grimm is the centerpiece of more other works (papers and tools) done by the same
 
 ## Releases
 
+- [v3.0-d9112018](https://github.com/ferdjoukh/grimm/releases/tag/v3.0-d9112018) (November 9th 2018). This versione add or corrects the following features:
+	- Adding an Exception when a given rootClass is incorrect.
+	- Correcting some issues (related to tricky meta-models as ecore.ecore): linking EObjects in a hierarchy of inheritance, checking the superType of an EObject instead of just comparing class names before linking. 
+	- Adding more diversity while connecting EObjects. Currently, diverse EObjects are chosen randomly.
+	- Corrected problem of attributes typing (== replaced by equals). 
+
 - [v2.0-d2792018](https://github.com/ferdjoukh/grimm/releases/tag/v2.0-d2792018) (September 27th 2018). This version adds the following features to grimm:
 
 	- Changing the way of giving input parameters: now grimm creates a pre-filled *.params* file in which you give: meta-model, root class, OCL file, generation parameters (quick mode or configuration file), number of desired solutions, output format type (xmi or dot).
