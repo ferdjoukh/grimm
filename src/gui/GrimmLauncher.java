@@ -14,6 +14,7 @@ import exceptions.IncorrectOutputFormatException;
 import exceptions.MetaModelNotFoundException;
 import exceptions.MissingGrimmParameterException;
 import exceptions.MissingInputValueException;
+import exceptions.MissingMetaModelElementException;
 import exceptions.OCLFileNotFoundException;
 import exceptions.ParameterFileDoesNotFileException;
 import exceptions.PositiveIntegerInputException;
@@ -181,8 +182,9 @@ public class GrimmLauncher {
 	 * @throws OCLFileNotFoundException 
 	 * @throws MetaModelNotFoundException 
 	 * @throws IOException 
+	 * @throws MissingMetaModelElementException 
 	 */
-	private static void generateModels(String[] args) throws MissingGrimmParameterException, MetaModelNotFoundException, OCLFileNotFoundException, ConfigurationFileNotFoundException, PositiveIntegerInputException, ParameterFileDoesNotFileException, MissingInputValueException, IncorrectOutputFormatException, UnknownCSPSolverException, IOException {
+	private static void generateModels(String[] args) throws MissingGrimmParameterException, MetaModelNotFoundException, OCLFileNotFoundException, ConfigurationFileNotFoundException, PositiveIntegerInputException, ParameterFileDoesNotFileException, MissingInputValueException, IncorrectOutputFormatException, UnknownCSPSolverException, IOException, MissingMetaModelElementException {
 		
 		if(args.length != 2) {
 			throw new MissingGrimmParameterException("generation of models requires a parameters file");

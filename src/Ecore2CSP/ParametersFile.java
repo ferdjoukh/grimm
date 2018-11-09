@@ -12,12 +12,14 @@ import java.io.PrintWriter;
 
 import com.sun.corba.se.spi.orbutil.fsm.InputImpl;
 
+import Ecore.MetaModelReader;
 import exceptions.ConfigurationFileNotFoundException;
 import exceptions.IncorrectOutputFormatException;
 import exceptions.PositiveIntegerInputException;
 import exceptions.UnknownCSPSolverException;
 import exceptions.MetaModelNotFoundException;
 import exceptions.MissingInputValueException;
+import exceptions.MissingMetaModelElementException;
 import exceptions.OCLFileNotFoundException;
 import exceptions.ParameterFileDoesNotFileException;
 
@@ -63,9 +65,16 @@ public class ParametersFile {
 		}
 	}
 	
-	private void setRootClass(String rootClass) {
-		this.rootClass = rootClass;
-		new File(rootClass).mkdir();
+	private void setRootClass(String rootClass) throws MissingMetaModelElementException {
+		try {
+		if(rootClassExists(rootClass)) {
+			this.rootClass = rootClass;
+			new File(rootClass).mkdir();
+		} 
+		}catch(MissingMetaModelElementException e){
+			System.out.println(e.getMessage());
+			throw e;
+		}
 	}
 	
 	private void setOclFile(String oclFile) throws OCLFileNotFoundException {
@@ -268,8 +277,9 @@ public class ParametersFile {
 	 * @throws MissingInputValueException 
 	 * @throws IncorrectOutputFormatException 
 	 * @throws UnknownCSPSolverException 
+	 * @throws MissingMetaModelElementException 
 	 */
-	public void readParamFile() throws MetaModelNotFoundException, OCLFileNotFoundException, ConfigurationFileNotFoundException, PositiveIntegerInputException, ParameterFileDoesNotFileException, MissingInputValueException, IncorrectOutputFormatException, UnknownCSPSolverException{
+	public void readParamFile() throws MetaModelNotFoundException, OCLFileNotFoundException, ConfigurationFileNotFoundException, PositiveIntegerInputException, ParameterFileDoesNotFileException, MissingInputValueException, IncorrectOutputFormatException, UnknownCSPSolverException, MissingMetaModelElementException{
 		
 		try {
 			
@@ -456,6 +466,17 @@ public class ParametersFile {
 		}
 			
 		
+	}
+	
+	private boolean rootClassExists(String value) throws MissingMetaModelElementException {
+		
+		MetaModelReader reader = new MetaModelReader(this.metamodel, value);
+	
+		if(reader.getClassIndex(value) == -1) {
+			throw new MissingMetaModelElementException("Class ["+value+"]", metamodel);
+		}else {
+			return true;
+		}
 	}
 	
 	/***********

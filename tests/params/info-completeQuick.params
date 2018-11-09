@@ -6,7 +6,7 @@
 #   (1) and (2) block must not appear at the same time
 #
 +meta-model =tests/test.ecore
-+rootClass =map
++rootClass =Compo
 -ocl file =tests/maps.ocl
 #(1)
 lowerBound for classes =5

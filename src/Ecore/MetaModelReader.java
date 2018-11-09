@@ -25,6 +25,22 @@ public class MetaModelReader {
 	ArrayList<Integer> sizes;
 	ConfigFileReader cfr;
 	
+	public MetaModelReader(String metamodel,String rootClass){
+		
+		 Resource.Factory.Registry reg=Resource.Factory.Registry.INSTANCE;
+		 Map<String,Object> m = reg.getExtensionToFactoryMap();
+		 m.put("ecore",new XMIResourceFactoryImpl());
+		 ResourceSet resourceSet=new ResourceSetImpl();
+		 URI fileURI=URI.createFileURI(metamodel);
+		 Resource resource=resourceSet.getResource(fileURI,true);
+		
+		this.resource=resource;
+		
+		EPackage c= (EPackage)  resource.getContents().get(0);
+		
+		this.BasePackage= c;
+		this.racine=rootClass;		
+	}
 	
 	public MetaModelReader(String str,String racine,int lb,int ub){
 		
@@ -47,7 +63,6 @@ public class MetaModelReader {
 	}
 	
 	public MetaModelReader(String str,String racine, ConfigFileReader cfr){
-		
 		
 		 this.cfr=cfr;
 		
@@ -170,7 +185,7 @@ public class MetaModelReader {
 			else
 				i++;
 		}
-		return (Integer) null;
+		return -1;
 	}
 	
 	public int getClassIndex(String c)
@@ -184,8 +199,7 @@ public class MetaModelReader {
 			else
 				i++;
 		}
-		System.out.println(c);
-		return (Integer) null;
+		return -1;
 	}
 		
 	//Méthode initialisant les size(class)
