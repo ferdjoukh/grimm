@@ -5,15 +5,14 @@
 #   - must be filled or removed
 #   (1) and (2) block must not appear at the same time
 #
-+meta-model =examples/ecore.ecore
-+rootClass =IZAN
++meta-model =tests/maps.ecore
++rootClass =map
 #(1)
-lowerBound for classes =1
+lowerBound for classes =2
 upperBound for classes =4
-upperBound for references =3
+upperBound for references =2
 #
-#
-number of solutions =1
+number of solutions =2
 #
 output format =xmi
 CSP solver =abscon

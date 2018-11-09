@@ -78,8 +78,8 @@ public class CSP2dot extends ModelBuilder{
 	{
 		ArrayList<Integer> vals= values;
 		int variable=0;
-		EPackage pack= r.getModelPackage();
-		List<EClass> cls= r.getClasses();
+		EPackage pack= reader.getModelPackage();
+		List<EClass> cls= reader.getClasses();
 		PrintWriter ecrivain;
 		
 		ArrayList<String> references= new ArrayList<String>();
@@ -100,7 +100,7 @@ public class CSP2dot extends ModelBuilder{
 			if(c.getName().equals(root))		
 			{
 				//ses attributs
-				for(EAttribute a:r.getAllAttributesFromClass(c))
+				for(EAttribute a:reader.getAllAttributesFromClass(c))
 				{
 					if(a.getEType().getName()=="EString")
 						AttrDots= AttrDots+ " "+ a.getName()+"="+ a.getName()+vals.get(variable).toString()+" \\n";
@@ -123,7 +123,7 @@ public class CSP2dot extends ModelBuilder{
 					variable++;
 				}	
 				
-				for (EReference ref: r.getAllReferencesFromClasswithOpposite(c))
+				for (EReference ref: reader.getAllReferencesFromClasswithOpposite(c))
     			{
 					int zz=ref.getUpperBound();
 					if (zz==-1)
@@ -159,8 +159,8 @@ public class CSP2dot extends ModelBuilder{
 			{
 				
 				//Les instances des autres classes
-				lb=  domaineSum(r.getClassIndex(c)-1)+1;
-				ub=  domaineSum(r.getClassIndex(c)); 
+				lb=  domaineSum(reader.getClassIndex(c)-1)+1;
+				ub=  domaineSum(reader.getClassIndex(c)); 
 				for(int i=lb;i<=ub;i++)
 				{
 					AttrDots="";
@@ -170,7 +170,7 @@ public class CSP2dot extends ModelBuilder{
 				
 				
 				//ses attributs
-				for(EAttribute a:r.getAllAttributesFromClass(c))
+				for(EAttribute a:reader.getAllAttributesFromClass(c))
 				{
 					//System.out.println("var="+variable);
 					if(a.getEType().getName()=="EString")
@@ -196,7 +196,7 @@ public class CSP2dot extends ModelBuilder{
 		    
 				//Ses références
 				//ses liens
-				for (EReference ref: r.getAllReferencesFromClasswithOpposite(c))
+				for (EReference ref: reader.getAllReferencesFromClasswithOpposite(c))
 				{
 					int zz=ref.getUpperBound();
 					if (zz==-1)

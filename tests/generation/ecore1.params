@@ -5,11 +5,11 @@
 #   - must be filled or removed
 #   (1) and (2) block must not appear at the same time
 #
-+meta-model =examples/ecore.ecore
-+rootClass =IZAN
++meta-model =tests/ecore.ecore
++rootClass =EPackage
 #(1)
 lowerBound for classes =1
-upperBound for classes =4
+upperBound for classes =3
 upperBound for references =3
 #
 #

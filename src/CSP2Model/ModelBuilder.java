@@ -17,7 +17,7 @@ import Utils.OCL.OclConstraints;
 
 public abstract class ModelBuilder {
 
-	protected MetaModelReader r;
+	protected MetaModelReader reader;
 	protected String ModelFile;
 	protected String root;
 	protected String InstanceFile;
@@ -45,8 +45,6 @@ public abstract class ModelBuilder {
 		
 	}
 	
-	
-	
 	public ArrayList<FoundSolution> getFoundSolutions() {
 		return foundSolutions;
 	}
@@ -62,17 +60,17 @@ public abstract class ModelBuilder {
 	 */
 	public void CallCSPGenrator(int lb, int ub, int rb, int sym, int sol) throws IOException
 	{
-		this.r= new MetaModelReader(ModelFile, root,lb,ub);
+		this.reader= new MetaModelReader(ModelFile, root,lb,ub);
 		this.refB=rb;
-		this.sizes=r.getClassSize();
-		this.sizesMin=r.getClassSizeMin();
+		this.sizes=reader.getClassSize();
+		this.sizesMin=reader.getClassSizeMin();
 		
 		long debut; double duree;
 		debut=System.nanoTime();
 			
 		//Call the CSP generator
 		System.out.print("CSP instance generator is running...");
-		GenXCSP generation= new GenXCSP(ModelFile,root,r,ub,rb,sym);
+		GenXCSP generation= new GenXCSP(ModelFile,root,reader,ub,rb,sym);
 		generation.GenerateXCSP(InstanceFile);
 		maxDomains=generation.getMaxDomains();
 		System.out.println(" OK");
@@ -88,7 +86,7 @@ public abstract class ModelBuilder {
 				debut = System.nanoTime();
 				System.out.print("OCL parser is running...");
 			
-				OclConstraints oclCons = new OclConstraints(r, oclFilePath, GenXCSP.getXCSPinstance());
+				OclConstraints oclCons = new OclConstraints(reader, oclFilePath, GenXCSP.getXCSPinstance());
 				generation.saveXML(oclCons.getResultDocumentXCSP(), InstanceFile);
 				
 				duree = (System.nanoTime()-debut)/1000000;
@@ -128,16 +126,16 @@ public abstract class ModelBuilder {
 		ConfigFileReader cfr= new ConfigFileReader(configFilePath);
 		cfr.read();
 		
-		this.r= new MetaModelReader(ModelFile, root, cfr);
-		sizes= r.getClassSize();
-		sizesMin= r.getClassSizeMin();
+		this.reader= new MetaModelReader(ModelFile, root, cfr);
+		sizes= reader.getClassSize();
+		sizesMin= reader.getClassSizeMin();
 		this.refB= cfr.getRefsBound();
 						
 		long debut; double duree;
 		debut=System.nanoTime();
 		
 		System.out.print("CSP instance generator is running...");
-	    GenXCSP generation= new GenXCSP(ModelFile,root,r,cfr,sym);
+	    GenXCSP generation= new GenXCSP(ModelFile,root,reader,cfr,sym);
 		generation.GenerateXCSP(InstanceFile);
 		maxDomains=generation.getMaxDomains();
 		System.out.println(" OK");
@@ -151,7 +149,7 @@ public abstract class ModelBuilder {
 			try {
 				debut = System.nanoTime();
 				System.out.print("OCL parser is running...");	
-				OclConstraints oclCons = new OclConstraints(r, oclFilePath, GenXCSP.getXCSPinstance());
+				OclConstraints oclCons = new OclConstraints(reader, oclFilePath, GenXCSP.getXCSPinstance());
 				generation.saveXML(oclCons.getResultDocumentXCSP(), InstanceFile);
 
 				duree = (System.nanoTime()-debut)/1000000;

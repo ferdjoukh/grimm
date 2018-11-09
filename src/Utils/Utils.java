@@ -16,13 +16,41 @@ public class Utils {
 		for(ClassInstance instance: instances){
 			
 			String currentObjectClassName =((DynamicEObjectImpl) instance.getObj()).eClass().getName();
-			System.out.println(currentObjectClassName);
+			
 			if(currentObjectClassName.equals(className))
 				object=instance.getObj();
 		}
 		return object;
 	}
+	
+	public static EObject searchInstanceByClass(ArrayList<ClassInstance> instances, EClass eClass) {
+		
+		ArrayList<EObject> objects = findAllinstancesOfClass(instances, eClass);
+		
+		if(objects.size() > 0) {
+			int n= (int) (Math.random()* (objects.size()));
+			System.out.println("num="+ n);
+			return objects.get(n);
+		}else {
+			return null;
+		}
+	}
 
+	public static ArrayList<EObject> findAllinstancesOfClass(ArrayList<ClassInstance> instances, EClass eClass){
+		ArrayList<EObject> objects= new ArrayList<EObject>();
+		
+		for(ClassInstance instance: instances){
+			
+			EClass currentObjectClass = ((DynamicEObjectImpl) instance.getObj()).eClass();
+			
+			if(currentObjectClass.getEAllSuperTypes().contains(eClass)) {
+				objects.add(instance.getObj());
+			}
+		}
+		
+		return objects;
+	}
+	
 	public static EObject searchIns(ArrayList<ClassInstance> a,int oid)
 	{
 		for(ClassInstance c: a)
