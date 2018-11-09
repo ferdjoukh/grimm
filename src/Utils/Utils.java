@@ -29,7 +29,7 @@ public class Utils {
 		
 		if(objects.size() > 0) {
 			int n= (int) (Math.random()* (objects.size()));
-			System.out.println("num="+ n);
+			//System.out.println("num="+ n);
 			return objects.get(n);
 		}else {
 			return null;

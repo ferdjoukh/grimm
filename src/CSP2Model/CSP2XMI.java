@@ -70,7 +70,7 @@ public class CSP2XMI extends ModelBuilder{
 		System.out.println("Model Builder is running...");
 		
 		if(foundSolutions.size()==0) {
-			System.out.println("\t0 solutions were found :(");
+			System.out.println(" 0 solutions were found :(");
 			return;
 		}
 		
@@ -80,7 +80,6 @@ public class CSP2XMI extends ModelBuilder{
 			ID++;
 			
 			EObject object= FindModel(solution.getValues());
-			System.out.println(object);
 			ValidModel(object,ID);
 		}
 	}
@@ -295,7 +294,7 @@ public class CSP2XMI extends ModelBuilder{
 						    					
 				    							if(targetEObjectClass.getEAllSuperTypes().contains(targetClass)) {
 				    								currentEObject.eSet(ref, targetEObject);
-				    								System.out.println("1 LINK: " + currentClass.getName()+ " >> "+ ref.getName() +" " );
+				    								//System.out.println("1 LINK: " + currentClass.getName()+ " >> "+ ref.getName() +" " );
 				    							}
 				    						}				    										    				
 				    				}catch(Exception e){}
@@ -317,7 +316,7 @@ public class CSP2XMI extends ModelBuilder{
 					    					
 				    						if(targetEObjectClass.getEAllSuperTypes().contains(targetClass)) {
 				    							objectsToLink.add(targetEObject);
-				    							System.out.println("1 n LINK: " + currentClass.getName()+ " >> "+ ref.getName() +" " );
+				    							//System.out.println("1 n LINK: " + currentClass.getName()+ " >> "+ ref.getName() +" " );
 				    						}
 				    					}				    									    				
 				    				}	
@@ -454,10 +453,7 @@ public class CSP2XMI extends ModelBuilder{
 			 URI uri=URI.createURI(root+"/"+this.Model+ID+".xmi");
 			 resource=resourceSet.createResource(uri);
 			 
-			 EList<EObject> ff=resource.getContents();
-			 
-			 ff.clear();
-			 ff.add(o);
+			 resource.getContents().add(o);
 			 
 			 Map<String,Boolean> opts= new HashMap<String,Boolean>();
 			 opts.put(XMLResourceImpl.OPTION_SCHEMA_LOCATION, Boolean.TRUE);
