@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="graphX">
+  <eClassifiers xsi:type="ecore:EClass" name="Graph">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="vertices" upperBound="-1"
+        eType="#//Vertex" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="edges" upperBound="-1"
+        eType="#//Edge" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Vertex">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="VEin" upperBound="-1" eType="#//Edge"
+        eOpposite="#//Edge/EVin"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="VEout" upperBound="-1"
+        eType="#//Edge" eOpposite="#//Edge/EVout"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Edge">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="EVin" eType="#//Vertex"
+        eOpposite="#//Vertex/VEin"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="EVout" eType="#//Vertex"
+        eOpposite="#//Vertex/VEout"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="weight" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData"/>
+    </eStructuralFeatures>
+  </eClassifiers>
+</ecore:EPackage>
