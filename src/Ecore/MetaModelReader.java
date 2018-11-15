@@ -112,11 +112,9 @@ public class MetaModelReader {
 		for (EClass ec:cls){
 			
 			if(ec.getName().equals(rootClassName)) {
-				System.out.println("  "+rootClassName);
 				sizes.add(pos, (Integer) 1);			    
 			}else {
 				String str =  cfr.getLineByStarting(ec.getName());
-				System.out.println(str);
 				sizes.add(pos, Integer.parseInt(str.substring(str.lastIndexOf("=")+1)));
 			}
 			pos++;		   

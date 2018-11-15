@@ -64,7 +64,6 @@ public class Utils {
 
 	public static ArrayList<ClassInstance> findAllinstancesOfClass(ArrayList<ClassInstance> instances, EClass eClass){
 		ArrayList<ClassInstance> objects= new ArrayList<ClassInstance>();
-		System.out.println(instances.size());
 		
 		for(ClassInstance instance: instances){
 			

@@ -119,12 +119,14 @@ public class CSP2XMI extends ModelBuilder{
 								rootObject.eSet(a, nameValue);
 							}
 							else {
-								rootObject.eSet(a, reader.getBasePackage().getName()+"_"+solutionValues.get(currentVar).toString());
+								String value= AttributeInstantiator.randomString();
+								rootObject.eSet(a, value);
 							}
 						
-						}else if (a.getEType().getName().equals("EInt"))
-						    rootObject.eSet(a, solutionValues.get(currentVar));	
-					    else{
+						}else if (a.getEType().getName().equals("EInt")) {
+							int value =  AttributeInstantiator.randomInt(0,100);
+							rootObject.eSet(a, value);	
+						} else{
 							//Enumeration type
 					    	EEnum enume= null;
 							try{enume=(EEnum) a.getEType();} catch(Exception e){}
@@ -184,14 +186,24 @@ public class CSP2XMI extends ModelBuilder{
 					for(EAttribute a:super.reader.getAllAttributesFromClass(c))
 					{
 						if(a.isChangeable()) {
-						    //System.out.println("UnChange: "+a.getName());
-						
-							if(a.getEType().getName().equals("EString")){
-								createdObject.eSet(a, c.getName()+"_"+currentInstance+"_"+a.getName()+"_"+ solutionValues.get(currentVar).toString());
-						    }
-							else if (a.getEType().getName().equals("EInt")){
-								createdObject.eSet(a, solutionValues.get(currentVar));
-						    }
+						    
+							if(a.getEType().getName().equals("EBoolean")) {
+								Boolean bool = AttributeInstantiator.generateBoolean();
+								createdObject.eSet(a, bool);
+							
+							}else if(a.getEType().getName().equals("EString")) {
+								if(a.getName().toLowerCase().equals("name")) {
+									String nameValue = AttributeInstantiator.generateBasicName(currentClassName, currentInstance);
+									createdObject.eSet(a, nameValue);
+								}
+								else {
+									String value= AttributeInstantiator.randomString();
+									createdObject.eSet(a, value);
+								}
+						    }else if (a.getEType().getName().equals("EInt")) {
+								int value =  AttributeInstantiator.randomInt(0,100);
+								createdObject.eSet(a, value);	
+							}
 							else{
 								// Enumeration
 								EEnum enume= null;
@@ -450,7 +462,7 @@ public class CSP2XMI extends ModelBuilder{
    			}	
 		}
 		
-		System.out.println(" EObject built with success");
+		System.out.println("\t[OK] Model EObject built with success");
 		return rootObject;
 	}
 	
@@ -512,11 +524,11 @@ public class CSP2XMI extends ModelBuilder{
 			 opts.put(XMLResourceImpl.OPTION_SCHEMA_LOCATION, Boolean.TRUE);
 			 
 			 resource.save(opts); 
-			 System.out.println(" Model: "+root+"/"+this.modelFilePath+ID+".xmi was generated");
+			 System.out.println("\t[OK] Model: "+root+"/"+this.modelFilePath+ID+".xmi was generated");
 		 }
 		 catch(Exception e){
 			 e.printStackTrace();
-			 System.out.println(" Problems while saving the xmi file");
+			 System.out.println("[PROBLEM] xmi file could not be saved :(");
 		 }
 	 }
 }

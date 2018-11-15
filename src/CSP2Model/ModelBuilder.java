@@ -72,14 +72,13 @@ public abstract class ModelBuilder {
 		////////////////////////////////////////////////////////////////
 		// Generate CSP instance
 		///////////////////////////////////////////////////////////////
-		System.out.print("CSP instance generator is running...");
+		System.out.println("CSP instance generator is running");
 		GenXCSP generation= new GenXCSP(metaModelFile,root,reader,ub,rb,sym);
 		generation.GenerateXCSP(CSPInstanceFile);
 		maxDomains=generation.getMaxDomains();
-		System.out.println(" OK");
 				
 		timeCounter=(System.nanoTime()-timeBegin)/1000000;
-		System.out.println("\tCSP istance generation time= "+ timeCounter+ " (ms)");
+		System.out.println("\t[OK] CSP istance generation time = "+ timeCounter+ " (ms)");
 				
 		/////////////////////////////////////////////////////////////
 		// OCL constraints parsing
@@ -87,23 +86,22 @@ public abstract class ModelBuilder {
 		if (!oclFilePath.equals("")) {
 			try {
 				timeBegin = System.nanoTime();
-				System.out.print("OCL parser is running...");
+				System.out.println("OCL parser is running");
 			
 				OclConstraints oclCons = new OclConstraints(reader, oclFilePath, GenXCSP.getXCSPinstance());
 				generation.saveXML(oclCons.getResultDocumentXCSP(), CSPInstanceFile);
 				
 				timeCounter = (System.nanoTime()-timeBegin)/1000000;
-				System.out.println(" OK");
-				System.out.println("\tOCL constraints parsing duration = "+ timeCounter+ " ms");
+				System.out.println("\t[OK] OCL constraints parsing duration = "+ timeCounter+ " ms");
 			} catch (FileNotFoundException | ParserException e) {
-				System.err.println("Problems when parsing OCL constraints !");				
+				System.err.println("\t[PROBLEM] OCL constraints were not parsed :(");				
 			}
 		}
 		
 		///////////////////////////////////////////////////////////////
 		// Execute CSP solver
 		////////////////////////////////////////////////////////////
-		System.out.print("CSP Solver is running...");
+		System.out.println("CSP Solver is running");
 		BufferedReader bufferedreader=executeAbsconSolver(CSPInstanceFile, sol);
 		findAllSolutions(bufferedreader);
 	}
@@ -138,10 +136,9 @@ public abstract class ModelBuilder {
 	    GenXCSP generation= new GenXCSP(metaModelFile,root,reader,cfr,sym);
 		generation.GenerateXCSP(CSPInstanceFile);
 		maxDomains=generation.getMaxDomains();
-		System.out.println(" OK");
 				
 		duree=(System.nanoTime()-debut)/1000000;
-		System.out.println("\tCSP instance generation time = "+ duree+ " ms");
+		System.out.println("\t[OK] CSP instance generation time = "+ duree+ " ms");
 				
 		
 		/////////////////////////////////////////////////////////////
@@ -150,13 +147,12 @@ public abstract class ModelBuilder {
 		if (!oclFilePath.equals("")) {
 			try {
 				debut = System.nanoTime();
-				System.out.print("OCL parser is running...");	
+				System.out.println("OCL parser is running");	
 				OclConstraints oclCons = new OclConstraints(reader, oclFilePath, GenXCSP.getXCSPinstance());
 				generation.saveXML(oclCons.getResultDocumentXCSP(), CSPInstanceFile);
 
 				duree = (System.nanoTime()-debut)/1000000;
-				System.out.println(" OK");
-				System.out.println("\tOCL constraints treatment duration= "+ duree+ " ms");
+				System.out.println("\t[OK] OCL constraints treatment duration= "+ duree+ " ms");
 			} catch (FileNotFoundException | ParserException e) {
 				System.err.println("\tProblems when parsing OCL file !");
 			}
@@ -165,7 +161,7 @@ public abstract class ModelBuilder {
 		///////////////////////////////////////////////////////////////
 		// Execute CSP solver
 		////////////////////////////////////////////////////////////
-		System.out.print("CSP Solver is running...");
+		System.out.println("CSP Solver is running");
 		BufferedReader bufferedreader;
 		bufferedreader=executeAbsconSolver(CSPInstanceFile,sol);
 		findAllSolutions(bufferedreader);
@@ -214,12 +210,10 @@ public abstract class ModelBuilder {
 			    }
 			}
 			if(found==0) {
-				System.out.println(" Not OK :(");
-				System.out.println("\tCSP instance is unsatisfiable :(");
+				System.out.println("\t[PROBLEM] CSP instance is unsatisfiable :(");
 			}
 			else{
-				System.out.println(" OK");
-				System.out.println("\tResolutuon time" +du);
+				System.out.println("\t[OK] resolutuon time " +du);
 			}
 			
 		} catch (IOException e) {

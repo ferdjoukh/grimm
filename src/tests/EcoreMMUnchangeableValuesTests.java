@@ -34,4 +34,10 @@ public class EcoreMMUnchangeableValuesTests {
 		String [] args= {"g","tests/generation/maps2.params"};
 		GrimmLauncher.main(args);
 	}
+	
+	@Test
+	public void mapsDot() throws Exception{
+		String [] args= {"g","tests/generation/maps-dot.params"};
+		GrimmLauncher.main(args);
+	}
 }
