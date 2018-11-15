@@ -106,19 +106,13 @@ public class GenXCSP {
 		sizes= (ArrayList<Integer>) r.getClassSize();
 		sizesMin= (ArrayList<Integer>) r.getClassSizeMin();
 		
-		
 		//Read the ConfigFile to get the FeatureBound et RefBound
-		
+		this.cfr=cfr;
 		this.racine=racine;
 		this.FeatureBound= cfr.getFeatureBound();
-		//System.out.println("FeaturesB="+this.FeatureBound);
-		this.RefsBound= cfr.getRefsBound();
-		//System.out.println("RefsB="+this.RefsBound);
+		this.RefsBound= cfr.getReferencesUB();
 		this.Symmetries=sym;
-		
-		this.cfr=cfr;
-		//featuresDomains=cfr.getfeaturesDomains();
-		
+		//featuresDomains=cfr.getfeaturesDomains();	
 	}
 	
 	public int getMaxDomains()

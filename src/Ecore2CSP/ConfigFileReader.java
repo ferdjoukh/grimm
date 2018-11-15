@@ -21,7 +21,8 @@ public class ConfigFileReader {
 	private int featureBound;
 	private int referencesUB;
 	private ArrayList<String> content;
-	private ArrayList<String> classInstances;
+	private ArrayList<String> classInstancesRaw;
+	private Hashtable<String,Integer> classInstances;
 	private ArrayList<String> attributesDomainsRaw;
 	private Hashtable<String,ArrayList<String>> attributesDomains; 
 	
@@ -31,7 +32,8 @@ public class ConfigFileReader {
 		this.featureBound = 0;
 		this.referencesUB = 0;
 		this.content = new ArrayList<String>();
-		this.classInstances = new ArrayList<String>();
+		this.classInstancesRaw = new ArrayList<String>();
+		this.classInstances = new Hashtable<String, Integer>();
 		this.attributesDomainsRaw = new ArrayList<String>();
 		this.attributesDomains = new Hashtable<String, ArrayList<String>>();
 	}
@@ -59,7 +61,7 @@ public class ConfigFileReader {
 				if(line.contains("/")) {
 					this.attributesDomainsRaw.add(line);
 				}else {
-					this.classInstances.add(line);
+					this.classInstancesRaw.add(line);
 				}
 				
 				//@ToDo: remove this later
@@ -67,6 +69,10 @@ public class ConfigFileReader {
 			}
 		}
 		reader.close();
+		
+		setClassInstances();
+		setAttributesDomains();
+		
 		}
 		catch(IOException e) {
 			System.out.println("\t[PROBLEM] ConfigFileReader met a fatal problem :(");
@@ -81,7 +87,7 @@ public class ConfigFileReader {
 	 */
 	public String getClassLineByStartString(String start) {
 		
-		for(String line: classInstances) {
+		for(String line: classInstancesRaw) {
 			if(line.startsWith(start)) {
 				return line;
 			}
@@ -89,16 +95,65 @@ public class ConfigFileReader {
 		return null;
 	}
 	
-	private void setFeaturesDomains(){
+	private void setClassInstances(){
 		
-		String cle;
-		String valeur;
+		for(String classinstance: classInstancesRaw) {
+			String className = classinstance.substring(0,classinstance.indexOf("="));
+			String valueS = classinstance.substring(classinstance.indexOf("=")+1);
+			int value;
+			try {
+				value = Integer.parseInt(valueS);
+				if(value < 0) {
+					value = 0;
+					System.out.println("\t[WARNING] number of instances <"+valueS+"> for class "+ className + " treated as 0");
+				}
+			}catch(NumberFormatException e) {
+				value = 0; 
+				System.out.println("\t[WARNING] number of instances <"+valueS+"> for class "+ className + " treated as 0");
+			}
+			
+			classInstances.put(className, value);
+		}
+	}
+	
+	/**
+	 * Key = ClassName/AttributeName
+	 * 
+	 * Element 0 of the ArrayList<String> = l if the domain is a list of values
+	 * 									  = i if the domain is a min..max interval
+	 * 
+	 * Examples:
+	 * 
+	 * ArrayList<String> = [i,23,100]
+	 * ArrayList<String> = [l,a,b,c,d,e]
+	 * 	
+	 */
+	private void setAttributesDomains(){
 		
-		for (String e: content)
-		{
-			cle=e.substring(0,e.lastIndexOf('='));
-			valeur=e.substring(e.lastIndexOf('=')+1,e.length());
-			//fD.put(cle, valeur);
+		String attrName;
+		String domainS;
+		
+		for (String attributedomain : attributesDomainsRaw){
+			
+			attrName = attributedomain.substring(0,attributedomain.lastIndexOf('='));
+			domainS = attributedomain.substring(attributedomain.indexOf("=")+1);
+			ArrayList<String> value = new ArrayList<String>();
+			
+			if(domainS.contains("..")) {
+				value.add("i");
+				String [] splits = domainS.split("\\.\\.");
+				for(String str: splits) {
+					value.add(str);
+				}
+			}else {
+				value.add("l");
+				String [] splits = domainS.split(" ");
+				for(String str: splits) {
+					value.add(str);
+				}
+			}
+			
+			attributesDomains.put(attrName, value);
 		}	
 	}
 	
@@ -112,20 +167,28 @@ public class ConfigFileReader {
 	public int getFeatureBound() {
 		return featureBound;
 	}
-
-	public int getRefsBound() {
-		return referencesUB;
-	}
-
-	public ArrayList<String> getClassInstances() {
-		return classInstances;
-	}
-
+	
 	public ArrayList<String> getAttributesDomainsRaw() {
 		return attributesDomainsRaw;
 	}
 
 	public Hashtable<String, ArrayList<String>> getAttributesDomains() {
 		return attributesDomains;
+	}
+
+	public String getConfigFilePath() {
+		return configFilePath;
+	}
+
+	public int getReferencesUB() {
+		return referencesUB;
+	}
+
+	public ArrayList<String> getClassInstancesRaw() {
+		return classInstancesRaw;
+	}
+
+	public Hashtable<String, Integer> getClassInstances() {
+		return classInstances;
 	}
 }

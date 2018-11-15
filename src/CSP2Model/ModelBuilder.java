@@ -124,7 +124,7 @@ public abstract class ModelBuilder {
 		this.reader= new MetaModelReader(metaModelFile, root, cfr);
 		classSizes= reader.getClassSize();
 		classMinSizes= reader.getClassSizeMin();
-		this.referenceUpperBound= cfr.getRefsBound();
+		this.referenceUpperBound= cfr.getReferencesUB();
 						
 		long debut; double duree;
 		debut=System.nanoTime();
