@@ -7,6 +7,7 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="spaces" upperBound="-1"
         eType="#//PublicSpace" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="isCity" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Road" abstract="true">
     <eStructuralFeatures xsi:type="ecore:EReference" name="border" upperBound="-1"
