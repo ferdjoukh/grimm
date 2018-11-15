@@ -30,6 +30,16 @@ grimm is the centerpiece of more other works (papers and tools) done by the same
 
 ## Releases
 
+- [v4.0-d15112018](https://github.com/ferdjoukh/grimm/releases/tag/v4.0-d15112018) (November 15th 2018). This version add following features:
+
+	- Add specific processing for containment references. Now it is different from classic references and not included in the produced CSP instances.
+	- Add support for deep containment references (>1). Now you can have containment references between two classes (not only root class).
+	- Add support for boolean, integer, string and enum attributes. Moreover, randomness is added while instantiating attributes.
+	- Diversity is added in treating EOpposite references. Now the created GCC has diverse upper bound. This makes the generated models different even when the same configuration is used.
+	- Adding the possibility of generating 0 instances for a given class (you can do that by using a config file).
+	- Corrected bugs in ConfigrationFileReader class. Now the order of classes in a config file is not important.
+	- Corrected bug: unchangeable references and attributes are not considered any more.
+
 - [v3.0-d9112018](https://github.com/ferdjoukh/grimm/releases/tag/v3.0-d9112018) (November 9th 2018). This versione add or corrects the following features:
 	- Adding an Exception when a given rootClass is incorrect.
 	- Correcting some issues (related to tricky meta-models as ecore.ecore): linking EObjects in a hierarchy of inheritance, checking the superType of an EObject instead of just comparing class names before linking. 
