@@ -117,7 +117,7 @@ public class GenXCSP {
 		this.Symmetries=sym;
 		
 		this.cfr=cfr;
-		featuresDomains=cfr.getfeaturesDomains();
+		//featuresDomains=cfr.getfeaturesDomains();
 		
 	}
 	

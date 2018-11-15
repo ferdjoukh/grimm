@@ -12,104 +12,120 @@ import java.util.Hashtable;
 
 import org.omg.CORBA.portable.InputStream;
 
+import com.sun.xml.internal.bind.v2.schemagen.xmlschema.List;
+
 public class ConfigFileReader {
 
 	
-	private int FeatureBound=0;
-	private int RefBound=0;
 	private String configFilePath;
+	private int featureBound;
+	private int referencesUB;
 	private ArrayList<String> content;
-	private Hashtable<String,String> featuresDomaines; 
-	
+	private ArrayList<String> classInstances;
+	private ArrayList<String> attributesDomainsRaw;
+	private Hashtable<String,ArrayList<String>> attributesDomains; 
 	
 	public ConfigFileReader(String configFilePath) {
-		// TODO Auto-generated constructor stub
+		
 		this.configFilePath = configFilePath;
+		this.featureBound = 0;
+		this.referencesUB = 0;
+		this.content = new ArrayList<String>();
+		this.classInstances = new ArrayList<String>();
+		this.attributesDomainsRaw = new ArrayList<String>();
+		this.attributesDomains = new Hashtable<String, ArrayList<String>>();
 	}
 
-	@SuppressWarnings("deprecation")
-	public void read() throws IOException {
+	public void read(){
 		
-		ArrayList<String> content= new ArrayList<String>();
+		try {
 		
-		File z= new File(configFilePath);
-		FileInputStream zz= new FileInputStream(z);
-		BufferedInputStream zzz= new BufferedInputStream(zz);
+		File file= new File(configFilePath);
+		FileInputStream fis= new FileInputStream(file);
+		InputStreamReader isr = new InputStreamReader(fis);
+		BufferedReader reader = new BufferedReader(isr);
+		String line;
 		
-		DataInputStream reader = new DataInputStream(zzz);
-		
-		String line="";
-		
-		while(reader.available()!=0)
+		while((line = reader.readLine()) != null)
 		{
-			line= reader.readLine();
-			if (line.startsWith("RefsBound="))
-			{
-				this.RefBound= Integer.parseInt(line.substring(line.lastIndexOf("=")+1));
-			}
-			else if (line.startsWith("FeaturesBound="))
-			{
-				this.FeatureBound= Integer.parseInt(line.substring(line.lastIndexOf("=")+1));
-			}
-			else if(!line.startsWith("%"))
-			{
-				content.add(line);
-				//System.out.println(line);
+			if (line.startsWith("RefsBound=")){
+				
+				this.referencesUB = Integer.parseInt(line.substring(line.lastIndexOf("=")+1));
+			}else if (line.startsWith("FeaturesBound=")) {
+				
+				this.featureBound = Integer.parseInt(line.substring(line.lastIndexOf("=")+1));			
+			}else if(!line.startsWith("%") && line.contains("=")){
+				
+				if(line.contains("/")) {
+					this.attributesDomainsRaw.add(line);
+				}else {
+					this.classInstances.add(line);
+				}
+				
+				//@ToDo: remove this later
+				this.content.add(line);
 			}
 		}
-		
-		this.content = content;
-		
 		reader.close();
-		zzz.close();
-		zz.close();
-		
+		}
+		catch(IOException e) {
+			System.out.println("\t[PROBLEM] ConfigFileReader met a fatal problem :(");
+		}
 	}
 
-	public ArrayList<String> getContent() {
-		return content;
-	}
-	
-	public String getLineByStarting(String start) {
+	/**
+	 * This method returns the line corresponding to a given class 
+	 * 
+	 * @param start: class Name
+	 * @return
+	 */
+	public String getClassLineByStartString(String start) {
 		
-		for(String line: content) {
+		for(String line: classInstances) {
 			if(line.startsWith(start)) {
 				return line;
 			}
 		}
 		return null;
 	}
-
-	public int getFeatureBound() {
-		// TODO Auto-generated method stub
-		return FeatureBound;
-	}
-
-	public int getRefsBound() {
-		// TODO Auto-generated method stub
-		return RefBound;
-	}
 	
-	public Hashtable<String,String> getfeaturesDomains()
-	{
+	private void setFeaturesDomains(){
 		
-		Hashtable<String,String> fD= new Hashtable<String, String>(); 
-		ArrayList<String> content= this.content;
 		String cle;
 		String valeur;
 		
 		for (String e: content)
 		{
-			//System.out.println("ligne="+e);
-			
 			cle=e.substring(0,e.lastIndexOf('='));
 			valeur=e.substring(e.lastIndexOf('=')+1,e.length());
-			//System.out.println("Cle="+cle+ " Valeur="+valeur);
-			fD.put(cle, valeur);
-		}
-		
-		return fD;
-		
+			//fD.put(cle, valeur);
+		}	
+	}
+	
+	/////////////////////////////////////////
+	///  getters
+	////////////////////////////////////////
+	public ArrayList<String> getContent() {
+		return content;
+	}
+	
+	public int getFeatureBound() {
+		return featureBound;
 	}
 
+	public int getRefsBound() {
+		return referencesUB;
+	}
+
+	public ArrayList<String> getClassInstances() {
+		return classInstances;
+	}
+
+	public ArrayList<String> getAttributesDomainsRaw() {
+		return attributesDomainsRaw;
+	}
+
+	public Hashtable<String, ArrayList<String>> getAttributesDomains() {
+		return attributesDomains;
+	}
 }

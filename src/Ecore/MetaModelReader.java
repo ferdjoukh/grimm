@@ -110,7 +110,7 @@ public class MetaModelReader {
 			if(ec.getName().equals(rootClassName)) {
 				sizes.add(pos, (Integer) 1);			    
 			}else {
-				String str =  cfr.getLineByStarting(ec.getName());
+				String str =  cfr.getClassLineByStartString(ec.getName());
 				sizes.add(pos, Integer.parseInt(str.substring(str.lastIndexOf("=")+1)));
 			}
 			pos++;		   
