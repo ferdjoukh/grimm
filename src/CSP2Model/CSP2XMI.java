@@ -19,6 +19,7 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 import org.eclipse.emf.ecore.xmi.impl.XMLResourceImpl;
 
+import Utils.AttributeInstantiator;
 import Utils.ClassInstance;
 import Utils.Utils;
 
@@ -95,7 +96,8 @@ public class CSP2XMI extends ModelBuilder{
 		
 		for(EClass c: cls)
 		{
-			if(c.getName().equals(root))		
+			String currentClassName= c.getName();
+			if(currentClassName.equals(root))		
 			{
 				//Create instance of rootClass
 				rootObject= rootPackage.getEFactoryInstance().create(c);
@@ -107,14 +109,23 @@ public class CSP2XMI extends ModelBuilder{
 				{
 					if(a.isChangeable()) {
 						
-						if(a.getEType().getName().equals("EString")) {
-							rootObject.eSet(a, reader.getBasePackage().getName()+"_"+solutionValues.get(currentVar).toString());							
-						}
-					    else if (a.getEType().getName().equals("EInt"))
+						if(a.getEType().getName().equals("EBoolean")) {
+							Boolean bool = AttributeInstantiator.generateBoolean();
+							rootObject.eSet(a, bool);
+						
+						}else if(a.getEType().getName().equals("EString")) {
+							if(a.getName().toLowerCase().equals("name")) {
+								String nameValue = AttributeInstantiator.generateBasicName(currentClassName, 1);
+								rootObject.eSet(a, nameValue);
+							}
+							else {
+								rootObject.eSet(a, reader.getBasePackage().getName()+"_"+solutionValues.get(currentVar).toString());
+							}
+						
+						}else if (a.getEType().getName().equals("EInt"))
 						    rootObject.eSet(a, solutionValues.get(currentVar));	
-					    else
-						{
-							//Enumeration type, boolean
+					    else{
+							//Enumeration type
 					    	EEnum enume= null;
 							try{enume=(EEnum) a.getEType();} catch(Exception e){}
 							EClass etype=null;

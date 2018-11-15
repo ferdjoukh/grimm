@@ -31,7 +31,7 @@ public class EcoreMMUnchangeableValuesTests {
 	
 	@Test
 	public void generateMaps() throws Exception{
-		String [] args= {"g","tests/generation/maps1.params"};
+		String [] args= {"g","tests/generation/maps2.params"};
 		GrimmLauncher.main(args);
 	}
 }

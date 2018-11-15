@@ -15,5 +15,13 @@ public class AttributeInstantiator {
 		Random rand= new SecureRandom();
 		return rand.nextBoolean();
 	}
+	
+	public static String generateBasicName(String objectName, int OID) {
+		return  objectName+OID;		
+	}
+	
+	public static String pickUpName() {
+		return "";		
+	}
 
 }
