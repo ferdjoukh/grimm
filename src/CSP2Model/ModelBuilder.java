@@ -132,7 +132,7 @@ public abstract class ModelBuilder {
 		////////////////////////////////////////////////////////
 		// Generate CSP instance
 		/////////////////////////////////////////////////////////
-		System.out.print("CSP instance generator is running...");
+		System.out.println("CSP instance generator is running");
 	    GenXCSP generation= new GenXCSP(metaModelFile,root,reader,cfr,sym);
 		generation.GenerateXCSP(CSPInstanceFile);
 		maxDomains=generation.getMaxDomains();

@@ -86,8 +86,6 @@ public class MetaModelReader {
 	
 	private void sizeClassMinRead() {
 		
-		System.out.println("set Class MIN sizes from Config file");
-				
 		ArrayList<EClass> cls= (ArrayList<EClass>) getClasses();
 		ArrayList<Integer> sizes= new ArrayList<Integer>(cls.size());
 		
@@ -101,8 +99,6 @@ public class MetaModelReader {
 	}
 
 	private void sizeClassRead() {
-		
-		System.out.println("set Class sizes from Config file");
 		
 		List<EClass> cls= getClasses();
 		ArrayList<Integer> sizes= new ArrayList<Integer>(cls.size());
