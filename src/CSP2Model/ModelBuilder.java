@@ -13,36 +13,37 @@ import org.eclipse.ocl.ParserException;
 import Ecore.MetaModelReader;
 import Ecore2CSP.ConfigFileReader;
 import Ecore2CSP.GenXCSP;
+import Utils.ClassInstance;
 import Utils.OCL.OclConstraints;
 
 public abstract class ModelBuilder {
 
 	protected MetaModelReader reader;
-	protected String ModelFile;
+	protected String metaModelFile;
 	protected String root;
-	protected String InstanceFile;
-	protected String Model;
-	protected int refB;
-	protected ArrayList<Integer> sizes;
-	protected ArrayList<Integer> sizesMin;
+	protected String CSPInstanceFile;
+	protected String modelFilePath;
+	protected int referenceUpperBound;
+	protected ArrayList<Integer> classSizes;
+	protected ArrayList<Integer> classMinSizes;
 	protected String oclFilePath;
 	protected int maxDomains;
 	protected ArrayList<FoundSolution> foundSolutions= new ArrayList<FoundSolution>();
+	protected ArrayList<ClassInstance> allCreatedEObjects= new ArrayList<ClassInstance>();
 	
 	/***
 	 * 
 	 * @param ModelFile: .ECORE meta-model File
-	 * @param racine: Root Class of this meta-model
-	 * @param InstanceFile: .XML file path of the produced CSP instance
+	 * @param root: Root Class of this meta-model
+	 * @param CSPInstanceFile: .XML file path of the produced CSP instance
 	 */
-	public ModelBuilder(String ModelFile, String root,String InstanceFile, String oclFilePath){
+	public ModelBuilder(String metaModelFile, String root,String CSPInstanceFile, String oclFilePath){
 		
-		this.ModelFile = ModelFile;
+		this.metaModelFile = metaModelFile;
 		this.root = root;
-		this.InstanceFile = InstanceFile;
+		this.CSPInstanceFile = CSPInstanceFile;
 		this.oclFilePath = oclFilePath;
-		this.Model= root+new Date().getDate()+new Date().getHours()+new Date().getMinutes()+ new Date().getSeconds()+"UB"+refB;
-		
+		this.modelFilePath= root+new Date().getDate()+new Date().getHours()+new Date().getMinutes()+ new Date().getSeconds()+"UB"+referenceUpperBound;
 	}
 	
 	public ArrayList<FoundSolution> getFoundSolutions() {
@@ -60,49 +61,50 @@ public abstract class ModelBuilder {
 	 */
 	public void CallCSPGenrator(int lb, int ub, int rb, int sym, int sol) throws IOException
 	{
-		this.reader= new MetaModelReader(ModelFile, root,lb,ub);
-		this.refB=rb;
-		this.sizes=reader.getClassSize();
-		this.sizesMin=reader.getClassSizeMin();
+		this.reader= new MetaModelReader(metaModelFile, root,lb,ub);
+		this.referenceUpperBound=rb;
+		this.classSizes=reader.getClassSize();
+		this.classMinSizes=reader.getClassSizeMin();
 		
-		long debut; double duree;
-		debut=System.nanoTime();
+		long timeBegin; double timeCounter;
+		timeBegin=System.nanoTime();
 			
-		//Call the CSP generator
+		////////////////////////////////////////////////////////////////
+		// Generate CSP instance
+		///////////////////////////////////////////////////////////////
 		System.out.print("CSP instance generator is running...");
-		GenXCSP generation= new GenXCSP(ModelFile,root,reader,ub,rb,sym);
-		generation.GenerateXCSP(InstanceFile);
+		GenXCSP generation= new GenXCSP(metaModelFile,root,reader,ub,rb,sym);
+		generation.GenerateXCSP(CSPInstanceFile);
 		maxDomains=generation.getMaxDomains();
 		System.out.println(" OK");
 				
-		duree=(System.nanoTime()-debut)/1000000;
-		System.out.println("\tCSP istance generation time= "+ duree+ " ms");
+		timeCounter=(System.nanoTime()-timeBegin)/1000000;
+		System.out.println("\tCSP istance generation time= "+ timeCounter+ " (ms)");
 				
 		/////////////////////////////////////////////////////////////
-		// Contraintes OCL
+		// OCL constraints parsing
 		////////////////////////////////////////////////////////////
 		if (!oclFilePath.equals("")) {
 			try {
-				debut = System.nanoTime();
+				timeBegin = System.nanoTime();
 				System.out.print("OCL parser is running...");
 			
 				OclConstraints oclCons = new OclConstraints(reader, oclFilePath, GenXCSP.getXCSPinstance());
-				generation.saveXML(oclCons.getResultDocumentXCSP(), InstanceFile);
+				generation.saveXML(oclCons.getResultDocumentXCSP(), CSPInstanceFile);
 				
-				duree = (System.nanoTime()-debut)/1000000;
+				timeCounter = (System.nanoTime()-timeBegin)/1000000;
 				System.out.println(" OK");
-				System.out.println("\tOCL constraints parsing duration = "+ duree+ " ms");
+				System.out.println("\tOCL constraints parsing duration = "+ timeCounter+ " ms");
 			} catch (FileNotFoundException | ParserException e) {
-				System.err.println("Problems when parsing OCL constraints !");
-				e.printStackTrace();
+				System.err.println("Problems when parsing OCL constraints !");				
 			}
 		}
 		
 		///////////////////////////////////////////////////////////////
-		//Excuter le solveur
+		// Execute CSP solver
 		////////////////////////////////////////////////////////////
 		System.out.print("CSP Solver is running...");
-		BufferedReader bufferedreader=executeAbsconSolver(InstanceFile, sol);
+		BufferedReader bufferedreader=executeAbsconSolver(CSPInstanceFile, sol);
 		findAllSolutions(bufferedreader);
 	}
 	
@@ -116,27 +118,25 @@ public abstract class ModelBuilder {
 	 */
 	public void CallCSPGenrator(String configFilePath, int sym, int sol) throws IOException
 	{
-		/*
-		 * 
-		 * Initialize the ConfigFileReader to read the input configuration file and
-		 * Get: - RefBound
-		 *      - FeaturesBound
-		 *      - Read Class sizes
-		 */
+		////////////////////////////////////////////////////////
+		// Init and read the configuration file
+		/////////////////////////////////////////////////////////
 		ConfigFileReader cfr= new ConfigFileReader(configFilePath);
 		cfr.read();
-		
-		this.reader= new MetaModelReader(ModelFile, root, cfr);
-		sizes= reader.getClassSize();
-		sizesMin= reader.getClassSizeMin();
-		this.refB= cfr.getRefsBound();
+		this.reader= new MetaModelReader(metaModelFile, root, cfr);
+		classSizes= reader.getClassSize();
+		classMinSizes= reader.getClassSizeMin();
+		this.referenceUpperBound= cfr.getRefsBound();
 						
 		long debut; double duree;
 		debut=System.nanoTime();
 		
+		////////////////////////////////////////////////////////
+		// Generate CSP instance
+		/////////////////////////////////////////////////////////
 		System.out.print("CSP instance generator is running...");
-	    GenXCSP generation= new GenXCSP(ModelFile,root,reader,cfr,sym);
-		generation.GenerateXCSP(InstanceFile);
+	    GenXCSP generation= new GenXCSP(metaModelFile,root,reader,cfr,sym);
+		generation.GenerateXCSP(CSPInstanceFile);
 		maxDomains=generation.getMaxDomains();
 		System.out.println(" OK");
 				
@@ -144,46 +144,46 @@ public abstract class ModelBuilder {
 		System.out.println("\tCSP instance generation time = "+ duree+ " ms");
 				
 		
-		// Contraintes OCL
+		/////////////////////////////////////////////////////////////
+		// OCL constraints parsing
+		////////////////////////////////////////////////////////////
 		if (!oclFilePath.equals("")) {
 			try {
 				debut = System.nanoTime();
 				System.out.print("OCL parser is running...");	
 				OclConstraints oclCons = new OclConstraints(reader, oclFilePath, GenXCSP.getXCSPinstance());
-				generation.saveXML(oclCons.getResultDocumentXCSP(), InstanceFile);
+				generation.saveXML(oclCons.getResultDocumentXCSP(), CSPInstanceFile);
 
 				duree = (System.nanoTime()-debut)/1000000;
 				System.out.println(" OK");
 				System.out.println("\tOCL constraints treatment duration= "+ duree+ " ms");
 			} catch (FileNotFoundException | ParserException e) {
 				System.err.println("\tProblems when parsing OCL file !");
-				e.printStackTrace();
 			}
 		}
 		
 		///////////////////////////////////////////////////////////////
-		//Ececuter le solveur
+		// Execute CSP solver
 		////////////////////////////////////////////////////////////
 		System.out.print("CSP Solver is running...");
-		BufferedReader r;
-		r=executeAbsconSolver(InstanceFile,sol);
-		findAllSolutions(r);
+		BufferedReader bufferedreader;
+		bufferedreader=executeAbsconSolver(CSPInstanceFile,sol);
+		findAllSolutions(bufferedreader);
 	}
 	
 	public BufferedReader executeAbsconSolver(String Instancefile, int sol){
 			
 			String cmd = "java -jar abssol.jar " + Instancefile +" -s="+ sol;
 	
-			Process p = null;
-				try {
-					p = Runtime.getRuntime().exec(cmd);
-					BufferedReader reader = new BufferedReader(new InputStreamReader(p.getInputStream()));
-					return reader;
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-		        return null;
+			Process process = null;
+			try {
+				process = Runtime.getRuntime().exec(cmd);
+				BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+				return reader;
+			} catch (IOException e) {
+				System.err.println("\tProblem when excecuting the CSP solver !");
+			}
+	        return null;
 		}
 	
 	/**
@@ -227,28 +227,27 @@ public abstract class ModelBuilder {
 		}
 	}
 	
-	public int domaineSum(int k)
+	/**
+	 * This method read class sizes and returns the begin of the domain of each class
+	 * 
+	 * domain D = [a,b]
+	 * 
+	 * to get a: call the method with classID-1, then add 1
+	 * to get b: call the method with classID
+	 * 
+	 * @param classID
+	 * @return
+	 */
+	public int domaineSum(int classID)
 	{
-		int s=0;
-		if (k==0)
+		int begin=0;
+		if (classID==0)
 			return 0;
-		for(int i=0;i<=k-1;i++)
+		for(int i=0;i<=classID-1;i++)
 		{
-			s+= sizes.get(i);
+			begin+= classSizes.get(i);
 		}
-		return s;
-	}
-	
-	public int domaineSumMin(int k)
-	{
-		int s=0;
-		if (k==0)
-			return 0;
-		for(int i=0;i<=k-1;i++)
-		{
-			s+= sizesMin.get(i);
-		}
-		return s;
+		return begin;
 	}
 
 	/**

@@ -1,9 +1,11 @@
 package Ecore2CSP;
 import java.io.*;
 import java.lang.reflect.Array;
+import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
+import java.util.Random;
 
 import org.eclipse.emf.ecore.EAnnotation;
 import org.eclipse.emf.ecore.EAttribute;
@@ -1023,23 +1025,11 @@ public class GenXCSP {
 		
 	}
 
-	///////////////////////////////////////////////////
-	///////////////////////////////////////////////
-	///////////////////////////////////////////
-	///////////////////////////////////////
-	///////////////////////////////////
-	///////////////////////////////
-	///////////////////////////          Class Instances vs Refernces 
-	///////////////////////           No Allocation Constraint 
- 	///////////////////           And Predicate Method
-	///////////////
-	////////////
 	/*********
 	 * 
 	 *   Class Instances References No Allocation Constraints 
 	 * 
 	 */
-
 	public void GenNoAllocConstraintPred()
 	{
 		//La relation d'implication
@@ -1064,8 +1054,6 @@ public class GenXCSP {
 	
 	public void GenNoAllocConstraint(String i,String var)
 	{
-		//Les contraintes
-	    		
 		Element cons = new Element("constraint");
 		nbCons++;
 		
@@ -1087,23 +1075,11 @@ public class GenXCSP {
 		
 	}
 	
-	
-	////////////////////////////////////////////////////
-	///////////////////////////////////////////////
-	//////////////////////////////////////////
-	//////////////////////////////////////
-	//////////////////////////////               Contrainte Gcc sur les références de la racine
-	/////////////////////////
-	////////////////////
-	////////////////
-	///////////
 	/**
 	* 
 	*    Generating a Gcc Constraint on root references' instances 
 	* 
 	*/
-
-	
 	public void Gccroot(int arity,int valsarity,String vars,String vals)
 	{
 		Element cons=new Element("constraint");
@@ -1145,51 +1121,56 @@ public class GenXCSP {
 
 	}
 	
-	
 	/**
-	* 
-	*    Generating a Gcc Constraint on root references' instances 
-	* 
-	*/	
-	public void createGcc(String nom,int arity,int valsarity,String vars,String vals, int lower, int upper)
+	 * This method creates a GCC constraint. It is mainly used to process EOpossite Reference.
+	 * Having diverse upperBound for this GCC helps to get a better diversity while instanciating 
+	 * the variables that links between class instances.
+	 * 
+	 * UpperBound are then randomly generated
+	 * 
+	 * @param gccName
+	 * @param variableArity
+	 * @param valuesArity
+	 * @param variables
+	 * @param domain
+	 * @param lower
+	 * @param upper
+	 */
+	
+	public void createGcc(String gccName,int variableArity, int valuesArity, String variables, String domain, int lower, int upper)
 	{
 		Element cons=new Element("constraint");
 		nbCons++;
 		
-		//Les parametres
-		//String vars= "";
-		String lb=" ",ub=" ";
+		String gccLowerBounds=" ",gccUpperBounds=" ";
+		Random random= new SecureRandom();
 		
-	    vals= ""+ vals;
-		
-	   // System.out.println("arity vals="+valsarity);
-	    
-		//Valeurs et bornes inf et sup
-		for(int i=1;i<=valsarity;i++)
+		//Create random uniform upper bound
+		for(int i=1;i<=valuesArity;i++)
 		{
-			lb=lb + lower+" ";
-			ub=ub +upper+" ";
+			gccLowerBounds = gccLowerBounds + lower+" ";
+			int nextUpper = random.nextInt(upper-lower+1) + lower;
+			gccUpperBounds = gccUpperBounds + nextUpper +" ";
 		}
 		
-        
-		String pText="[ "+ vars +"] [ "+ vals +"] ["+lb+"] ["+ub+"]";
+		//Set GCC body
+		String body="[ "+ variables +"] [ "+ domain +"] ["+gccLowerBounds+"] ["+gccUpperBounds+"]";
 		Element param= new Element("parameters");
-		param.setText(pText);
+		param.setText(body);
 		cons.addContent(param);
 		
-		//Les attributs
-		Attribute name= new Attribute("name", nom);
+		//Set GCC attributes
+		Attribute name= new Attribute("name", gccName);
 		cons.setAttribute(name);
-		Attribute Arity= new Attribute("arity", ""+arity);
+		Attribute Arity= new Attribute("arity", ""+variableArity);
 		cons.setAttribute(Arity);
-		Attribute Scope= new Attribute("scope", ""+vars);
+		Attribute Scope= new Attribute("scope", ""+variables);
 		cons.setAttribute(Scope);
 		Attribute refe= new Attribute("reference", "global:globalCardinality");
 		cons.setAttribute(refe);
 		
+		//Add GCC to all constraints
 		constraints.addContent(cons);
-		
-
 	}
 	
 	public void GenAllDiffRoot(int arity,String vars)

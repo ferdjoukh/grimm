@@ -9,23 +9,21 @@ import org.eclipse.emf.ecore.impl.DynamicEObjectImpl;
 
 public class Utils {
 	
-	public static EObject searchInstanceByClass(ArrayList<ClassInstance> instances, String className) {
-		
-		EObject object=null;
+	public static ClassInstance searchInstanceByClass(ArrayList<ClassInstance> instances, String className) {
 		
 		for(ClassInstance instance: instances){
 			
 			String currentObjectClassName =((DynamicEObjectImpl) instance.getObj()).eClass().getName();
 			
 			if(currentObjectClassName.equals(className))
-				object=instance.getObj();
+				return instance;
 		}
-		return object;
+		return null;
 	}
 	
-	public static EObject searchInstanceByClass(ArrayList<ClassInstance> instances, EClass eClass) {
+	public static ClassInstance searchInstanceByClass(ArrayList<ClassInstance> instances, EClass eClass) {
 		
-		ArrayList<EObject> objects = findAllinstancesOfClass(instances, eClass);
+		ArrayList<ClassInstance> objects = findAllinstancesOfClass(instances, eClass);
 		
 		if(objects.size() > 0) {
 			int n= (int) (Math.random()* (objects.size()));
@@ -35,16 +33,45 @@ public class Utils {
 			return null;
 		}
 	}
+	
+	/**
+	 * Search for instance that was not used
+	 * 
+	 * @param instances
+	 * @param eClass
+	 * @param used
+	 * @return
+	 */
+	public static ClassInstance searchInstanceByClass(ArrayList<ClassInstance> instances, EClass eClass, ArrayList<Integer> used) {
+		
+		ArrayList<ClassInstance> objects = findAllinstancesOfClass(instances, eClass);
+		int i=objects.size();
+		
+		if(objects.size() > 0) {
+			for(int cpt=0; cpt< objects.size();cpt++) {
+			
+				int n= (int) (Math.random()* (objects.size()));
+				
+				ClassInstance instance = objects.get(n); 
+				
+				if(!used.contains(instance.getId())) {
+					return objects.get(n);
+				}
+			}
+		}
+		return null;
+	}
 
-	public static ArrayList<EObject> findAllinstancesOfClass(ArrayList<ClassInstance> instances, EClass eClass){
-		ArrayList<EObject> objects= new ArrayList<EObject>();
+	public static ArrayList<ClassInstance> findAllinstancesOfClass(ArrayList<ClassInstance> instances, EClass eClass){
+		ArrayList<ClassInstance> objects= new ArrayList<ClassInstance>();
+		System.out.println(instances.size());
 		
 		for(ClassInstance instance: instances){
 			
 			EClass currentObjectClass = ((DynamicEObjectImpl) instance.getObj()).eClass();
 			
-			if(currentObjectClass.getEAllSuperTypes().contains(eClass)) {
-				objects.add(instance.getObj());
+			if(currentObjectClass.equals(eClass) || currentObjectClass.getEAllSuperTypes().contains(eClass)) {
+				objects.add(instance);
 			}
 		}
 		

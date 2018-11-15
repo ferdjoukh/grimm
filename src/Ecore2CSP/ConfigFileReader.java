@@ -69,6 +69,16 @@ public class ConfigFileReader {
 	public ArrayList<String> getContent() {
 		return content;
 	}
+	
+	public String getLineByStarting(String start) {
+		
+		for(String line: content) {
+			if(line.startsWith(start)) {
+				return line;
+			}
+		}
+		return null;
+	}
 
 	public int getFeatureBound() {
 		// TODO Auto-generated method stub

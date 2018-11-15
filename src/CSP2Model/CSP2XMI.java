@@ -2,10 +2,12 @@ package CSP2Model;
 
 import java.io.File;
 import java.io.IOException;
+import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
@@ -21,8 +23,8 @@ import Utils.ClassInstance;
 import Utils.Utils;
 
 public class CSP2XMI extends ModelBuilder{
-
-	ArrayList<ClassInstance> allCreatedEObjects= new ArrayList<ClassInstance>(); 
+	
+	private EObject rootObject = null;
 	
 	/**
 	 * 
@@ -32,9 +34,9 @@ public class CSP2XMI extends ModelBuilder{
 	 * @param Model: Result model file path .xmi
 	 * @param oclFilePath: ocl file path .ocl or empty string.
 	 */
-	public CSP2XMI(String ModelFile, String root,String InstanceFile,String oclFilePath){
+	public CSP2XMI(String ModelFile, String root,String CSPInstanceFile,String oclFilePath){
 			
-		super(ModelFile, root, InstanceFile, oclFilePath);
+		super(ModelFile, root, CSPInstanceFile, oclFilePath);
 	}
 	
 	/***
@@ -79,31 +81,24 @@ public class CSP2XMI extends ModelBuilder{
 		for(FoundSolution solution: foundSolutions) {
 			ID++;
 			
-			EObject object= FindModel(solution.getValues());
-			ValidModel(object,ID);
+			EObject object= CSP2XMIBuild(solution.getValues());
+			generateXMIfile(object,ID);
 		}
 	}
 	
-	public EObject FindModel(ArrayList<Integer> values)
-	{	
-		ArrayList<Integer> vals= values;
-		int variable=0;
-		EPackage pack= super.reader.getModelPackage();
-		List<EClass> cls= super.reader.getClasses();
-		EObject rootObject = null;
-		int lb=0,ub=0;
-			
-		ArrayList<ClassInstance> mesInstLiees= new ArrayList<ClassInstance>(); 
+	public void createEObjects(ArrayList<Integer> solutionValues) {
 		
-		/////////////////////////////////////////////
-		// STEP 1 : Create all EObjects
-		////////////////////////////////////////////
+		int currentVar = 0;
+		
+		EPackage rootPackage= super.reader.getModelPackage();
+		List<EClass> cls= super.reader.getClasses();
+		
 		for(EClass c: cls)
 		{
 			if(c.getName().equals(root))		
 			{
 				//Create instance of rootClass
-				rootObject= pack.getEFactoryInstance().create(c);
+				rootObject= rootPackage.getEFactoryInstance().create(c);
 				
 				/////////////////////////////////////
 				//   Attributes of rootClass
@@ -113,10 +108,10 @@ public class CSP2XMI extends ModelBuilder{
 					if(a.isChangeable()) {
 						
 						if(a.getEType().getName().equals("EString")) {
-							rootObject.eSet(a, reader.getBasePackage().getName()+"_"+vals.get(variable).toString());							
+							rootObject.eSet(a, reader.getBasePackage().getName()+"_"+solutionValues.get(currentVar).toString());							
 						}
 					    else if (a.getEType().getName().equals("EInt"))
-						    rootObject.eSet(a, vals.get(variable));	
+						    rootObject.eSet(a, solutionValues.get(currentVar));	
 					    else
 						{
 							//Enumeration type, boolean
@@ -126,13 +121,13 @@ public class CSP2XMI extends ModelBuilder{
 							try{etype=(EClass) a.getEType();} catch(Exception e){}				
 							if(enume!=null)
 							{
-								rootObject.eSet(a, enume.getEEnumLiteral(vals.get(variable)-1));
+								rootObject.eSet(a, enume.getEEnumLiteral(solutionValues.get(currentVar)-1));
 							}
 							if(etype!=null)
 								System.out.println("Attention: L'attribut "+a.getName()+ " de la classe "+c.getName()+ " est de type objet("+a.getEType().getName()+") doit être remplacé par une référence !!");
 						}
 					}
-					variable++;
+					currentVar++;
 				}
 				
 				/////////////////////////////////////////////////////
@@ -143,15 +138,15 @@ public class CSP2XMI extends ModelBuilder{
 					int zz=ref.getUpperBound();
 					if (zz==-1){	
 						if(!ref.getEReferenceType().isAbstract())
-							zz=refB;
+							zz=referenceUpperBound;
 						else
-							zz=refB;
+							zz=referenceUpperBound;
 					}
 					EClass dst= ref.getEReferenceType();
 					ArrayList<EObject> rr= new ArrayList<EObject>(); 
 					for(int z=1;z<=zz;z++)
 					{
-						variable++;
+						currentVar++;
 					}
     			}
 			}
@@ -160,16 +155,16 @@ public class CSP2XMI extends ModelBuilder{
 				////////////////////////////////////////////
 				// Create instances of other classes
 				////////////////////////////////////////////
-				lb=  domaineSum(reader.getClassIndex(c)-1)+1;
-				ub=  domaineSum(reader.getClassIndex(c)); 
+				int classDomainBegin=  domaineSum(reader.getClassIndex(c)-1)+1;
+				int classDomainEnd=  domaineSum(reader.getClassIndex(c)); 
 				
-				for(int j=lb;j<=ub;j++)
+				for(int currentInstance=classDomainBegin;currentInstance<=classDomainEnd;currentInstance++)
 				{
 					///////////////////////////////////////
 					// Create the EObject
 					///////////////////////////////////////
 					EObject createdObject;
-					createdObject= pack.getEFactoryInstance().create(c);
+					createdObject= rootPackage.getEFactoryInstance().create(c);
 					
 					
 					///////////////////////////////////////
@@ -181,10 +176,10 @@ public class CSP2XMI extends ModelBuilder{
 						    //System.out.println("UnChange: "+a.getName());
 						
 							if(a.getEType().getName().equals("EString")){
-								createdObject.eSet(a, c.getName()+"_"+j+"_"+a.getName()+"_"+ vals.get(variable).toString());
+								createdObject.eSet(a, c.getName()+"_"+currentInstance+"_"+a.getName()+"_"+ solutionValues.get(currentVar).toString());
 						    }
 							else if (a.getEType().getName().equals("EInt")){
-								createdObject.eSet(a, vals.get(variable));
+								createdObject.eSet(a, solutionValues.get(currentVar));
 						    }
 							else{
 								// Enumeration
@@ -194,13 +189,13 @@ public class CSP2XMI extends ModelBuilder{
 								try{etype=(EClass) a.getEType();} catch(Exception e){}				
 								if(enume!=null)
 								{
-									createdObject.eSet(a, enume.getEEnumLiteral(vals.get(variable)-1));
+									createdObject.eSet(a, enume.getEEnumLiteral(solutionValues.get(currentVar)-1));
 								}
 								if(etype!=null)
 									System.out.println("Attention: L'attribut "+a.getName()+ " de la classe "+c.getName()+ " est de type objet("+a.getEType().getName()+") doit être remplacé par une référence !!");
 							}
 						}
-						variable++;
+						currentVar++;
 					}
 					
 					////////////////////////////////////////////////////
@@ -212,42 +207,41 @@ public class CSP2XMI extends ModelBuilder{
 	    				if (zz==-1)
 	    				{	
 	    					if(ref.getEReferenceType().isAbstract())
-	    						zz=refB;
+	    						zz=referenceUpperBound;
 	    					else
-	    						zz=refB;
+	    						zz=referenceUpperBound;
 	    				}
-	    				for(int z=1;z<=zz;z++) {variable++;}
+	    				for(int z=1;z<=zz;z++) {currentVar++;}
 	    			}
 					
 					//Add current EObject to list of all instances 
-					allCreatedEObjects.add(new ClassInstance(j, createdObject));
+					allCreatedEObjects.add(new ClassInstance(currentInstance, createdObject));
 				}
 			}
 		} 
+	}
+	
+	public void createReferenceLinks(ArrayList<Integer> solutionValues) {
+		int currentVar=0;
+		List<EClass> cls= super.reader.getClasses();
+		ArrayList<ClassInstance> linkedInstances= new ArrayList<ClassInstance>(); 
 		
-		///////////////////////////////////////////
-		// STEP 2: Create pointers for references
-		///////////////////////////////////////////
-		variable=0;		 
 		for(EClass currentClass: cls)
 		{
-			int vari=0;
 			if(currentClass.getName().equals(root))
 			{
-				vari= variable;
-				
 				//Skip attributes of rootClass
-				for(EAttribute a:reader.getAllAttributesFromClass(currentClass)) variable++;		
+				for(EAttribute a:reader.getAllAttributesFromClass(currentClass)) currentVar++;		
 				
 				//Skip references of rootClass
 				for (EReference ref: reader.getAllReferencesFromClasswithOpposite(currentClass))	
 				{
 					int zz=ref.getUpperBound();
 		    	    if (zz==-1){	
-						if(ref.getEReferenceType().isAbstract()) zz=refB;
-						else zz=refB;
+						if(ref.getEReferenceType().isAbstract()) zz=referenceUpperBound;
+						else zz=referenceUpperBound;
 					}
-		   			for(int z=1;z<=zz;z++) variable++;
+		   			for(int z=1;z<=zz;z++) {currentVar++;}
 		    	}
 			}
 			else
@@ -255,215 +249,263 @@ public class CSP2XMI extends ModelBuilder{
 				////////////////////////////////////////
 				// Create links of other classes
 				////////////////////////////////////////
-				lb=  domaineSum(reader.getClassIndex(currentClass)-1)+1;
-				ub=  domaineSum(reader.getClassIndex(currentClass)); 
+				int classDomBegin=  domaineSum(reader.getClassIndex(currentClass)-1)+1;
+				int classDomEnd=  domaineSum(reader.getClassIndex(currentClass)); 
 				
-				for(int j=lb;j<=ub;j++)
+				for(int objectOID=classDomBegin;objectOID<=classDomEnd;objectOID++)
 				{
-					EObject currentEObject = Utils.searchIns(allCreatedEObjects, j);
+					EObject currentEObject = Utils.searchIns(allCreatedEObjects, objectOID);
 					
-					//Skip all attributes
-					for(EAttribute a:reader.getAllAttributesFromClass(currentClass)) variable++;
+					//Skip attributes
+					for(EAttribute a:reader.getAllAttributesFromClass(currentClass)) currentVar++;
 					
-					////////////////////////////////////////////////
-					// Make sure that the reference is changeable
-					////////////////////////////////////////////////
 					for (EReference ref: reader.getAllReferencesFromClasswithOpposite(currentClass))	
 					{
-						if(ref.isChangeable()) {
-							
-							int refUpperBound=ref.getUpperBound();
-				    		
-							if (refUpperBound==-1) {
-		    					if(ref.getEReferenceType().isAbstract()) refUpperBound=refB;
-		    					else refUpperBound=refB;
-		    				}
-							
-				    		EClass targetClass= ref.getEReferenceType();
-				    		List<EObject> objectsToLink= new ArrayList<EObject>(); 
-				    		
-				    		if(refUpperBound==1){
-				    			if(vals.get(variable)!=0)
-				    			{
-				    				try{
-				    						EObject targetEObject= Utils.searchInstanceByClass(allCreatedEObjects, targetClass);
-				    						
-				    						if(targetEObject != null) {
-				    							
-				    							EClass targetEObjectClass= ((DynamicEObjectImpl) targetEObject).eClass();
-						    					
-				    							if(targetEObjectClass.getEAllSuperTypes().contains(targetClass)) {
-				    								currentEObject.eSet(ref, targetEObject);
-				    								//System.out.println("1 LINK: " + currentClass.getName()+ " >> "+ ref.getName() +" " );
-				    							}
-				    						}				    										    				
-				    				}catch(Exception e){}
-				    			}
-				    			variable++;
-				    		}
-				    		else{
-				    			int z=0;
-				    			for(z=1;z<=refUpperBound;z++)
-				    			{
-				    				if(vals.get(variable)!=0)
-				    				{
-				    					//EObject targetEObject= Utils.searchIns(allCreatedEObjects, vals.get(variable));
-				    					
-				    					EObject targetEObject= Utils.searchInstanceByClass(allCreatedEObjects, targetClass);
-				    					
-				    					if(targetEObject!=null) {
-				    						EClass targetEObjectClass= ((DynamicEObjectImpl) targetEObject).eClass();
+						int refUpperBound=ref.getUpperBound();
+			    		
+						if (refUpperBound==-1) {
+	    					if(ref.getEReferenceType().isAbstract()) refUpperBound=referenceUpperBound;
+	    					else refUpperBound=referenceUpperBound;
+	    				}
+						
+			    		EClass targetClass= ref.getEReferenceType();
+			    		List<EObject> objectsToLink= new ArrayList<EObject>(); 
+			    		
+			    		if(refUpperBound==1){
+			    			if(solutionValues.get(currentVar)!=0)
+			    			{
+			    				try{
+			    						EObject targetEObject= Utils.searchInstanceByClass(allCreatedEObjects, targetClass).getObj();
+			    						
+			    						if(targetEObject != null) {
+			    							
+			    							EClass targetEObjectClass= ((DynamicEObjectImpl) targetEObject).eClass();
 					    					
-				    						if(targetEObjectClass.getEAllSuperTypes().contains(targetClass)) {
-				    							objectsToLink.add(targetEObject);
-				    							//System.out.println("1 n LINK: " + currentClass.getName()+ " >> "+ ref.getName() +" " );
-				    						}
-				    					}				    									    				
-				    				}	
-				    				variable++;
-				    			}
-				    			
-				    			try{
-				    				if(!ref.isContainment()) {
-				    					currentEObject.eSet(ref, objectsToLink);
-				    					//System.out.println(currentClass.getName()+ " >> "+ ref.getName() +" "+ objectsToLink.size());
-				    				}
+			    							if(targetEObjectClass.getEAllSuperTypes().contains(targetClass)) {
+			    								currentEObject.eSet(ref, targetEObject);				    								
+			    							}
+			    						}				    										    				
 			    				}catch(Exception e){}
-				    			
-				    		}						
-						}						
+			    			}
+			    			currentVar++;
+			    		}
+			    		else{
+			    			int z=0;
+			    			for(z=1;z<=refUpperBound;z++)
+			    			{
+			    				if(solutionValues.get(currentVar)!=0)
+			    				{
+			    					EObject targetEObject= Utils.searchInstanceByClass(allCreatedEObjects, targetClass).getObj();
+			    					
+			    					if(targetEObject!=null) {
+			    						EClass targetEObjectClass= ((DynamicEObjectImpl) targetEObject).eClass();
+				    					
+			    						if(targetEObjectClass.getEAllSuperTypes().contains(targetClass)) {
+			    							objectsToLink.add(targetEObject);				    							
+			    						}
+			    					}				    									    				
+			    				}	
+			    				currentVar++;
+			    			}
+			    			
+			    			try{
+			    				if(!ref.isContainment()) {
+			    					currentEObject.eSet(ref, objectsToLink);				    					
+			    				}
+		    				}catch(Exception e){}
+			    			
+			    		}						
+												
 					}
-					mesInstLiees.add(new ClassInstance(j, currentEObject));						
+					linkedInstances.add(new ClassInstance(objectOID, currentEObject));						
 				}					
 			}
 		}
+	}
+	
+	public void createNonRootCompositions() {
+		ArrayList<Integer> oidUsedInContainment= new ArrayList<Integer>();
 		
-		//////////////////////////////////////////////
-		// STEP 3: containment relations of rootClass
-		//////////////////////////////////////////////
-		
-		variable=0;	
-		for(EClass c: cls)
-		{
-			if(c.getName().equals(root))
-			{
-				//Skip attributes
-				for(EAttribute a:super.reader.getAllAttributesFromClass(c)) variable++;
+		for(EClass currentClass: reader.getClasses()) {
+			
+			if(!currentClass.getName().equals(root)) {
 				
-				/////////////////////////////////////////////////
-				// Links of rootClass
-				/////////////////////////////////////////////////
-				for (EReference ref: super.reader.getAllReferencesFromClass(c))	
-		    	{
-					if(!ref.isChangeable()) {
-						//System.out.println("[ROOT] Unchange "+ref.getName());
-					}else {
+				int oidStart=  domaineSum(reader.getClassIndex(currentClass)-1)+1;
+				int oidEnd=  domaineSum(reader.getClassIndex(currentClass)); 
+				
+				for(int currentOID=oidStart; currentOID<=oidEnd; currentOID++){
+					
+					EObject currentEObject = Utils.searchIns(allCreatedEObjects, currentOID);
+					
+					for(EReference ref: reader.getAllContainmentFromClass(currentClass)) {
 						
-						int refUpperBound=ref.getUpperBound();
-						if (refUpperBound==-1){	
-							if(ref.getEReferenceType().isAbstract()) refUpperBound=refB;
-							else refUpperBound=refB;
+						int minLinks= ref.getLowerBound();
+						int maxLinks= ref.getUpperBound();
+						if(maxLinks == -1) {
+							maxLinks = referenceUpperBound;
 						}
-			   			List<EObject> objectstoCompose= new ArrayList<EObject>(); 
-			    		
-			   			if(refUpperBound==1){
-			   				if(vals.get(variable)!=0) {
-			   					try {
-			   						String targetedClassName=ref.getEType().getName();
-			   						EObject target = Utils.searchInstanceByClass(allCreatedEObjects, targetedClassName);
-			   						
-			   						if(target!=null) {
-			   							rootObject.eSet(ref, target);			   										   											   							
-			   						}
-			   					}
-			   					catch(Exception e) {
-			   						System.out.println("Class:"+c.getName()+" Ref:"+ref.getName()+ " 1 component add error !");
-			   					}
-			   				}
-			   				variable++;
-			   			}	
-			   			else{
-			   				for(int z=1;z<=refUpperBound;z++) variable++;
-			   				
-			   				//Add the appropriate instances for each reference of rootClass
-			   				for(ClassInstance clInst: allCreatedEObjects)
-			   				{
-			   					EObject object= clInst.getObj();
-			   					EClass classOfObject= ((DynamicEObjectImpl) object).eClass();
-			   					String cl =classOfObject.getName();
-			   					
-			   					if(classOfObject.getEAllSuperTypes().contains(ref.getEType())) {
-			   						objectstoCompose.add(object);
-			   					}
-			   				}
-			   				try{
-			   					rootObject.eSet(ref, objectstoCompose);
-			   				}
-			   				catch(Exception e){
-			   					System.out.println("Class:"+c.getName()+" Ref:"+ref.getName()+ " n component add error !");
-			   				}
-			    		}
+						
+						Random random= new SecureRandom();
+						int actualLinks =  random.nextInt(maxLinks-minLinks) + minLinks;
+						
+						EClass targetClass= ref.getEReferenceType();
+						ArrayList<ClassInstance> candidatesObject= Utils.findAllinstancesOfClass(allCreatedEObjects, targetClass);
+						
+						System.out.println("  "+currentClass.getName());
+						System.out.println("    "+ ref.getName());
+						System.out.println("       "+targetClass.getName()+" "+ candidatesObject.size());
+						System.out.println("       ["+ minLinks +" < "+ actualLinks + " < " + maxLinks +"]");
+					
+						//Do something only if actualLinks > 0
+						if( actualLinks > 0) {
+							if(ref.getUpperBound() == 1) {
+								ClassInstance instance = Utils.searchInstanceByClass(candidatesObject, targetClass, oidUsedInContainment);
+								
+								if(instance != null) {
+									try{
+										currentEObject.eSet(ref, instance.getObj());
+										oidUsedInContainment.add(instance.getId());
+									}catch (Exception e) {
+										System.out.println("PROBLEM COMPO class:"+currentClass.getName()+" ref"+ ref.getName());
+									}
+								}
+							}else {
+								List<EObject> objectstoCompose= new ArrayList<EObject>();
+								
+								for(int i=1; i<= actualLinks; i++) {
+									ClassInstance instance = Utils.searchInstanceByClass(candidatesObject, targetClass, oidUsedInContainment);									
+									if(instance != null) {
+										objectstoCompose.add(instance.getObj());
+										oidUsedInContainment.add(instance.getId());
+									}
+								}
+								
+								try {
+									currentEObject.eSet(ref, objectstoCompose);
+								}catch (Exception e) {
+									 System.out.println("PROBLEM COMPO class:"+currentClass.getName()+" ref"+ ref.getName());
+								}
+							}
+						}
 					}
-		    	}
+				}
 			}
-			else
-			{
-				/////////////////////////////////
-				// Other classes
-				/////////////////////////////////
-				lb=  domaineSum(reader.getClassIndex(c)-1)+1;
-				ub=  domaineSum(reader.getClassIndex(c)); 
-				
-				for(int j=lb;j<=ub;j++)
-				{	
-						//ses attributs
-						for(EAttribute a:reader.getAllAttributesFromClass(c)) variable++;
-						//Ses références
-						for (EReference ref: reader.getAllReferencesFromClasswithOpposite(c))
-			    		{
-						    int zz=ref.getUpperBound();
-			    			if (zz==-1){
-	    						if(ref.getEReferenceType().isAbstract()) zz=refB;
-	    						else zz=refB;
-	    					}
-			    			for(int z=1;z<=zz;z++) variable++;
-			    		}						
-			    	}
-			} 
 		}
-		//End of STEP 3
+	}
+	
+	public EObject CSP2XMIBuild(ArrayList<Integer> solutionValues)
+	{	
+		/////////////////////////////////////////////
+		// STEP 1 : Create all EObjects
+		////////////////////////////////////////////
+		createEObjects(solutionValues);
+		
+		///////////////////////////////////////////
+		// STEP 2: Create pointers for references
+		///////////////////////////////////////////
+		createReferenceLinks(solutionValues);
+		
+		/////////////////////////////////////////////////////////////
+		// STEP 3 : containment relations of non-root Classes
+		/////////////////////////////////////////////////////////////
+		createNonRootCompositions();
+		
+		//////////////////////////////////////////////
+		// STEP 4 : containment relations of rootClass
+		//////////////////////////////////////////////
+		EClass rootClass = reader.getClassByName(root);
+		
+		for(EReference ref: reader.getAllContainmentFromClass(rootClass)) {
+			
+			int refUpperBound=ref.getUpperBound();
+			if (refUpperBound==-1){	
+				refUpperBound=referenceUpperBound;				
+			}
+			
+			if(refUpperBound==1){
+   				try {
+   						String targetedClassName=ref.getEType().getName();
+   						EObject target = Utils.searchInstanceByClass(allCreatedEObjects, targetedClassName).getObj();
+   						
+   						if(target!=null) {
+   							rootObject.eSet(ref, target);			   										   											   							
+   						}
+   					}
+   					catch(Exception e) {
+   						System.out.println("Class:"+rootClass.getName()+" Ref:"+ref.getName()+ " 1 component add error !");
+   					}   				
+   			}else {
+   				rootObject = setRootContainment(rootObject, ref);
+   			}	
+		}
 		
 		System.out.println(" EObject built with success");
-		
 		return rootObject;
 	}
 	
-	 public void ValidModel(EObject o, int ID)
+	/**
+	 * This method will set the containments between rootClass and EObject for given reference
+	 * 
+	 * @param container
+	 * @param containment
+	 */
+	public EObject setRootContainment(EObject container, EReference containment) {
+		
+		List<EObject> objectstoCompose= new ArrayList<EObject>(); 
+		
+		//Add the appropriate instances for each reference of rootClass
+		for(ClassInstance clInst: allCreatedEObjects)
+		{
+			EObject object= clInst.getObj();
+			EClass classOfObject= ((DynamicEObjectImpl) object).eClass();
+			
+			if(classOfObject.getEAllSuperTypes().contains(containment.getEType())) {
+				objectstoCompose.add(object);
+			}
+		}
+		
+		try{
+			container.eSet(containment, objectstoCompose);
+		}
+		catch(Exception e){
+			System.out.println("Containment Error: "+containment.getName());
+		}
+		finally {
+			return container;
+		}
+		
+	}
+		
+	/**
+	 * This method creates an XMI file from a given EObject
+	 * @param rootObject
+	 * @param ID
+	 */
+	public void generateXMIfile(EObject rootObject, int ID)
 	 {
 
 		 new File(root).mkdir();
 		 ResourceSet resourceSet=new ResourceSetImpl();
 		 Resource resource= reader.getModelResource();
-		 EPackage pack= reader.getModelPackage();
-		 //Resource resource;
+		 
 		 try
 		 {
 			 resourceSet = new ResourceSetImpl();
 			 resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put("xmi",new XMIResourceFactoryImpl());
-			 URI uri=URI.createURI(root+"/"+this.Model+ID+".xmi");
+			 URI uri=URI.createURI(root+"/"+this.modelFilePath+ID+".xmi");
 			 resource=resourceSet.createResource(uri);
 			 
-			 resource.getContents().add(o);
+			 resource.getContents().add(rootObject);
 			 
 			 Map<String,Boolean> opts= new HashMap<String,Boolean>();
 			 opts.put(XMLResourceImpl.OPTION_SCHEMA_LOCATION, Boolean.TRUE);
 			 
 			 resource.save(opts); 
-			 System.out.println(" Model: "+root+"/"+this.Model+ID+".xmi was generated");
+			 System.out.println(" Model: "+root+"/"+this.modelFilePath+ID+".xmi was generated");
 		 }
 		 catch(Exception e){
 			 e.printStackTrace();
-			 System.out.println(" Problems when saving the xmi file");
+			 System.out.println(" Problems while saving the xmi file");
 		 }
 	 }
 }

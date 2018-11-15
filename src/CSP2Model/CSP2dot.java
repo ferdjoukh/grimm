@@ -85,15 +85,16 @@ public class CSP2dot extends ModelBuilder{
 		ArrayList<String> references= new ArrayList<String>();
 				
 		new File(root).mkdir();
-		ecrivain =  new PrintWriter(new BufferedWriter(new FileWriter(root+"/"+this.Model+ID+".dot")));
+		ecrivain =  new PrintWriter(new BufferedWriter(new FileWriter(root+"/"+this.modelFilePath+ID+".dot")));
 		
 		ecrivain.write("Graph g{ \n");
 		
 		String AttrDots="";
 		
 		int lb=0,ub=0;
-		/////////////////////////////////////////////////////////
-		//  Créer les objets instances de classe et leurs attribut;
+		////////////////////////////////////////////////////////////
+		//  Créer les objets instances de classe et leurs attribut
+		////////////////////////////////////////////////////////////
 		for(EClass c: cls)
 		{
 			//Instance de la racine
@@ -129,9 +130,9 @@ public class CSP2dot extends ModelBuilder{
 					if (zz==-1)
 					{	//zz=5;
 						if(!ref.getEReferenceType().isAbstract())
-							zz=refB;
+							zz=referenceUpperBound;
 						else
-							zz=refB;
+							zz=referenceUpperBound;
 					}
 					for(int z=1;z<=zz;z++)
 					{
@@ -140,7 +141,6 @@ public class CSP2dot extends ModelBuilder{
 						{
 							if(!references.contains("1-"+vals.get(variable)))
 							{
-								
 								//ecrivain.write("struct1"+" -- "+"struct"+vals.get(variable) +" [arrowtail=diamond,arrowhead=none,dir=both,label=\""+ref.getName()+"\"]   ;\n");
 								//references.add("1-"+vals.get(variable));
 							}
@@ -153,10 +153,11 @@ public class CSP2dot extends ModelBuilder{
 				
 	//			System.out.println("struct1 [shape=record,label=\"{"+c.getName()+"|"+ AttrDots +"}\"];");
 				ecrivain.write("struct1 [shape=record,label=\"{"+c.getName().charAt(0)+"1:"+c.getName()+"|"+ AttrDots +"}\"]; \n");
-				
 			}
 			else
 			{
+				
+				System.out.println(c.getName());
 				
 				//Les instances des autres classes
 				lb=  domaineSum(reader.getClassIndex(c)-1)+1;
@@ -198,13 +199,15 @@ public class CSP2dot extends ModelBuilder{
 				//ses liens
 				for (EReference ref: reader.getAllReferencesFromClasswithOpposite(c))
 				{
+					System.out.println(" "+ref.getName());
+					
 					int zz=ref.getUpperBound();
 					if (zz==-1)
 					{	//zz=5;
 						if(ref.getEReferenceType().isAbstract())
-							zz=refB;
+							zz=referenceUpperBound;
 						else
-							zz=refB;
+							zz=referenceUpperBound;
 					}
 					for(int z=1;z<=zz;z++)
 					{
@@ -213,8 +216,8 @@ public class CSP2dot extends ModelBuilder{
 						int precedente= vals.get(variable);
 						if(vals.get(variable)<=this.maxDomains)
 						{
-							if(!references.contains(i+"-"+vals.get(variable)))
-							{
+							//if(!references.contains(i+"-"+vals.get(variable)))
+							//{
 								
 								//The Edge is different when the kind of the reference is.
 								if(ref.isContainment())
@@ -224,7 +227,7 @@ public class CSP2dot extends ModelBuilder{
 								else
 									ecrivain.write("struct"+i+" -- "+"struct"+vals.get(variable) +" [arrowhead=open,arrowtail=open,dir=forward,label=\""+ref.getName()+"\"]   ;\n");
 								references.add(i+"-"+vals.get(variable));
-							}
+							//}
 						}
 						variable++;
 					}
@@ -249,18 +252,18 @@ public class CSP2dot extends ModelBuilder{
 		// Call graphViz in order to generate 
 		// an object diagram in pdf file
 		/////////////////////////////////////////////////////
-		String cmd = "dot -Tpdf "+root+"/"+this.Model+ID+".dot -o "+root+ "/"+ this.Model+ID+".pdf";
+		String cmd = "dot -Tpdf "+root+"/"+this.modelFilePath+ID+".dot -o "+root+ "/"+ this.modelFilePath+ID+".pdf";
 		
 		Process p = null;
 		try {
 			p = Runtime.getRuntime().exec(cmd);
 			
-			System.out.println("  model :"+root+"/"+this.Model+ID+".pdf was generated");
+			System.out.println("  model :"+root+"/"+this.modelFilePath+ID+".pdf was generated");
 		  
 		}
 		catch(Exception e)
 		{
-			System.out.println(" model :"+root+"/"+this.Model+ID+".dot was generated");
+			System.out.println(" model :"+root+"/"+this.modelFilePath+ID+".dot was generated");
 		}
 		
 	}

@@ -20,9 +20,9 @@ public class MetaModelReader {
 	 */
 	Resource resource;
 	EPackage BasePackage;
-	String racine;
-	ArrayList<Integer> sizesMin;
+	String rootClassName;
 	ArrayList<Integer> sizes;
+	ArrayList<Integer> sizesMin;
 	ConfigFileReader cfr;
 	
 	public MetaModelReader(String metamodel,String rootClass){
@@ -39,104 +39,98 @@ public class MetaModelReader {
 		EPackage c= (EPackage)  resource.getContents().get(0);
 		
 		this.BasePackage= c;
-		this.racine=rootClass;		
+		this.rootClassName=rootClass;		
 	}
 	
 	public MetaModelReader(String str,String racine,int lb,int ub){
 		
-		 Resource.Factory.Registry reg=Resource.Factory.Registry.INSTANCE;
-		 Map<String,Object> m = reg.getExtensionToFactoryMap();
-		 m.put("ecore",new XMIResourceFactoryImpl());
-		 ResourceSet resourceSet=new ResourceSetImpl();
-		 URI fileURI=URI.createFileURI(str);
-		 Resource resource=resourceSet.getResource(fileURI,true);
-		
+		Resource.Factory.Registry reg=Resource.Factory.Registry.INSTANCE;
+		Map<String,Object> m = reg.getExtensionToFactoryMap();
+		m.put("ecore",new XMIResourceFactoryImpl());
+		ResourceSet resourceSet=new ResourceSetImpl();
+		URI fileURI=URI.createFileURI(str);
+		Resource resource=resourceSet.getResource(fileURI,true);
+				
 		this.resource=resource;
-		
+				
 		EPackage c= (EPackage)  resource.getContents().get(0);
-		
+				
 		this.BasePackage= c;
-		this.racine=racine;
-		
+		this.rootClassName=racine;
+				
 		sizeClassInit(lb,ub);
 		sizeClassMinInit(1,lb);
 	}
 	
 	public MetaModelReader(String str,String racine, ConfigFileReader cfr){
 		
-		 this.cfr=cfr;
+	this.cfr=cfr;
 		
-		 Resource.Factory.Registry reg=Resource.Factory.Registry.INSTANCE;
-		 Map<String,Object> m = reg.getExtensionToFactoryMap();
-		 m.put("ecore",new XMIResourceFactoryImpl());
-		 ResourceSet resourceSet=new ResourceSetImpl();
-		 URI fileURI=URI.createFileURI(str);
-		 Resource resource=resourceSet.getResource(fileURI,true);
+	Resource.Factory.Registry reg=Resource.Factory.Registry.INSTANCE;
+	Map<String,Object> m = reg.getExtensionToFactoryMap();
+	m.put("ecore",new XMIResourceFactoryImpl());
+	ResourceSet resourceSet=new ResourceSetImpl();
+	URI fileURI=URI.createFileURI(str);
+	Resource resource=resourceSet.getResource(fileURI,true);
 		
-		this.resource=resource;
+	this.resource=resource;
+	
+	EPackage c= (EPackage) resource.getContents().get(0);
 		
-		EPackage c= (EPackage) resource.getContents().get(0);
+	this.BasePackage= c;
+	this.rootClassName=racine;
 		
-		this.BasePackage= c;
-		this.racine=racine;
-		
-		sizeClassRead();
-		sizeClassMinRead();
+	sizeClassRead();
+	sizeClassMinRead();
 	}
 	
 	private void sizeClassMinRead() {
-		// TODO Auto-generated method stub
+		
+		System.out.println("set Class MIN sizes from Config file");
+				
 		ArrayList<EClass> cls= (ArrayList<EClass>) getClasses();
 		ArrayList<Integer> sizes= new ArrayList<Integer>(cls.size());
 		
-		sizes.add(getClassIndex(racine)-1,1);
-	    
-		int i=1;
+		int i=0;
 		
-		for (EClass ec:cls)
-		{	
-			sizes.add(i, 1);
+		for (EClass ec : cls){	
+			sizes.add(i, 0);
 			i++;
 		}
 		this.sizesMin=sizes;
 	}
 
 	private void sizeClassRead() {
-		// TODO Auto-generated method stub
-		ArrayList<EClass> cls= (ArrayList<EClass>) getClasses();
+		
+		System.out.println("set Class sizes from Config file");
+		
+		List<EClass> cls= getClasses();
 		ArrayList<Integer> sizes= new ArrayList<Integer>(cls.size());
-		ArrayList<String> content = cfr.getContent();
 		
-		System.out.println(cls.size());
+		int pos=0;
 		
-		System.out.println(racine+" index="+getClassIndex(racine));
-		
-		sizes.add(getClassIndex(racine)-1,1);
-	    
-		int i=0;
-		String str;
-		
-		for (EClass ec:cls)
-		{	
-			if(i!=0)
-			{
-				str = content.get(getClassIndex(ec)-2);
-				//System.out.println("Classe dans content"+ec.getName()+ "  -  "+str);
-				sizes.add(i, Integer.parseInt(str.substring(str.lastIndexOf("=")+1)));
-		    }
-			i++;
-		   
+		for (EClass ec:cls){
+			
+			if(ec.getName().equals(rootClassName)) {
+				System.out.println("  "+rootClassName);
+				sizes.add(pos, (Integer) 1);			    
+			}else {
+				String str =  cfr.getLineByStarting(ec.getName());
+				System.out.println(str);
+				sizes.add(pos, Integer.parseInt(str.substring(str.lastIndexOf("=")+1)));
+			}
+			pos++;		   
 		}
+		
+		
 		this.sizes=sizes;
 	}
 
-	public Resource getModelResource()
-	{
+	public Resource getModelResource(){
 		return this.resource;
 	}
 	
-	public EPackage getModelPackage()
-	{
+	public EPackage getModelPackage(){
 		return this.BasePackage;
 	}
 	
@@ -157,6 +151,16 @@ public class MetaModelReader {
 		return cls;
 	}
 	
+	public EClass getClassByName(String className) {
+		
+		for(EClass eclass: getClasses()) {
+			if (eclass.getName().equals(className)) {
+				return eclass;
+			}
+		}
+		return null;
+	}
+	
 	public List<EClass> getAbtractClasses()
 	{
 		ArrayList<EClass> cls= new ArrayList<EClass>();
@@ -165,8 +169,7 @@ public class MetaModelReader {
 			if (cf instanceof EClass)
 			{
 					if (((EClass) cf).isAbstract())
-						cls.add((EClass) cf);
-										
+						cls.add((EClass) cf);										
 			}
 		}
 		
@@ -215,7 +218,7 @@ public class MetaModelReader {
 			int random = (int)(Math.random() * (upperb-moy)) + moy;
 			sizes.add(i, random);
 		}
-		sizes.add(getClassIndex(racine)-1,1);
+		sizes.add(getClassIndex(rootClassName)-1,1);
 	    this.sizes=sizes;
 	}
 	
@@ -232,7 +235,7 @@ public class MetaModelReader {
 			int random = (int)(Math.random() * (moy-lowerb)) + lowerb;
 			sizes.add(i, random);
 		}
-		sizes.add(getClassIndex(racine)-1,1);
+		sizes.add(getClassIndex(rootClassName)-1,1);
 		this.sizesMin=sizes;
 	}
 	
@@ -246,83 +249,117 @@ public class MetaModelReader {
 		return this.sizesMin;
 	}
 	
+	/**
+	 * This method collects all the attributes of a Class
+	 * It includes also the attributes of all the inheritance tree.
+	 * 
+	 * Unchangeable attributes are not considered
+	 * 
+	 * @param c
+	 * @return
+	 */
 	public List<EAttribute> getAllAttributesFromClass(EClass c)
 	{
-		ArrayList<EAttribute> attr= new ArrayList<EAttribute>();
-		attr.addAll(c.getEAllAttributes());
-		return attr;
+		ArrayList<EAttribute> attributes= new ArrayList<EAttribute>();
+		
+		for(EAttribute a : c.getEAllAttributes()) {
+			if(a.isChangeable()) {
+				attributes.add(a);
+			}
+		}
+		return attributes;
 	}
 	
 	public List<EClass> getAllSubtypes(EClass c)
 	{
-		ArrayList<EClass> cls= new ArrayList<EClass>();
-		for(EClass cc: getClasses())
-		{
-			if(cc.getEAllSuperTypes().contains(c))
-			cls.add(cc);
+		ArrayList<EClass> allClasses= new ArrayList<EClass>();
+		for(EClass subClass: getClasses()){
+			
+			if(subClass.getEAllSuperTypes().contains(c))
+			allClasses.add(subClass);
 		}
-		return cls;
+		return allClasses;
 	}
 	
-	public List<EReference> getAllReferencesFromClass(EClass c)
-	{
-		ArrayList<EReference> refs= new ArrayList<EReference>();
-		refs.addAll(c.getEAllReferences());
-		/*for (EReference ref: c.getEAllReferences())
-		{
-			if (ref.getEReferenceType().isAbstract())
-			{
-				refs.remove(ref);
-				
-			  for (EClass e: getAllSubtypes((EClass) ref.getEType()) )
-			  {
-				  
-				  EReference r= EcoreFactory.eINSTANCE.createEReference();
-				  r.setContainment(ref.isContainer());
-				  r.setEOpposite(ref.getEOpposite());
-				  r.setLowerBound(ref.getLowerBound());
-				  r.setUpperBound(ref.getUpperBound());
-				  r.setName(ref.getName());
-				  r.setEType(e);
-				  refs.add(r);
-			  }
+	/**
+	 * This method collects all the references of a given class.
+	 * It includes also the references of superClasses of c.
+	 * 
+	 * Unchangeable and containments are not considered
+	 * 
+	 * @param c
+	 * @return
+	 */
+	public List<EReference> getAllReferencesFromClass(EClass c){
+		ArrayList<EReference> references= new ArrayList<EReference>();
+		for (EReference r: c.getEAllReferences()){
+			if (r.isChangeable() && !r.isContainment()){
+				references.add(r);
 			}
-		}*/
-		return refs;
+		}
+		return references;
     }
 	
+	/**
+	 * This method collects the containment relation of a given class
+	 * 
+	 * unchangeable references are not considered
+	 * 
+	 * @param c
+	 * @return
+	 */
+	public List<EReference> getAllContainmentFromClass(EClass c){
+		ArrayList<EReference> containments= new ArrayList<EReference>();
+		for (EReference r: c.getEAllReferences()){
+			if (r.isChangeable() && r.isContainment()){
+				containments.add(r);
+			}
+		}
+		return containments;
+	}
+	
+	/**
+	 * This method is collecting the references of a class.
+	 * If a reference has not an EOpposite then it is added.
+	 * If it has then the reference with the smallest bound is added
+	 * 
+	 * @param c
+	 * @return
+	 */
 	public List<EReference> getAllReferencesFromClasswithOpposite(EClass c)
 	{
-		ArrayList<EReference> refs= new ArrayList<EReference>();
-		//refs.addAll(c.getEAllReferences());
-		for (EReference ref: c.getEAllReferences())
-		{
-			if(ref.getEOpposite()==null)
-			{
-				//Si elle n'a pas de EOpposite: l'ajouter
-				refs.add(ref);
+		ArrayList<EReference> references= new ArrayList<EReference>();
+		for (EReference ref: getAllReferencesFromClass(c)){
+			
+			if(ref.getEOpposite()==null){
+				references.add(ref);
 			}
-			else
-			{
-				//Si elle a une EOpposite: Ajouter une des deux;
-				int i=ref.getEOpposite().getUpperBound();
-				if (i==-1) i=100;
-				int j=ref.getUpperBound();
-				if (j==-1) j=100;			
-				if(j<i)
-				{
-					refs.add(ref);
+			else{
+				
+				int bound=ref.getUpperBound();
+				int oppositeBound = ref.getEOpposite().getUpperBound();
+				
+				if (bound == -1) {
+					bound=100;			
 				}
-				else if(i==j)
+				
+				if (oppositeBound == -1) { 
+					oppositeBound=100;
+				}
+				
+				if(bound < oppositeBound){
+					references.add(ref);
+				}
+				else if(oppositeBound==bound)
 				{
-					if(ref.getName().codePointCount(0, ref.getName().length())< ref.getEOpposite().getName().codePointCount(0, ref.getEOpposite().getName().length()))
+					if(ref.getName().codePointCount(0, ref.getName().length()) < ref.getEOpposite().getName().codePointCount(0, ref.getEOpposite().getName().length()))
 					{
-						refs.add(ref);
+						references.add(ref);
 					}
 				}
 			}
 		}
-		return refs;
+		return references;
     }
 	
 	public List<EClass> getConcreteSubTypes(EClass c) 
