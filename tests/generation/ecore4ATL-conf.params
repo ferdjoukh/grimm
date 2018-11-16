@@ -8,9 +8,9 @@
 +meta-model =tests/Ecore.ecore
 +rootClass =EPackage
 #(2)
-configuration file =tests/config/ecore4ATL.grimm
+configuration file =tests/config/ecore4ATL1.grimm
 #
-number of solutions =4
+number of solutions =1
 #
 output format =xmi
 CSP solver =abscon

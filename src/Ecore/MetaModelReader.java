@@ -57,31 +57,31 @@ public class MetaModelReader {
 				
 		this.BasePackage= c;
 		this.rootClassName=racine;
-				
-		sizeClassInit(lb,ub);
+		
 		sizeClassMinInit(1,lb);
+		sizeClassInit(lb,ub);
 	}
 	
 	public MetaModelReader(String str,String racine, ConfigFileReader cfr){
 		
-	this.cfr=cfr;
+		this.cfr=cfr;
+			
+		Resource.Factory.Registry reg=Resource.Factory.Registry.INSTANCE;
+		Map<String,Object> m = reg.getExtensionToFactoryMap();
+		m.put("ecore",new XMIResourceFactoryImpl());
+		ResourceSet resourceSet=new ResourceSetImpl();
+		URI fileURI=URI.createFileURI(str);
+		Resource resource=resourceSet.getResource(fileURI,true);
+			
+		this.resource=resource;
 		
-	Resource.Factory.Registry reg=Resource.Factory.Registry.INSTANCE;
-	Map<String,Object> m = reg.getExtensionToFactoryMap();
-	m.put("ecore",new XMIResourceFactoryImpl());
-	ResourceSet resourceSet=new ResourceSetImpl();
-	URI fileURI=URI.createFileURI(str);
-	Resource resource=resourceSet.getResource(fileURI,true);
-		
-	this.resource=resource;
-	
-	EPackage c= (EPackage) resource.getContents().get(0);
-		
-	this.BasePackage= c;
-	this.rootClassName=racine;
-		
-	sizeClassRead();
-	sizeClassMinRead();
+		EPackage c= (EPackage) resource.getContents().get(0);
+			
+		this.BasePackage= c;
+		this.rootClassName=racine;
+			
+		sizeClassMinRead();
+		sizeClassRead();
 	}
 	
 	private void sizeClassMinRead() {
@@ -92,7 +92,11 @@ public class MetaModelReader {
 		int i=0;
 		
 		for (EClass ec : cls){	
-			sizes.add(i, 0);
+			if(ec.getName().equals(rootClassName)) {
+				sizes.add(i,1);
+			}else {
+				sizes.add(i, 0);
+			}
 			i++;
 		}
 		this.sizesMin=sizes;
@@ -102,20 +106,26 @@ public class MetaModelReader {
 		
 		List<EClass> cls= getClasses();
 		ArrayList<Integer> sizes= new ArrayList<Integer>(cls.size());
+		Hashtable<String, Integer> classInstanceNb = cfr.getClassInstances(); 
 		
 		int pos=0;
+		for (EClass ec:cls){
+			sizes.add(0);
+			pos++;
+		}
+		
+		pos=0;
 		
 		for (EClass ec:cls){
 			
 			if(ec.getName().equals(rootClassName)) {
-				sizes.add(pos, (Integer) 1);			    
+				sizes.set(pos, (Integer) 1);			    
 			}else {
-				String str =  cfr.getClassLineByStartString(ec.getName());
-				sizes.add(pos, Integer.parseInt(str.substring(str.lastIndexOf("=")+1)));
+				int nbInstances = classInstanceNb.get(ec.getName());
+				sizes.set(pos,nbInstances);
 			}
 			pos++;		   
 		}
-		
 		
 		this.sizes=sizes;
 	}

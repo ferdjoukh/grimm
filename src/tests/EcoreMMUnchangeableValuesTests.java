@@ -18,6 +18,12 @@ public class EcoreMMUnchangeableValuesTests {
 	}
 	
 	@Test
+	public void generationEcore4ATLconf1() throws Exception{
+		String [] args= {"g","tests/generation/ecore4ATL-conf.params"};
+		GrimmLauncher.main(args);
+	}
+	
+	@Test
 	public void generationEcore4ATLconf() throws Exception{
 		String [] args= {"g","tests/generation/ecore4ATL-conf.params"};
 		GrimmLauncher.main(args);

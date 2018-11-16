@@ -23,11 +23,10 @@ import Ecore.MetaModelReader;
 
 public class GenXCSP {
 
-	static MetaModelReader r;
+	private MetaModelReader reader;
 	static Element instance= new Element("instance");
 	private static org.jdom2.Document XCSPinstance;
-    
-	static Element domains= new Element("domains");
+    static Element domains= new Element("domains");
 	static Element variables= new Element("variables");
 	static Element predicates= new Element("predicates");
 	static Element relations= new Element("relations");
@@ -43,10 +42,10 @@ public class GenXCSP {
 	int nbCons=0;
 	int gccvalsarity=0;
 	int Alldiffnames=0;
-	int FeatureBound;
-	int RefsBound;
+	int FeatureBound=10;
+	int RefsBound=2;
 	int maxDomains=0;
-	int Symmetries=0;
+	int Symmetries=1;
 	
 	ConfigFileReader cfr=null;
 	Hashtable<String,String> featuresDomains=null;
@@ -55,9 +54,9 @@ public class GenXCSP {
 	String alldiffnames="";
 	
 	
-	public GenXCSP(String modelFile,String racine,MetaModelReader re,int FeatureBound,int RefsBound, int sym)
+	public GenXCSP(String modelFile,String racine,MetaModelReader reader,int FeatureBound,int RefsBound, int sym)
 	{
-		this.r=re;
+		this.reader=reader;
 		Document document= new Document(instance);
 		setXCSPinstance(document);
 		Element rac1= new Element("presentation");
@@ -68,25 +67,23 @@ public class GenXCSP {
 		rac1.setAttribute(a1);
 		rac1.setAttribute(a2);
 		rac1.setAttribute(a3);
-	//	rac1.setAttribute(a4);	
 		instance.addContent(rac1);
 		
 		//Construire les variables
-	    lesClasses= (ArrayList<EClass>) r.getClasses();
+	    lesClasses= (ArrayList<EClass>) reader.getClasses();
 				
 		//Les size des classes
-		sizes= (ArrayList<Integer>) r.getClassSize();
-		sizesMin= (ArrayList<Integer>) r.getClassSizeMin();
+		sizes= (ArrayList<Integer>) reader.getClassSize();
+		sizesMin= (ArrayList<Integer>) reader.getClassSizeMin();
 		
 		this.racine=racine;
-		this.FeatureBound=FeatureBound;
 		this.RefsBound=RefsBound;
 		this.Symmetries=sym;
 	}
 	
-	public GenXCSP(String modelFile,String racine,MetaModelReader re, ConfigFileReader cfr, int sym)
+	public GenXCSP(String modelFile, String racine, MetaModelReader re, ConfigFileReader cfr, int sym)
 	{
-		this.r=re;
+		this.reader=re;
 		setXCSPinstance(new Document(instance));
 		Element rac1= new Element("presentation");
 		Attribute a1= new Attribute("name", "?");
@@ -100,19 +97,15 @@ public class GenXCSP {
 		instance.addContent(rac1);
 		
 		//Construire les variables
-	    lesClasses= (ArrayList<EClass>) r.getClasses();
+	    lesClasses= (ArrayList<EClass>) reader.getClasses();
 				
 		//Les size des classes
-		sizes= (ArrayList<Integer>) r.getClassSize();
-		sizesMin= (ArrayList<Integer>) r.getClassSizeMin();
+		sizes= (ArrayList<Integer>) reader.getClassSize();
+		sizesMin= (ArrayList<Integer>) reader.getClassSizeMin();
 		
-		//Read the ConfigFile to get the FeatureBound et RefBound
 		this.cfr=cfr;
 		this.racine=racine;
-		this.FeatureBound= cfr.getFeatureBound();
-		this.RefsBound= cfr.getReferencesUB();
-		this.Symmetries=sym;
-		//featuresDomains=cfr.getfeaturesDomains();	
+		this.RefsBound= cfr.getReferencesUB();	
 	}
 	
 	public int getMaxDomains()
@@ -195,8 +188,8 @@ public class GenXCSP {
 		//	n=new Attribute("name", "DC_"+c.getName()); ////Nom de classe = name, DC_name
 			domaine.setAttribute(n);
 			
-			lB=  domaineSum(r.getClassIndex(c)-1)+1;
-			uB= domaineSum(r.getClassIndex(c)-1) + sizesMin.get(r.getClassIndex(c)-1); 
+			lB=  domaineSum(reader.getClassIndex(c)-1)+1;
+			uB= domaineSum(reader.getClassIndex(c)-1) + sizesMin.get(reader.getClassIndex(c)-1); 
 			
 			if(lB==uB)
 			v= ""+lB;
@@ -221,8 +214,8 @@ public class GenXCSP {
 			
 			domaine.setAttribute(n);
 			
-			lB=  domaineSum(r.getClassIndex(c)-1)+ sizesMin.get(r.getClassIndex(c)-1)+1; 					
-			uB=  domaineSum(r.getClassIndex(c)); 
+			lB=  domaineSum(reader.getClassIndex(c)-1)+ sizesMin.get(reader.getClassIndex(c)-1)+1; 					
+			uB=  domaineSum(reader.getClassIndex(c)); 
 			
 			if (lB-1==uB)
 			{
@@ -256,8 +249,8 @@ public class GenXCSP {
 			domaine.setAttribute(n);
 			
 			
-			lB=  domaineSum(r.getClassIndex(c)-1)+1;
-			uB=  domaineSum(r.getClassIndex(c)); 
+			lB=  domaineSum(reader.getClassIndex(c)-1)+1;
+			uB=  domaineSum(reader.getClassIndex(c)); 
 				
 			if (lB==uB)
 			{
@@ -303,7 +296,7 @@ public class GenXCSP {
 		for(EClass c: lesClasses)
 		{
 			fid=0;
-			for (EAttribute a: r.getAllAttributesFromClass(c))
+			for (EAttribute a: reader.getAllAttributesFromClass(c))
 			{
 				fid++;
 				Element domainef= new Element("domain");
@@ -312,7 +305,7 @@ public class GenXCSP {
 				domainef.setAttribute(nf);
 			
 				EEnum enume = null;
-				try{enume= (EEnum) a.getEType();}catch(Exception e){}
+				try{enume= (EEnum) a.getEType();} catch(Exception e){}
 			
 				if(enume!=null)
 				{
@@ -325,7 +318,7 @@ public class GenXCSP {
 				
 				if(cfr!=null)
 				{
-					domainef.setText(featuresDomains.get(c.getName()+"/"+a.getName()));
+					//domainef.setText(featuresDomains.get(c.getName()+"/"+a.getName()));
 				}	
 				int vf= borne+borne+1;
 				Attribute n2f=new Attribute("nbValues", ""+vf);
@@ -354,7 +347,7 @@ public class GenXCSP {
 		int max=0;
 		for(EClass c:lesClasses)
 		{
-			for(EReference ref: r.getAllReferencesFromClass(c))
+			for(EReference ref: reader.getAllReferencesFromClass(c))
 			{
 				int ub=ref.getUpperBound();
 				if (ub==-1)
@@ -392,7 +385,7 @@ public class GenXCSP {
 			
 			int refi=0;
 		    // Création des domaines pour Les références
-		    for (EReference ref: r.getAllReferencesFromClass(c))
+		    for (EReference ref: reader.getAllReferencesFromClass(c))
 			{
 		    	refi++;
 		    	if (!ref.getEReferenceType().isAbstract())
@@ -404,7 +397,7 @@ public class GenXCSP {
 
                 	//Domaine de la réf
 					EClass dst= ref.getEReferenceType();
-					int cindex=r.getClassIndex(dst);
+					int cindex=reader.getClassIndex(dst);
                 	    					
 					Element domaine= new Element("domain");
         			nbDoms++;
@@ -452,14 +445,14 @@ public class GenXCSP {
 				else
 				{
 					//Union des domaines
-					List<EClass> ddd=r.getConcreteSubTypes(ref.getEReferenceType());
+					List<EClass> ddd=reader.getConcreteSubTypes(ref.getEReferenceType());
 					String v="",gcc1 = "";
 					int vv=0;
 					int vvv=0;
 					for (EClass cst: ddd)
 					{
 						EClass dst= ref.getEReferenceType();
-    					int cindex=r.getClassIndex(cst);
+    					int cindex=reader.getClassIndex(cst);
     					
     					int lB=  domaineSum(cindex-1)+1; //(i-1)*10+1; // size(class)= 10;
     					int uB=  domaineSum(cindex); //(i)*10;   // size(class)= 10;
@@ -543,7 +536,7 @@ public class GenXCSP {
 
 					int refi=0;
 					// Création des domaines pour Les références + Jokers
-					for (EReference ref: r.getAllReferencesFromClasswithOpposite(c))
+					for (EReference ref: reader.getAllReferencesFromClasswithOpposite(c))
 						{
 							refi++;
 							if (!ref.getEReferenceType().isAbstract())
@@ -555,7 +548,7 @@ public class GenXCSP {
 
 									//Domaine de la réf
 									EClass dst= ref.getEReferenceType();
-									int cindex=r.getClassIndex(dst);
+									int cindex=reader.getClassIndex(dst);
 
 									Element domaine= new Element("domain");
 									nbDoms++;
@@ -603,14 +596,14 @@ public class GenXCSP {
 							else
 								{
 								//Union des domaines
-								List<EClass> ddd=r.getConcreteSubTypes(ref.getEReferenceType());
+								List<EClass> ddd=reader.getConcreteSubTypes(ref.getEReferenceType());
 								String v="",gcc1 = "";
 								int vv=0;
 								int vvv=0;
 								for (EClass cst: ddd)
 									{
 										EClass dst= ref.getEReferenceType();
-										int cindex=r.getClassIndex(cst);
+										int cindex=reader.getClassIndex(cst);
 
 										int lB=  domaineSum(cindex-1)+1; //(i-1)*10+1; // size(class)= 10;
 										int uB=  domaineSum(cindex); //(i)*10;   // size(class)= 10;
@@ -702,12 +695,12 @@ public class GenXCSP {
 		    	String valsGcc="";
 			   
 			
-			for(int j=domaineSum(r.getClassIndex(c)-1)+1;j<=domaineSum(r.getClassIndex(c));j++) 	
+			for(int j=domaineSum(reader.getClassIndex(c)-1)+1;j<=domaineSum(reader.getClassIndex(c));j++) 	
 			{	
 				//************************************            
 				//Les variables Des Attributs 
 				int fid=0;
-            	for (EAttribute a: r.getAllAttributesFromClass(c))
+            	for (EAttribute a: reader.getAllAttributesFromClass(c))
             	{
 				
 				fid++;
@@ -739,7 +732,7 @@ public class GenXCSP {
             	//******************************
             	//Les références
     		    refi=0;
-    		    for (EReference ref: r.getAllReferencesFromClasswithOpposite(c))
+    		    for (EReference ref: reader.getAllReferencesFromClasswithOpposite(c))
     			{
     		    	refi++;
     		    	if (!ref.getEReferenceType().isAbstract())
@@ -749,7 +742,7 @@ public class GenXCSP {
     						zz=RefsBound;
     					
     					EClass dst= ref.getEReferenceType();
-    					int cindex=r.getClassIndex(dst);
+    					int cindex=reader.getClassIndex(dst);
                     	
     					String VarPrec="";
     					
@@ -814,11 +807,11 @@ public class GenXCSP {
     				else
     				{
     					//Création des variables ---- Union de domaines
-    					List<EClass> ddd=r.getConcreteSubTypes(ref.getEReferenceType());
+    					List<EClass> ddd=reader.getConcreteSubTypes(ref.getEReferenceType());
     					for (EClass cst: ddd)
     					{
     						EClass dst= ref.getEReferenceType();
-        					int cindex=r.getClassIndex(cst);                        	
+        					int cindex=reader.getClassIndex(cst);                        	
     					}   
     					int zz=ref.getUpperBound();
     					if (zz==-1)
@@ -895,7 +888,7 @@ public class GenXCSP {
 			///////////    Gestion des references EOpposite
 			//////////////////////////////////////////////////////////////
 
-			for(EReference ref: r.getAllReferencesFromClasswithOpposite(c))
+			for(EReference ref: reader.getAllReferencesFromClasswithOpposite(c))
 			{
 				//Créer la Gcc Eopposite
 				if(ref.getEOpposite()!=null)
@@ -913,7 +906,7 @@ public class GenXCSP {
 						
 						EClass dst= ref.getEReferenceType();
 						//System.out.println("Class="+dst.getName());
-						int cindex=r.getClassIndex(dst);
+						int cindex=reader.getClassIndex(dst);
 						int lB=  domaineSum(cindex-1)+1; 
 						int uB=  domaineSum(cindex);
 										
@@ -929,11 +922,11 @@ public class GenXCSP {
 								zz=RefsBound;
 
 							EClass dst2= ref.getEReferenceType();
-							int cindex2=r.getClassIndex(dst);
+							int cindex2=reader.getClassIndex(dst);
 
 							String VarPrec="";
 
-							for(int j=domaineSum(r.getClassIndex(c)-1)+1;j<=domaineSum(r.getClassIndex(c));j++)   //10= size(c);
+							for(int j=domaineSum(reader.getClassIndex(c)-1)+1;j<=domaineSum(reader.getClassIndex(c));j++)   //10= size(c);
 							{
 								for(int z=1;z<=zz;z++)
 								{
@@ -1235,8 +1228,8 @@ public class GenXCSP {
 		{
 			if(c.getName().equals("Arc"))
 			{
-				int pi= r.getClassIndex("Place");
-				int ti= r.getClassIndex("Transition");
+				int pi= reader.getClassIndex("Place");
+				int ti= reader.getClassIndex("Transition");
 				
 				int a=  domaineSum(pi-1)+1;
 				int b= domaineSum(pi-1) + sizesMin.get(pi-1); 
@@ -1283,8 +1276,8 @@ public class GenXCSP {
 		{
 			if(c.getName().equals("Arc"))
 			{
-				int pi= r.getClassIndex("Place");
-				int ti= r.getClassIndex("Transition");
+				int pi= reader.getClassIndex("Place");
+				int ti= reader.getClassIndex("Transition");
 				
 				int a=  domaineSum(pi-1)+1;
 				int b= domaineSum(pi-1) + sizesMin.get(pi-1); 
@@ -1294,7 +1287,7 @@ public class GenXCSP {
 				
 				
 				//Création des contraintes
-				for(int j=1;j<=sizes.get(r.getClassIndex(c)-1);j++)
+				for(int j=1;j<=sizes.get(reader.getClassIndex(c)-1);j++)
 				{
 					Element cons = new Element("constraint");
 					nbCons++;
@@ -1391,13 +1384,11 @@ public class GenXCSP {
 	{
 		//Construire les dommaines des classes
 		GenDomains();
-	
 		
 		//Construire les domaines des features des classes
 		GenFeaturesDomains(FeatureBound);//FeatureBound);
 		
 		//Construire les domaines des références
-	//	GenRefsDomains(RefsBound);
 		GenRefsDomainsJokers(RefsBound);
 		
 		//Construire les variables des classes et de leurs Features et de leurs Références
@@ -1492,9 +1483,5 @@ public class GenXCSP {
 
 	public static void setXCSPinstance(org.jdom2.Document xCSPinstance) {
 		XCSPinstance = xCSPinstance;
-	}
-	
-	
-	
-	
+	}	
 }
