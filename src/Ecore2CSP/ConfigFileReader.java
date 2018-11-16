@@ -140,7 +140,7 @@ public class ConfigFileReader {
 			ArrayList<String> value = new ArrayList<String>();
 			
 			//If default value is set: random, name or 1..100 is found, the attribute is ignored
-			if(!domainS.equals("random") && !domainS.equals("random") && !domainS.equals("1..100") ) {
+			if(!domainS.equals("random") && !domainS.equals("name") && !domainS.equals("1..100") ) {
 			
 				if(domainS.contains("..")) {
 					value.add("i");

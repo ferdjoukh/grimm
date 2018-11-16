@@ -25,7 +25,7 @@ class ConfigFileReaderTests {
 	
 	@Test
 	void readScaffoldConf2() {
-		ConfigFileReader cfr = new ConfigFileReader("tests/config/scaffold2.grimm");
+		ConfigFileReader cfr = new ConfigFileReader("tests/config/scaffold2-invalid.grimm");
 		cfr.read();
 		
 		int vertex = cfr.getClassInstances().get("Vertex");
@@ -33,6 +33,8 @@ class ConfigFileReaderTests {
 		
 		int edges = cfr.getClassInstances().get("Edge");
 		assertEquals(0, edges);
+		
+		assertEquals(1, cfr.getAttributesDomains().size());
 		
 		String attrWeightDom = cfr.getAttributesDomains().get("Edge/weight").toString();
 		assertEquals("[i, 13, 45]", attrWeightDom);

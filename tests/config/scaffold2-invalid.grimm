@@ -20,6 +20,9 @@ Edge=-aa120
 % Integer
 %---------
 Edge/weight=13..45
+Edge/name=name
+Edge/country=random
+Edge/length=1..100
 %---------------------------------
 % References upper bound
 %---------------------------------
