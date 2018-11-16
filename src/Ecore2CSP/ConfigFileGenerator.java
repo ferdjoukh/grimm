@@ -40,21 +40,19 @@ public class ConfigFileGenerator {
 	public void createConfigFile() throws MetaModelNotFoundException {
 		
 		new File(rootClass).mkdir();
-	
 		PrintWriter ecrivain;
+	
 		try {
 			ecrivain = new PrintWriter(new BufferedWriter(new FileWriter(filePath)));
 			
-			ecrivain.write("%This is a configuration file for Grimm Tool \n");
-			ecrivain.write("%Please do not change the ordering or the name of any element !\n");
-			ecrivain.write("%Put a numerical value instead of 0, lower, upper, a and z \n");
-			
-			ecrivain.write("% \n");
-			ecrivain.write("% \n");
-			ecrivain.write("%-------------------------------------------------------------\n");
-			ecrivain.write("% Number of instances for Classes \n");
-			ecrivain.write("%-------------------------------------------------------------\n");
-			ecrivain.write("%-------------------------------------------------------------\n");
+			ecrivain.write("% Configuration file for grimm tool \n");
+			ecrivain.write("%	Please specify detailed information on your models:\n");
+			ecrivain.write("%		(1) precise number of class intances\n"
+						 + "%		(2) domain for attributes\n"
+					     + "%		(3) reference upper bound\n");
+			ecrivain.write("%---------------------------------\n");
+			ecrivain.write("% Number of instances for Classes\n");
+			ecrivain.write("%---------------------------------\n");
 					
 			ArrayList<EClass> cls= new ArrayList<EClass>();
 			cls= (ArrayList<EClass>) modelReader.getClasses();
@@ -64,33 +62,44 @@ public class ConfigFileGenerator {
 				if (name.compareTo(rootClass)!=0)
 				ecrivain.write(name+"=0\n");
 			}
-			ecrivain.write("%-------------------------------------------------------------\n");
-			ecrivain.write("%-------------------------------------------------------------\n");
-			ecrivain.write("%Domains of the features \n");
-			ecrivain.write("%-------------------------------------------------------------\n");
-			ecrivain.write("%-------------------------------------------------------------\n");
+			ecrivain.write("%---------------------------------\n");
+			ecrivain.write("% Domains of the features\n");
+			ecrivain.write("%---------------------------------\n");
+			ecrivain.write("%	Strings: choose: random, name or give a list of values (space separated)\n");
+			ecrivain.write("%	Integer: choose: 1..100, custom interval or  list of values (space separated)\n");
+			ecrivain.write("%---------------------------------\n");
 			ArrayList<EAttribute> attributes= new ArrayList<EAttribute>();
-			for(EClass c: cls)
-			{
+			ecrivain.write("% String\n");
+			ecrivain.write("%--------\n");
+			for(EClass c: cls){
 				attributes= (ArrayList<EAttribute>) modelReader.getAllAttributesFromClass(c);
-				for (EAttribute a: attributes)
-				{
-					String name= a.getName();
-					ecrivain.write(c.getName()+"/"+name+"=lower..upper or a b c ... z\n");
-				}
-						
+				for (EAttribute a: attributes){
+					if(a.getEType().getName().equals("EString")) {
+						String name= a.getName();
+						if(name.toLowerCase().equals("name")) {
+							ecrivain.write(c.getName()+"/"+name+"=name\n");
+						}else {
+							ecrivain.write(c.getName()+"/"+name+"=random\n");
+						}
+					}
+				}								
 			}
-			ecrivain.write("%-------------------------------------------------------------\n");
-			ecrivain.write("%-------------------------------------------------------------\n");
-			ecrivain.write("%Some others \n");
-			ecrivain.write("%-------------------------------------------------------------\n");
-			ecrivain.write("%-------------------------------------------------------------\n");
-			
-			ecrivain.write("RefsBound=0\n");
-			ecrivain.write("FeaturesBound=0\n");
-					
-			ecrivain.write("%-------------------------------------------------------------\n");
-			
+			ecrivain.write("%---------------------------------\n");
+			ecrivain.write("% Integer\n");
+			ecrivain.write("%---------\n");
+			for(EClass c: cls){
+				attributes= (ArrayList<EAttribute>) modelReader.getAllAttributesFromClass(c);
+				for (EAttribute a: attributes){
+					if(a.getEType().getName().equals("EInt")) {
+						String name= a.getName();
+						ecrivain.write(c.getName()+"/"+name+"=1..100\n");
+					}
+				}								
+			}
+			ecrivain.write("%---------------------------------\n");
+			ecrivain.write("% References upper bound\n");
+			ecrivain.write("%---------------------------------\n");
+			ecrivain.write("RefsBound=3\n");
 			
 			ecrivain.close();			
 			

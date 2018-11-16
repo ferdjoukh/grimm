@@ -139,21 +139,26 @@ public class ConfigFileReader {
 			domainS = attributedomain.substring(attributedomain.indexOf("=")+1);
 			ArrayList<String> value = new ArrayList<String>();
 			
-			if(domainS.contains("..")) {
-				value.add("i");
-				String [] splits = domainS.split("\\.\\.");
-				for(String str: splits) {
-					value.add(str);
+			//If default value is set: random, name or 1..100 is found, the attribute is ignored
+			if(!domainS.equals("random") && !domainS.equals("random") && !domainS.equals("1..100") ) {
+			
+				if(domainS.contains("..")) {
+					value.add("i");
+					String [] splits = domainS.split("\\.\\.");
+					for(String str: splits) {
+						value.add(str);
+					}
+				}else {
+					value.add("l");
+					String [] splits = domainS.split(" ");
+					for(String str: splits) {
+						value.add(str);
+					}
 				}
-			}else {
-				value.add("l");
-				String [] splits = domainS.split(" ");
-				for(String str: splits) {
-					value.add(str);
-				}
+				
+				attributesDomains.put(attrName, value);
 			}
 			
-			attributesDomains.put(attrName, value);
 		}	
 	}
 	
