@@ -95,7 +95,7 @@ public class GenXCSP {
 	public void generateXCSP(String file){
 		
 		createFakeVariable();
-		GenDomains();
+		genenerateClassDomains();
 		GenRefsDomainsJokers(referencesUB);
 		GenVars();
 		GenPredOrd();
@@ -145,7 +145,7 @@ public class GenXCSP {
 	 *  Generate Class Domains
 	 *   
 	 */
-	public void GenDomains(){
+	public void genenerateClassDomains(){
 		
 		int i=1;
 		for(EClass c: listOfClasses){	
@@ -175,13 +175,11 @@ public class GenXCSP {
 	 *
 	 *     Features Domains
 	 */
-	public void GenFeaturesDomains(int borne)
-	{
+	public void GenFeaturesDomains(int borne){
 		int fid=0;
 		int i=1;
 		
-		for(EClass c: listOfClasses)
-		{
+		for(EClass c: listOfClasses){
 			fid=0;
 			for (EAttribute a: reader.getAllAttributesFromClass(c))
 			{
