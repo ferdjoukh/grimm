@@ -123,6 +123,7 @@ public class GenXCSP {
 	 *  it is used to create an empty model when all config are 0  
 	 */
 	public void createFakeVariable() {
+		
 		Element variable= new Element("variable");
 		Attribute name = new Attribute("name", "First");
 		Attribute domain= new Attribute("domain", "First");
@@ -144,110 +145,30 @@ public class GenXCSP {
 	 *  Generate Class Domains
 	 *   
 	 */
-	public void GenDomains()
-	{
+	public void GenDomains(){
 		
 		int i=1;
-		for(EClass c: listOfClasses)
-		{
-			//***************************************
-			//Construire son domaine
-			//***************************************
-			Element domaine;
-			Attribute n,n2;
-			int lB,uB,vv;
-			String v,v1;
+		for(EClass c: listOfClasses){	
 			
-			//*****************************************************
-			//Domaine 1..min
-			//*****************************************************
-			domaine= new Element("domain");
-			numberOfDomaines++;
-			n=new Attribute("name", "DC"+i);
-			domaine.setAttribute(n);
+			int domainStart=  reader.domaineSum(reader.getClassIndex(c)-1)+1;
+			int domainEnd=  reader.domaineSum(reader.getClassIndex(c)); 
+			int nb= domainEnd-domainStart+1;
+			String body;
 			
-			lB=  reader.domaineSum(reader.getClassIndex(c)-1)+1;
-			uB=  reader.domaineSum(reader.getClassIndex(c)-1) + minSizesOfClasses.get(reader.getClassIndex(c)-1); 
+			if(domainStart == domainEnd) body = ""+domainStart;
+			else body = domainStart + ".." + domainEnd;
 			
-			if(lB==uB)
-			v= ""+lB;
-			else
-			v= lB+ ".."+ uB;
+			Element domain= new Element("domain");
+			Attribute name=new Attribute("name", "D_"+c.getName());
+			Attribute nbValues=new Attribute("nbValues", ""+nb);
+			domain.setAttribute(name);
+			domain.setAttribute(nbValues);
+			domain.setText(body);
+			domains.addContent(domain);
 			
-			domaine.setText(v);
-			vv= uB-lB+1; //Plus la valuer 0 de non allocation
-			v1= ""+vv+"";
-			n2=new Attribute("nbValues", v1);
-			domaine.setAttribute(n2);
-			domains.addContent(domaine);
-			
-			//*****************************************************
-			//Domaine min+1..max
-			//****************************************************
-			domaine= new Element("domain");
-			numberOfDomaines++;
-			n=new Attribute("name", "DC"+i+"_2");
-		//	n=new Attribute("name", "DC_"+c.getName()+"_2");
-			
-			
-			domaine.setAttribute(n);
-			
-			lB=  reader.domaineSum(reader.getClassIndex(c)-1)+ minSizesOfClasses.get(reader.getClassIndex(c)-1)+1; 					
-			uB=  reader.domaineSum(reader.getClassIndex(c)); 
-			
-			if (lB-1==uB){
-				v= "0 "+uB;
-				vv= uB+1;
-			}
-			else
-			{   
-				v= "0" + " "+ lB+ ".."+ uB;
-				vv= uB-lB+1+1; //Plus la valuer 0 de non allocation
-			}
-			domaine.setText(v);
-			v1= ""+vv+"";
-			n2=new Attribute("nbValues", v1);
-			domaine.setAttribute(n2);
-			domains.addContent(domaine);
-			
-			
+			maxDomains=domainEnd;
 			i++;
-			maxDomains=uB;
-			
-			////////////////////////////////////
-			//  Domaine d'une classe 
-			////////////////////////////////////
-			
-			domaine= new Element("domain");
-			numberOfDomaines++;
-		//	n=new Attribute("name", "DC"+i+"_2");
-			n=new Attribute("name", "DC_"+c.getName());
-			
-			domaine.setAttribute(n);
-			
-			
-			lB=  reader.domaineSum(reader.getClassIndex(c)-1)+1;
-			uB=  reader.domaineSum(reader.getClassIndex(c)); 
-				
-			if (lB==uB)
-			{
-				v= ""+uB;
-				vv= uB;
-			}
-			else
-			{   
-				v= lB+ ".."+ uB;
-				vv= uB-lB+1; //Plus la valuer 0 de non allocation
-			}
-			domaine.setText(v);
-			v1= ""+vv+"";
-			n2=new Attribute("nbValues", v1);
-			domaine.setAttribute(n2);
-			domains.addContent(domaine);
-			
 		}
-		
-		
 	}
 	
 	/**

@@ -10,7 +10,7 @@
 #(1)
 lowerBound for classes =2
 upperBound for classes =4
-upperBound for references =2
+upperBound for references =1
 #
 number of solutions =1
 #

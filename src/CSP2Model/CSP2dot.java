@@ -101,7 +101,6 @@ public class CSP2dot extends ModelBuilder{
 				if (enume.getELiterals() != null) {
 					int numberOfLiterals = enume.getELiterals().size();
 					int value =  AttributeInstantiator.randomInt(0, numberOfLiterals);	
-					System.out.println("map enum "+ value);
 					attributes= attributes+" "+ a.getName()+"="+ enume.getELiterals().get(value)+" \\n";
 				}										
 			}else {

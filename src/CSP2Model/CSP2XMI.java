@@ -117,7 +117,6 @@ public class CSP2XMI extends ModelBuilder{
 					if (enume.getELiterals() != null) {
 						int numberOfLiterals = enume.getELiterals().size();
 						int value =  AttributeInstantiator.randomInt(0, numberOfLiterals);	
-						System.out.println("map enum "+ value);
 						currentobject.eSet(a, enume.getELiterals().get(value));
 					}										
 				}else {
@@ -224,7 +223,7 @@ public class CSP2XMI extends ModelBuilder{
 			    		EClass targetClass= ref.getEReferenceType();
 			    		List<EObject> objectsToLink= new ArrayList<EObject>(); 
 			    		
-			    		if(refUpperBound==1){
+			    		if(ref.getUpperBound()==1){
 			    			if(solutionValues.get(currentVar)!=0)
 			    			{
 			    				try{
@@ -368,7 +367,7 @@ public class CSP2XMI extends ModelBuilder{
 				refUpperBound=referenceUpperBound;				
 			}
 			
-			if(refUpperBound==1){
+			if(ref.getUpperBound()==1){
    				try {
    						String targetedClassName=ref.getEType().getName();
    						EObject target = Utils.searchInstanceByClass(allCreatedEObjects, targetedClassName).getObj();

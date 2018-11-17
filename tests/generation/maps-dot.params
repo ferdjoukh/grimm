@@ -12,7 +12,7 @@ lowerBound for classes =1
 upperBound for classes =2
 upperBound for references =2
 #
-number of solutions =1
+number of solutions =3
 #
 output format =dot
 CSP solver =abscon
