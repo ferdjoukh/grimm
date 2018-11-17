@@ -69,6 +69,46 @@ public class CSP2dot extends ModelBuilder{
 			}
 		}
 	}
+	
+	
+	public String instantiateAttributes(EClass c, int OID) {
+		
+		String attributes="";
+		String currentclassname = c.getName();
+		
+		for(EAttribute a:reader.getAllAttributesFromClass(c))
+		{
+			if(a.getEType().getName().equals("EBoolean")) {
+				boolean value= AttributeInstantiator.generateBoolean();
+				attributes= attributes+ " "+ a.getName()+"="+ value +" \\n";
+				
+			}else if(a.getEType().getName().equals("EString")) {
+				if(a.getName().toLowerCase().equals("name")) {
+					String value = AttributeInstantiator.generateBasicName(currentclassname, OID);
+					attributes= attributes+ " "+ a.getName()+"="+ value +" \\n";
+				}else {
+					String value = AttributeInstantiator.randomString();
+					attributes= attributes+ " "+ a.getName()+"="+ value +" \\n";
+				}
+				
+			}
+			else if (a.getEType().getName().equals("EInt")) {
+				int value = AttributeInstantiator.randomInt(1, 100);
+				attributes= attributes+ " "+ a.getName()+"="+ value +" \\n";
+			}
+			else {
+				//@TODO enumerations 
+				EEnum enume= null;
+				try{enume=(EEnum) a.getEType();}catch(Exception e){}
+				EClass etype=null;
+				try{etype=(EClass) a.getEType();}catch(Exception e){}				
+				if(enume!=null){
+					attributes= attributes+" "+ a.getName()+"="+ enume.getEEnumLiteral(1)+" \\n";
+				}			
+			}			
+		}	
+		return attributes;
+	}
 		
 	public void generateDot(ArrayList<Integer> values, int ID) throws IOException
 	{
@@ -101,40 +141,7 @@ public class CSP2dot extends ModelBuilder{
 			if(currentClassName.equals(root))		
 			{
 				//Attributes
-				for(EAttribute a:reader.getAllAttributesFromClass(c))
-				{
-					if(a.getEType().getName().equals("EBoolean")) {
-						boolean value= AttributeInstantiator.generateBoolean();
-						AttrDots= AttrDots+ " "+ a.getName()+"="+ value +" \\n";
-						
-					}else if(a.getEType().getName().equals("EString")) {
-						if(a.getName().toLowerCase().equals("name")) {
-							String value = AttributeInstantiator.generateBasicName(currentClassName, 1);
-							AttrDots= AttrDots+ " "+ a.getName()+"="+ value +" \\n";
-						}else {
-							String value = AttributeInstantiator.randomString();
-							AttrDots= AttrDots+ " "+ a.getName()+"="+ value +" \\n";
-						}
-						
-					}
-					else if (a.getEType().getName().equals("EInt")) {
-						int value = AttributeInstantiator.randomInt(1, 100);
-						AttrDots= AttrDots+ " "+ a.getName()+"="+ value +" \\n";
-					}
-					else {
-						//@TODO enumerations 
-						EEnum enume= null;
-						try{enume=(EEnum) a.getEType();}catch(Exception e){}
-						EClass etype=null;
-						try{etype=(EClass) a.getEType();}catch(Exception e){}				
-						if(enume!=null)
-						{
-							AttrDots= AttrDots+" "+ a.getName()+"="+ enume.getEEnumLiteral(vals.get(variable)-1)+" \\n";
-						}
-						
-					}
-					//variable++;
-				}	
+				AttrDots = instantiateAttributes(c, 1);
 				
 				for (EReference ref: reader.getAllReferencesFromClasswithOpposite(c)){
 					int zz=ref.getUpperBound();
@@ -159,46 +166,14 @@ public class CSP2dot extends ModelBuilder{
 				classDomBegin=  reader.domaineSum(reader.getClassIndex(c)-1)+1;
 				classDomEnd=  reader.domaineSum(reader.getClassIndex(c)); 
 				
-				for(int instanceOID=classDomBegin;instanceOID<=classDomEnd;instanceOID++)
+				for(int OID=classDomBegin;OID<=classDomEnd;OID++)
 				{
 					AttrDots="";
 					//////////////////////////
 					// Creating the attributes
 					//////////////////////////
-					for(EAttribute a:reader.getAllAttributesFromClass(c))
-					{
-						if(a.getEType().getName().equals("EBoolean")) {
-							boolean value= AttributeInstantiator.generateBoolean();
-							AttrDots= AttrDots+ " "+ a.getName()+"="+ value +" \\n";
-							
-						}else if(a.getEType().getName().equals("EString")) {
-							if(a.getName().toLowerCase().equals("name")) {
-								String value = AttributeInstantiator.generateBasicName(currentClassName, instanceOID);
-								AttrDots= AttrDots+ " "+ a.getName()+"="+ value +" \\n";
-							}else {
-								String value = AttributeInstantiator.randomString();
-								AttrDots= AttrDots+ " "+ a.getName()+"="+ value +" \\n";
-							}
-							
-						}
-						else if (a.getEType().getName().equals("EInt")) {
-							int value = AttributeInstantiator.randomInt(1, 100);
-							AttrDots= AttrDots+ " "+ a.getName()+"="+ value +" \\n";
-						}
-						else
-						{
-							//@TODO enumerations 
-							EEnum enume= null;
-							try{enume=(EEnum) a.getEType();}catch(Exception e){}
-							EClass etype=null;
-							try{etype=(EClass) a.getEType();}catch(Exception e){}				
-							if(enume!=null){
-								AttrDots= AttrDots+" "+ a.getName()+"="+ enume.getEEnumLiteral(vals.get(variable)-1)+" \\n";
-							}							
-						}
-						//variable++;
-					}
-		    
+					AttrDots = instantiateAttributes(c, OID);
+					
 					//////////////////////
 					// Creating the links
 					//////////////////////
@@ -214,27 +189,26 @@ public class CSP2dot extends ModelBuilder{
 						for(int z=1;z<=zz;z++)
 						{
 							int precedente= vals.get(variable);
-							if(vals.get(variable)<=this.maxDomains)
-							{
+							if(vals.get(variable)<=this.maxDomains){
 									if(ref.isContainment())
-										ecrivain.write("struct"+instanceOID+" -- "+"struct"+vals.get(variable) +" [arrowtail=diamond,arrowhead=none,dir=both,label=\""+ref.getName()+"\"]   ;\n");
+										ecrivain.write("struct"+OID+" -- "+"struct"+vals.get(variable) +" [arrowtail=diamond,arrowhead=none,dir=both,label=\""+ref.getName()+"\"]   ;\n");
 									else if(ref.getEOpposite() != null)
-										ecrivain.write("struct"+instanceOID+" -- "+"struct"+vals.get(variable) +" [arrowhead=open,arrowtail=open,dir=both,label=\""+ref.getName()+"\"]   ;\n");
+										ecrivain.write("struct"+OID+" -- "+"struct"+vals.get(variable) +" [arrowhead=open,arrowtail=open,dir=both,label=\""+ref.getName()+"\"]   ;\n");
 									else
-										ecrivain.write("struct"+instanceOID+" -- "+"struct"+vals.get(variable) +" [arrowhead=open,arrowtail=open,dir=forward,label=\""+ref.getName()+"\"]   ;\n");
+										ecrivain.write("struct"+OID+" -- "+"struct"+vals.get(variable) +" [arrowhead=open,arrowtail=open,dir=forward,label=\""+ref.getName()+"\"]   ;\n");
 									
-									references.add(instanceOID+"-"+vals.get(variable));								
+									references.add(OID+"-"+vals.get(variable));								
 							}
 							variable++;
 						}
 					}
 				
 					//Creating the current shape
-					ecrivain.write("struct"+instanceOID+" [shape=record,label=\"{"+c.getName().charAt(0)+instanceOID+":"+c.getName()+"|"+ AttrDots +"}\"];\n");
+					ecrivain.write("struct"+OID+" [shape=record,label=\"{"+c.getName().charAt(0)+OID+":"+c.getName()+"|"+ AttrDots +"}\"];\n");
 			
 					//Adding a link between rootObject and the current Object
-					ecrivain.write("struct1"+" -- "+"struct"+instanceOID +" [arrowtail=diamond,arrowhead=none,dir=both];\n");
-					references.add("1-"+instanceOID);
+					ecrivain.write("struct1"+" -- "+"struct"+OID +" [arrowtail=diamond,arrowhead=none,dir=both];\n");
+					references.add("1-"+OID);
 				}
 			}
 		}
