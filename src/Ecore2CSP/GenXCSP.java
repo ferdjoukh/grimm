@@ -92,10 +92,10 @@ public class GenXCSP {
 	 * @param file: filepath of CSP document (instance.xml)
 	 * @return
 	 */
-	public void GenerateXCSP(String file){
+	public void generateXCSP(String file){
 		
+		createFakeVariable();
 		GenDomains();
-		//GenFeaturesDomains(featuresBound);
 		GenRefsDomainsJokers(referencesUB);
 		GenVars();
 		GenPredOrd();
@@ -116,6 +116,28 @@ public class GenXCSP {
 		instance.addContent(constraints);
 		
 		saveXML(getXCSPinstance(), file);
+	}
+	
+	/**
+	 * 	Create the fake variable
+	 *  it is used to create an empty model when all config are 0  
+	 */
+	public void createFakeVariable() {
+		Element variable= new Element("variable");
+		Attribute name = new Attribute("name", "First");
+		Attribute domain= new Attribute("domain", "First");
+		variable.setAttribute(domain);
+		variable.setAttribute(name);
+		variables.addContent(variable);
+		numberOfVariables++;
+		
+		//Create one domain	
+		Element domainef= new Element("domain");
+		Attribute nf=new Attribute("name", "First");
+		domainef.setAttribute(nf);
+		domainef.setText("-1");
+		domains.addContent(domainef);
+		numberOfDomaines++;
 	}
 	
 	/**
@@ -529,33 +551,14 @@ public class GenXCSP {
 			i++;
 		}
 	}
-	
+		
 	/**
 	 *  This method generates the variables of the CSP:
 	 * 		- variables of references
 	 *      - variables of EOpposite references
 	 */
-	public void GenVars()
-	{
-		///////////////////////////
-		// Create variable 1
-		//////////////////////////
-		Element variable= new Element("variable");
-    	Attribute name = new Attribute("name", "First");
-    	Attribute domain= new Attribute("domain", "First");
-    	variable.setAttribute(domain);
-    	variable.setAttribute(name);
-    	variables.addContent(variable);
-    	numberOfVariables++;
-    
-    	//Create one domain	
-    	Element domainef= new Element("domain");
-		Attribute nf=new Attribute("name", "First");
-		domainef.setAttribute(nf);
-		domainef.setText("1");
-		domains.addContent(domainef);
-		numberOfDomaines++;
-				
+	public void GenVars(){
+		
 		int i=1;
 		for(EClass c: listOfClasses){
 			int refi=0;

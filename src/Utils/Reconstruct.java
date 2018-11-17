@@ -55,7 +55,7 @@ public class Reconstruct {
 				
 		//Sa racine est Petrinet
 	    GenXCSP generation= new GenXCSP(r,rb,sym);
-		generation.GenerateXCSP(InstanceFile);
+		generation.generateXCSP(InstanceFile);
 				
 		duree=(System.nanoTime()-debut)/1000000;
 		System.out.println("Le temps de génération du XCSP = [ "+ duree+ " Millisecondes ]\n");

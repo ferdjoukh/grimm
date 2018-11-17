@@ -74,7 +74,7 @@ public abstract class ModelBuilder {
 		///////////////////////////////////////////////////////////////
 		System.out.println("CSP instance generator is running");
 		GenXCSP CSPgenerator = new GenXCSP(reader, rb, sym);
-		CSPgenerator.GenerateXCSP(CSPInstanceFile);
+		CSPgenerator.generateXCSP(CSPInstanceFile);
 		maxDomains=CSPgenerator.getMaxDomains();
 				
 		timeCounter=(System.nanoTime()-timeBegin)/1000000;
@@ -134,7 +134,7 @@ public abstract class ModelBuilder {
 		/////////////////////////////////////////////////////////
 		System.out.println("CSP instance generator is running");
 	    GenXCSP CSPgenerator = new GenXCSP(reader, cfr, sym);
-		CSPgenerator.GenerateXCSP(CSPInstanceFile);
+		CSPgenerator.generateXCSP(CSPInstanceFile);
 		maxDomains = CSPgenerator.getMaxDomains();
 				
 		duree=(System.nanoTime()-debut)/1000000;

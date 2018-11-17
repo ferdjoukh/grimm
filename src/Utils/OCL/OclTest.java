@@ -29,7 +29,7 @@ public class OclTest extends TestCase{
 
 		modelReader = new MetaModelReader(ecoreFile, racine, 2, 2);
 	    generation = new GenXCSP(modelReader, 4, 1);
-		generation.GenerateXCSP(OclConstraints.XCSPFile);
+		generation.generateXCSP(OclConstraints.XCSPFile);
 	}
 	
 	@Override

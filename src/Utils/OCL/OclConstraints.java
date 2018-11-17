@@ -172,7 +172,7 @@ public class OclConstraints {
 		MetaModelReader modelReader = new MetaModelReader(ecoreFile, racine, 2, 2);
 		
 	    GenXCSP generation = new GenXCSP(modelReader, 4, 1);
-		generation.GenerateXCSP(OclConstraints.XCSPFile);
+		generation.generateXCSP(OclConstraints.XCSPFile);
 
 		XMLOutputter outputXML = new XMLOutputter(Format.getPrettyFormat());
 		try {
