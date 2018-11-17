@@ -269,12 +269,10 @@ public class GenXCSP {
 				domainef.setAttribute(n2f);
 			
 				domains.addContent(domainef);
-			
 			}
 			i++;
 		}
 	}
-	
 	
 	/**
 	 * 
@@ -373,16 +371,16 @@ public class GenXCSP {
 					String v="",gcc1 = "";
 					int vv=0;
 					int vvv=0;
-					for (EClass cst: ddd)
-					{
+					for (EClass cst: ddd){
+						
 						EClass dst= ref.getEReferenceType();
     					int cindex=reader.getClassIndex(cst);
     					
     					int lB=  reader.domaineSum(cindex-1)+1; //(i-1)*10+1; // size(class)= 10;
     					int uB=  reader.domaineSum(cindex); //(i)*10;   // size(class)= 10;
     					
-    					for(int ii=lB;ii<=uB;ii++)
-    					{
+    					for(int ii=lB;ii<=uB;ii++){
+    						
     						gcc1+=" "+ii;
     					}
     					
@@ -394,8 +392,6 @@ public class GenXCSP {
         			numberOfDomaines++;
         			Attribute n=new Attribute("name", "DCR_"+refi+"_"+i);
         			domaine.setAttribute(n);
-        				
-        			//String vn= " "+ lB+ ".."+ uB;
         			domaine.setText(v);
         			
         			Attribute n2=new Attribute("nbValues", ""+vv);
@@ -406,190 +402,160 @@ public class GenXCSP {
         			n=new Attribute("name", "DCR2_"+refi+"_"+i);
         			Dom.setAttribute(n);
         			vvv=vv+1;
+        			
         			n2=new Attribute("nbValues", ""+vvv);
         			Dom.setAttribute(n2);
         			Dom.setText("0" +v);	   			
         			
-        			if(c.getName().equals(rootClass)) 
-    				{
+        			if(c.getName().equals(rootClass)){
     					gccvals= gcc1;
     					gccValuesArity+= vv;
     				}
-        		//	Dom.setText(v);	   			//Virer ça pour mettre le 0
-        			
-        			
-        			
-        			domains.addContent(Dom);
-        		
-				}
-				
+        			domains.addContent(Dom);        		
+				}				
 			}
 			i++;
 		}
 	}
 	
-
-
 	/**
 	*      Generate References Domains      
 	* 
 	*/
 	public void GenRefsDomainsJokers(int FeatureBound){			
-			int max= GenJokers();
-			int JSLB= maxDomains+1;
-			int JSUB= JSLB+max;
-			String jokerString= ""+ JSLB+ ".."+JSUB+"" ;
-			int nbvJ= JSUB-JSLB;
-			
-			int i=1;
-			for(EClass c: listOfClasses)
-				{
+		int max= GenJokers();
+		int JSLB= maxDomains+1;
+		int JSUB= JSLB+max;
+		String jokerString= ""+ JSLB+ ".."+JSUB+"" ;
+		int nbvJ= JSUB-JSLB;
+		
+		int i=1;
+		for(EClass c: listOfClasses){
+			int refi=0;
+			// Création des domaines pour Les références + Jokers
+			for (EReference ref: reader.getAllReferencesFromClasswithOpposite(c)){
+				refi++;
+				if (!ref.getEReferenceType().isAbstract()){
+					int zz=ref.getUpperBound();
+					if (zz==-1)	zz=FeatureBound;
 
-					int refi=0;
-					// Création des domaines pour Les références + Jokers
-					for (EReference ref: reader.getAllReferencesFromClasswithOpposite(c))
-						{
-							refi++;
-							if (!ref.getEReferenceType().isAbstract())
-								{
-									int zz=ref.getUpperBound();
-									if (zz==-1)
-										//zz=5;
-										zz=FeatureBound;
+					//Domaine de la réf
+					EClass dst= ref.getEReferenceType();
+					int cindex=reader.getClassIndex(dst);
 
-									//Domaine de la réf
-									EClass dst= ref.getEReferenceType();
-									int cindex=reader.getClassIndex(dst);
+					Element domaine= new Element("domain");
+					numberOfDomaines++;
+					Attribute n=new Attribute("name", "DCRJ_"+refi+"_"+i);
+					domaine.setAttribute(n);
 
-									Element domaine= new Element("domain");
-									numberOfDomaines++;
-									Attribute n=new Attribute("name", "DCRJ_"+refi+"_"+i);
-									domaine.setAttribute(n);
+					int lB=  reader.domaineSum(cindex-1)+1; //(i-1)*10+1; // size(class)= 10;
+					int uB=  reader.domaineSum(cindex); //(i)*10;   // size(class)= 10;
 
-									int lB=  reader.domaineSum(cindex-1)+1; //(i-1)*10+1; // size(class)= 10;
-									int uB=  reader.domaineSum(cindex); //(i)*10;   // size(class)= 10;
+					String vn= ""+ lB+ ".."+ uB+ " "+jokerString;
+					String v= " "+ lB+ ".."+ uB;
 
-
-									String vn= ""+ lB+ ".."+ uB+ " "+jokerString;
-									String v= " "+ lB+ ".."+ uB;
-
-
-									if(c.getName().equals(rootClass)) 
-									{
-										for(int ii=lB;ii<=uB;ii++)
-											{
-												gccvals+= " "+ii;
-											}
-										//gccvals+= v;
-										gccValuesArity+= uB-lB+1;
-									}
-									//*********			
-									//  			String vn=v;         //Virer ça pour mettre le "0"
-									//*********			
-									domaine.setText(v);
-									int vv= uB-lB+1; //Plus la valuer 0 de non allocation
-
-									Attribute n2=new Attribute("nbValues", ""+vv);
-									domaine.setAttribute(n2);
-									domains.addContent(domaine);
-
-									Element Dom= new Element("domain");   			
-									n=new Attribute("name", "DCRJ2_"+refi+"_"+i);
-									Dom.setAttribute(n);
-									int vvv= vv+nbvJ;
-									n2=new Attribute("nbValues", ""+vvv);
-									Dom.setAttribute(n2);
-									Dom.setText(vn);	   			
-									domains.addContent(Dom);
-
-
-								}
-							else
-								{
-								//Union des domaines
-								List<EClass> ddd=reader.getConcreteSubTypes(ref.getEReferenceType());
-								String v="",gcc1 = "";
-								int vv=0;
-								int vvv=0;
-								for (EClass cst: ddd)
-									{
-										EClass dst= ref.getEReferenceType();
-										int cindex=reader.getClassIndex(cst);
-
-										int lB=  reader.domaineSum(cindex-1)+1; //(i-1)*10+1; // size(class)= 10;
-										int uB=  reader.domaineSum(cindex); //(i)*10;   // size(class)= 10;
-
-										for(int ii=lB;ii<=uB;ii++)
-											{
-												gcc1+=" "+ii;
-											}
-
-										v+= " "+ lB+ ".."+ uB;
-										vv+= uB-lB+1;           		           					
-									}
-
-								Element domaine= new Element("domain");
-								numberOfDomaines++;
-								Attribute n=new Attribute("name", "DCRJ_"+refi+"_"+i);
-								domaine.setAttribute(n);
-
-								//String vn= " "+ lB+ ".."+ uB;
-								domaine.setText(v);
-
-								Attribute n2=new Attribute("nbValues", ""+vv);
-								domaine.setAttribute(n2);
-								domains.addContent(domaine);
-
-								Element Dom= new Element("domain");   			
-								n=new Attribute("name", "DCRJ2_"+refi+"_"+i);
-								Dom.setAttribute(n);
-								vvv=vv+nbvJ;
-								n2=new Attribute("nbValues", ""+vvv);
-								Dom.setAttribute(n2);
-								Dom.setText(v + " "+ jokerString);	   			
-
-								if(c.getName().equals(rootClass)) 
-									{
-										gccvals= gcc1;
-										gccValuesArity+= vv;
-									}
-								//	Dom.setText(v);	   			//Virer ça pour mettre le 0
-
-
-
-								domains.addContent(Dom);
-
-								//System.out.println("Class="+ c.getName()+ " i= "+ i+ " ref= "+ ref.getName()+ " refi= "+refi+ " dom= "+n+ " domT= "+v); 
-								
-								}
-
+					if(c.getName().equals(rootClass)){
+						
+						for(int ii=lB;ii<=uB;ii++){
+							gccvals+= " "+ii;
 						}
-					i++;
-				}
-		}
+						gccValuesArity+= uB-lB+1;
+					}
+					
+					domaine.setText(v);
+					int vv= uB-lB+1;
 
+					Attribute n2=new Attribute("nbValues", ""+vv);
+					domaine.setAttribute(n2);
+					domains.addContent(domaine);
+
+					Element Dom= new Element("domain");   			
+					n=new Attribute("name", "DCRJ2_"+refi+"_"+i);
+					Dom.setAttribute(n);
+					int vvv= vv+nbvJ;
+					n2=new Attribute("nbValues", ""+vvv);
+					Dom.setAttribute(n2);
+					Dom.setText(vn);	   			
+					domains.addContent(Dom);
+				}
+				else{
+					//Union des domaines
+					List<EClass> ddd=reader.getConcreteSubTypes(ref.getEReferenceType());
+					String v="",gcc1 = "";
+					int vv=0;
+					int vvv=0;
+					for (EClass cst: ddd){
+						EClass dst= ref.getEReferenceType();
+						int cindex=reader.getClassIndex(cst);
+
+						int lB=  reader.domaineSum(cindex-1)+1; //(i-1)*10+1; // size(class)= 10;
+						int uB=  reader.domaineSum(cindex); //(i)*10;   // size(class)= 10;
+
+						for(int ii=lB;ii<=uB;ii++){
+							gcc1+=" "+ii;
+						}
+
+						v+= " "+ lB+ ".."+ uB;
+						vv+= uB-lB+1;           		           					
+					}
+
+					Element domaine= new Element("domain");
+					numberOfDomaines++;
+					Attribute n=new Attribute("name", "DCRJ_"+refi+"_"+i);
+					domaine.setAttribute(n);
+
+					//String vn= " "+ lB+ ".."+ uB;
+					domaine.setText(v);
+
+					Attribute n2=new Attribute("nbValues", ""+vv);
+					domaine.setAttribute(n2);
+					domains.addContent(domaine);
+
+					Element Dom= new Element("domain");   			
+					n=new Attribute("name", "DCRJ2_"+refi+"_"+i);
+					Dom.setAttribute(n);
+					vvv=vv+nbvJ;
+					n2=new Attribute("nbValues", ""+vvv);
+					Dom.setAttribute(n2);
+					Dom.setText(v + " "+ jokerString);	   			
+
+					if(c.getName().equals(rootClass)){
+						gccvals= gcc1;
+						gccValuesArity+= vv;
+					}
+					domains.addContent(Dom);
+				}
+			}
+			i++;
+		}
+	}
 	
-	
-	///////////////////////////////////////////////////
-	///////////////////////////////////////////////
-	///////////////////////////////////////////
-	///////////////////////////////////////         Generete
-	///////////////////////////////////         Class CSP Variables              
-	///////////////////////////////        Feature Variables  
-	///////////////////////////        References Variables
-	///////////////////////         Class Instances vs References Constraints (No allocation)
-	///////////////////
-	///////////////
-	////////////
-	/****
-	 * 
-	 *     Generate Class CSP Variables
-	 *            And Features Variables
-	 *                And References Variables
+	/**
+	 *  This method generates the variables of the CSP:
+	 * 		- variables of references
+	 *      - variables of EOpposite references
 	 */
-	
 	public void GenVars()
 	{
+		///////////////////////////
+		// Create variable 1
+		//////////////////////////
+		Element variable= new Element("variable");
+    	Attribute name = new Attribute("name", "First");
+    	Attribute domain= new Attribute("domain", "First");
+    	variable.setAttribute(domain);
+    	variable.setAttribute(name);
+    	variables.addContent(variable);
+    	numberOfVariables++;
+    
+    	//Create one domain	
+    	Element domainef= new Element("domain");
+		Attribute nf=new Attribute("name", "First");
+		domainef.setAttribute(nf);
+		domainef.setText("1");
+		domains.addContent(domainef);
+		numberOfDomaines++;
+				
 		int i=1;
 		for(EClass c: listOfClasses){
 			int refi=0;

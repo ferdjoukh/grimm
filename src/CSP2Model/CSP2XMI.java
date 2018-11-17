@@ -130,7 +130,8 @@ public class CSP2XMI extends ModelBuilder{
 	
 	public void createEObjects(ArrayList<Integer> solutionValues) {
 		
-		int currentVar = 0;
+		//init currentVar to 1 in order to skip first variable
+		int currentVar = 1;
 		
 		EPackage rootPackage= super.reader.getModelPackage();
 		List<EClass> cls= super.reader.getClasses();

@@ -113,7 +113,9 @@ public class CSP2dot extends ModelBuilder{
 	public void generateDot(ArrayList<Integer> values, int ID) throws IOException
 	{
 		ArrayList<Integer> vals= values;
-		int variable=0;
+		
+		//init variable to 1 in order to skip first variable
+		int variable=1;
 		EPackage pack= reader.getModelPackage();
 		List<EClass> cls= reader.getClasses();
 		PrintWriter ecrivain;
