@@ -14,74 +14,55 @@ import org.eclipse.emf.ecore.xmi.impl.XMLResourceFactoryImpl;
 import Ecore2CSP.ConfigFileReader;
 
 public class MetaModelReader {
-
-	/**
-	 * @param args
-	 */
-	Resource resource;
-	EPackage BasePackage;
-	String rootClassName;
-	ArrayList<Integer> sizes;
-	ArrayList<Integer> sizesMin;
-	ConfigFileReader cfr;
 	
-	public MetaModelReader(String metamodel,String rootClass){
-		
-		 Resource.Factory.Registry reg=Resource.Factory.Registry.INSTANCE;
-		 Map<String,Object> m = reg.getExtensionToFactoryMap();
-		 m.put("ecore",new XMIResourceFactoryImpl());
-		 ResourceSet resourceSet=new ResourceSetImpl();
-		 URI fileURI=URI.createFileURI(metamodel);
-		 Resource resource=resourceSet.getResource(fileURI,true);
-		
-		this.resource=resource;
-		
-		EPackage c= (EPackage)  resource.getContents().get(0);
-		
-		this.BasePackage= c;
-		this.rootClassName=rootClass;		
-	}
+	private Resource resource;
+	private EPackage BasePackage;
+	private String rootClassName;
+	private ArrayList<Integer> sizeOfClasses;
+	private ArrayList<Integer> minSizesOfClasses;
+	private ConfigFileReader configFileReader;
+	private String metamodelFilePath;
 	
-	public MetaModelReader(String str,String racine,int lb,int ub){
-		
+	public void loadRootPackage(String metamodel,String rootClass) {
 		Resource.Factory.Registry reg=Resource.Factory.Registry.INSTANCE;
 		Map<String,Object> m = reg.getExtensionToFactoryMap();
 		m.put("ecore",new XMIResourceFactoryImpl());
 		ResourceSet resourceSet=new ResourceSetImpl();
-		URI fileURI=URI.createFileURI(str);
+		URI fileURI=URI.createFileURI(metamodel);
 		Resource resource=resourceSet.getResource(fileURI,true);
-				
+		EPackage rootpackage= (EPackage)  resource.getContents().get(0);
+		
+		this.metamodelFilePath = metamodel;
+		this.rootClassName=rootClass;
 		this.resource=resource;
-				
-		EPackage c= (EPackage)  resource.getContents().get(0);
-				
-		this.BasePackage= c;
-		this.rootClassName=racine;
+		this.BasePackage= rootpackage;
+	}
+	
+	public MetaModelReader(String metamodel,String rootClass){
+		loadRootPackage(metamodel, rootClass);
+	}
+	
+	public MetaModelReader(String metamodel,String rootClass, int lb, int ub){
+		loadRootPackage(metamodel, rootClass);
 		
 		sizeClassMinInit(1,lb);
 		sizeClassInit(lb,ub);
 	}
 	
-	public MetaModelReader(String str,String racine, ConfigFileReader cfr){
+	public MetaModelReader(String metamodel,String rootClass, ConfigFileReader cfr){
+		loadRootPackage(metamodel, rootClass);	
 		
-		this.cfr=cfr;
-			
-		Resource.Factory.Registry reg=Resource.Factory.Registry.INSTANCE;
-		Map<String,Object> m = reg.getExtensionToFactoryMap();
-		m.put("ecore",new XMIResourceFactoryImpl());
-		ResourceSet resourceSet=new ResourceSetImpl();
-		URI fileURI=URI.createFileURI(str);
-		Resource resource=resourceSet.getResource(fileURI,true);
-			
-		this.resource=resource;
-		
-		EPackage c= (EPackage) resource.getContents().get(0);
-			
-		this.BasePackage= c;
-		this.rootClassName=racine;
-			
+		this.configFileReader=cfr;
 		sizeClassMinRead();
 		sizeClassRead();
+	}
+		
+	public String getMetamodel(){
+		return metamodelFilePath;
+	}
+
+	public String getRootClass() {
+		return rootClassName;
 	}
 	
 	private void sizeClassMinRead() {
@@ -99,14 +80,14 @@ public class MetaModelReader {
 			}
 			i++;
 		}
-		this.sizesMin=sizes;
+		this.minSizesOfClasses=sizes;
 	}
 
 	private void sizeClassRead() {
 		
 		List<EClass> cls= getClasses();
 		ArrayList<Integer> sizes= new ArrayList<Integer>(cls.size());
-		Hashtable<String, Integer> classInstanceNb = cfr.getClassInstances(); 
+		Hashtable<String, Integer> classInstanceNb = configFileReader.getClassInstances(); 
 		
 		int pos=0;
 		for (EClass ec:cls){
@@ -127,7 +108,7 @@ public class MetaModelReader {
 			pos++;		   
 		}
 		
-		this.sizes=sizes;
+		this.sizeOfClasses=sizes;
 	}
 
 	public Resource getModelResource(){
@@ -136,6 +117,39 @@ public class MetaModelReader {
 	
 	public EPackage getModelPackage(){
 		return this.BasePackage;
+	}
+	
+	/**
+	 * This method read class sizes and returns the begin of the domain of each class
+	 * 
+	 * domain D = [a,b]
+	 * 
+	 * to get a: call the method with classID-1, then add 1
+	 * to get b: call the method with classID
+	 * 
+	 * @param classID
+	 * @return
+	 */
+	public int domaineSum(int classID)
+	{
+		int begin=0;
+		if (classID==0)
+			return 0;
+		for(int i=0;i<=classID-1;i++)
+		{
+			begin+= sizeOfClasses.get(i);
+		}
+		return begin;
+	}
+	
+	public int domaineSumMin(int k){
+		int s=0;
+		if (k==0) return 0;
+	
+		for(int i=0;i<=k-1;i++){
+			s+= minSizesOfClasses.get(i);
+		}
+		return s;
 	}
 	
 	public List<EClass> getClasses()
@@ -223,7 +237,7 @@ public class MetaModelReader {
 			sizes.add(i, random);
 		}
 		sizes.add(getClassIndex(rootClassName)-1,1);
-	    this.sizes=sizes;
+	    this.sizeOfClasses=sizes;
 	}
 	
 	//Init les sizeMin d'une classe
@@ -240,17 +254,17 @@ public class MetaModelReader {
 			sizes.add(i, random);
 		}
 		sizes.add(getClassIndex(rootClassName)-1,1);
-		this.sizesMin=sizes;
+		this.minSizesOfClasses=sizes;
 	}
 	
 
 	public ArrayList<Integer> getClassSize(){
-		return this.sizes;
+		return this.sizeOfClasses;
 	}
 	
 	
 	public ArrayList<Integer> getClassSizeMin(){
-		return this.sizesMin;
+		return this.minSizesOfClasses;
 	}
 	
 	/**

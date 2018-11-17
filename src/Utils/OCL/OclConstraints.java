@@ -171,12 +171,12 @@ public class OclConstraints {
 
 		MetaModelReader modelReader = new MetaModelReader(ecoreFile, racine, 2, 2);
 		
-	    GenXCSP generation = new GenXCSP(ecoreFile, racine, modelReader, 2, 4, 1);
+	    GenXCSP generation = new GenXCSP(modelReader, 4, 1);
 		generation.GenerateXCSP(OclConstraints.XCSPFile);
 
 		XMLOutputter outputXML = new XMLOutputter(Format.getPrettyFormat());
 		try {
-			OclConstraints oclCons = new OclConstraints(modelReader, oclFile, GenXCSP.getXCSPinstance());
+			OclConstraints oclCons = new OclConstraints(modelReader, oclFile, generation.getXCSPinstance());
 			
 			System.out.println("***** TREE *****\n");
 			OclTools.scanNode(oclCons.getConstraintsTree());

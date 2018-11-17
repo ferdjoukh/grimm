@@ -73,9 +73,9 @@ public abstract class ModelBuilder {
 		// Generate CSP instance
 		///////////////////////////////////////////////////////////////
 		System.out.println("CSP instance generator is running");
-		GenXCSP generation= new GenXCSP(metaModelFile,root,reader,ub,rb,sym);
-		generation.GenerateXCSP(CSPInstanceFile);
-		maxDomains=generation.getMaxDomains();
+		GenXCSP CSPgenerator = new GenXCSP(reader, rb, sym);
+		CSPgenerator.GenerateXCSP(CSPInstanceFile);
+		maxDomains=CSPgenerator.getMaxDomains();
 				
 		timeCounter=(System.nanoTime()-timeBegin)/1000000;
 		System.out.println("\t[OK] CSP istance generation time = "+ timeCounter+ " (ms)");
@@ -88,8 +88,8 @@ public abstract class ModelBuilder {
 				timeBegin = System.nanoTime();
 				System.out.println("OCL parser is running");
 			
-				OclConstraints oclCons = new OclConstraints(reader, oclFilePath, GenXCSP.getXCSPinstance());
-				generation.saveXML(oclCons.getResultDocumentXCSP(), CSPInstanceFile);
+				OclConstraints oclCons = new OclConstraints(reader, oclFilePath, CSPgenerator.getXCSPinstance());
+				CSPgenerator.saveXML(oclCons.getResultDocumentXCSP(), CSPInstanceFile);
 				
 				timeCounter = (System.nanoTime()-timeBegin)/1000000;
 				System.out.println("\t[OK] OCL constraints parsing duration = "+ timeCounter+ " ms");
@@ -133,9 +133,9 @@ public abstract class ModelBuilder {
 		// Generate CSP instance
 		/////////////////////////////////////////////////////////
 		System.out.println("CSP instance generator is running");
-	    GenXCSP generation= new GenXCSP(metaModelFile,root,reader,cfr,sym);
-		generation.GenerateXCSP(CSPInstanceFile);
-		maxDomains=generation.getMaxDomains();
+	    GenXCSP CSPgenerator = new GenXCSP(reader, cfr, sym);
+		CSPgenerator.GenerateXCSP(CSPInstanceFile);
+		maxDomains = CSPgenerator.getMaxDomains();
 				
 		duree=(System.nanoTime()-debut)/1000000;
 		System.out.println("\t[OK] CSP instance generation time = "+ duree+ " ms");
@@ -148,8 +148,8 @@ public abstract class ModelBuilder {
 			try {
 				debut = System.nanoTime();
 				System.out.println("OCL parser is running");	
-				OclConstraints oclCons = new OclConstraints(reader, oclFilePath, GenXCSP.getXCSPinstance());
-				generation.saveXML(oclCons.getResultDocumentXCSP(), CSPInstanceFile);
+				OclConstraints oclCons = new OclConstraints(reader, oclFilePath, CSPgenerator.getXCSPinstance());
+				CSPgenerator.saveXML(oclCons.getResultDocumentXCSP(), CSPInstanceFile);
 
 				duree = (System.nanoTime()-debut)/1000000;
 				System.out.println("\t[OK] OCL constraints treatment duration= "+ duree+ " ms");
@@ -221,29 +221,6 @@ public abstract class ModelBuilder {
 		}
 	}
 	
-	/**
-	 * This method read class sizes and returns the begin of the domain of each class
-	 * 
-	 * domain D = [a,b]
-	 * 
-	 * to get a: call the method with classID-1, then add 1
-	 * to get b: call the method with classID
-	 * 
-	 * @param classID
-	 * @return
-	 */
-	public int domaineSum(int classID)
-	{
-		int begin=0;
-		if (classID==0)
-			return 0;
-		for(int i=0;i<=classID-1;i++)
-		{
-			begin+= classSizes.get(i);
-		}
-		return begin;
-	}
-
 	/**
 	 * This method generate models using a detailed configuration file
 	 * 

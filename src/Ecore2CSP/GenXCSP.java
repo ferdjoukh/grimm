@@ -23,153 +23,110 @@ import Ecore.MetaModelReader;
 
 public class GenXCSP {
 
+	private Element instance= new Element("instance");
+	private org.jdom2.Document XCSPinstance;
+    private Element domains= new Element("domains");
+    private Element variables= new Element("variables");
+    private Element predicates= new Element("predicates");
+    private Element relations= new Element("relations");
+    private Element constraints= new Element("constraints");
+	
 	private MetaModelReader reader;
-	static Element instance= new Element("instance");
-	private static org.jdom2.Document XCSPinstance;
-    static Element domains= new Element("domains");
-	static Element variables= new Element("variables");
-	static Element predicates= new Element("predicates");
-	static Element relations= new Element("relations");
-	static Element constraints= new Element("constraints");
+	private ConfigFileReader cfr;
+	private String rootClass;
+	private String metamodel;
+	private ArrayList<EClass> listOfClasses;
+	private ArrayList<Integer> sizesOfClasses;
+	private ArrayList<Integer> minSizesOfClasses;
+	private int numberOfVariables = 0;
+	private int numberOfDomaines = 0;
+	private int numberOfPredicates = 0;
+	private int numberOfRelations = 0;
+	private int numberOfConstraints = 0;
+	private int featuresBound = 10;
+	private int referencesUB = 2;
+	private int maxDomains = 0;
+	private int symmetries = 1;
 	
-	ArrayList<EClass> lesClasses;
-	ArrayList<Integer> sizes;
-	ArrayList<Integer> sizesMin;
-	int nbVars=0;
-	int nbDoms=0;
-	int nbPre=0;
-	int nbRel=0;
-	int nbCons=0;
-	int gccvalsarity=0;
-	int Alldiffnames=0;
-	int FeatureBound=10;
-	int RefsBound=2;
-	int maxDomains=0;
-	int Symmetries=1;
+	private String vars="";
+	private int gccValuesArity = 0;
+	private int alldiffNames = 0;
+	private String gccvals = "";
+	private String alldiffnames = "";
 	
-	ConfigFileReader cfr=null;
-	Hashtable<String,String> featuresDomains=null;
-	
-	String vars="",racine,gccvals="";
-	String alldiffnames="";
-	
-	
-	public GenXCSP(String modelFile,String racine,MetaModelReader reader,int FeatureBound,int RefsBound, int sym)
-	{
-		this.reader=reader;
+	public void createRootElement(MetaModelReader reader, int sym) {
 		Document document= new Document(instance);
 		setXCSPinstance(document);
 		Element rac1= new Element("presentation");
 		Attribute a1= new Attribute("name", "?");
 		Attribute a2= new Attribute("maxConstraintArity", "2");
 		Attribute a3= new Attribute("format", "XCSP 2.0");
-		Attribute a4= new Attribute("type", "WCSP");
 		rac1.setAttribute(a1);
 		rac1.setAttribute(a2);
 		rac1.setAttribute(a3);
-		instance.addContent(rac1);
 		
-		//Construire les variables
-	    lesClasses= (ArrayList<EClass>) reader.getClasses();
-				
-		//Les size des classes
-		sizes= (ArrayList<Integer>) reader.getClassSize();
-		sizesMin= (ArrayList<Integer>) reader.getClassSizeMin();
-		
-		this.racine=racine;
-		this.RefsBound=RefsBound;
-		this.Symmetries=sym;
+		this.instance.addContent(rac1);
+		this.reader=reader;
+		this.rootClass=reader.getRootClass();
+		this.metamodel=reader.getMetamodel();
+		this.listOfClasses= (ArrayList<EClass>) reader.getClasses();
+		this.sizesOfClasses= reader.getClassSize();
+		this.minSizesOfClasses= reader.getClassSizeMin();
+		this.symmetries=sym;
 	}
 	
-	public GenXCSP(String modelFile, String racine, MetaModelReader re, ConfigFileReader cfr, int sym)
-	{
-		this.reader=re;
-		setXCSPinstance(new Document(instance));
-		Element rac1= new Element("presentation");
-		Attribute a1= new Attribute("name", "?");
-		Attribute a2= new Attribute("maxConstraintArity", "2");
-		Attribute a3= new Attribute("format", "XCSP 2.0");
-		Attribute a4= new Attribute("type", "WCSP");
-		rac1.setAttribute(a1);
-		rac1.setAttribute(a2);
-		rac1.setAttribute(a3);
-	    //rac1.setAttribute(a4);	
-		instance.addContent(rac1);
-		
-		//Construire les variables
-	    lesClasses= (ArrayList<EClass>) reader.getClasses();
-				
-		//Les size des classes
-		sizes= (ArrayList<Integer>) reader.getClassSize();
-		sizesMin= (ArrayList<Integer>) reader.getClassSizeMin();
-		
+	public GenXCSP(MetaModelReader reader, int RefsBound, int sym){
+		createRootElement(reader,sym);
+		this.referencesUB=RefsBound;
+	}
+	
+	public GenXCSP(MetaModelReader reader, ConfigFileReader cfr, int sym){
+		createRootElement(reader,sym);
 		this.cfr=cfr;
-		this.racine=racine;
-		this.RefsBound= cfr.getReferencesUB();	
+		this.referencesUB= cfr.getReferencesUB();	
 	}
 	
-	public int getMaxDomains()
-	{
-		return maxDomains;
+	/**
+	 * This is the main method. It generates the CSP instance
+	 * 
+	 * @param file: filepath of CSP document (instance.xml)
+	 * @return
+	 */
+	public void GenerateXCSP(String file){
+		
+		GenDomains();
+		//GenFeaturesDomains(featuresBound);
+		GenRefsDomainsJokers(referencesUB);
+		GenVars();
+		GenPredOrd();
+    	
+		Attribute nbvars= new Attribute("nbVariables", ""+numberOfVariables);
+		Attribute nbdom= new Attribute("nbDomains", ""+numberOfDomaines);
+		Attribute nbpre= new Attribute("nbPredicates", ""+numberOfPredicates );
+		Attribute nbrel= new Attribute("nbRelationss", ""+numberOfRelations);
+		Attribute nbcons= new Attribute("nbConstraints", ""+numberOfConstraints);
+		domains.setAttribute(nbdom);
+		variables.setAttribute(nbvars);
+		predicates.setAttribute(nbpre);
+		relations.setAttribute(nbrel);
+		constraints.setAttribute(nbcons);
+		instance.addContent(domains);
+		instance.addContent(variables);
+		instance.addContent(predicates);
+		instance.addContent(constraints);
+		
+		saveXML(getXCSPinstance(), file);
 	}
 	
-	///////////////////////////////////////////////////
-	///////////////////////////////////////////////
-	///////////////////////////////////////////
-	///////////////////////////////////////
-	///////////////////////////////////
-	///////////////////////////////
-	///////////////////////////          Sum computation methods 
-	///////////////////////
-	///////////////////
-	///////////////
-	////////////
-	
-	
-	public int domaineSum(int k)
-	{
-		int s=0;
-		if (k==0)
-			return 0;
-		for(int i=0;i<=k-1;i++)
-		{
-			s+= sizes.get(i);
-		}
-		return s;
-	}
-	
-	public int domaineSumMin(int k)
-	{
-		int s=0;
-		if (k==0)
-			return 0;
-		for(int i=0;i<=k-1;i++)
-		{
-			s+= sizesMin.get(i);
-		}
-		return s;
-	}
-	
-	///////////////////////////////////////////////////
-	///////////////////////////////////////////////
-	///////////////////////////////////////////
-	///////////////////////////////////////
-	///////////////////////////////////
-	///////////////////////////////           Generate Class Domains
-	///////////////////////////          
-	///////////////////////
-	///////////////////
-	///////////////
-	////////////
-	/****
-	 *    Generate Class Domains
+	/**
+	 *  Generate Class Domains
 	 *   
 	 */
 	public void GenDomains()
 	{
 		
 		int i=1;
-		for(EClass c: lesClasses)
+		for(EClass c: listOfClasses)
 		{
 			//***************************************
 			//Construire son domaine
@@ -183,13 +140,12 @@ public class GenXCSP {
 			//Domaine 1..min
 			//*****************************************************
 			domaine= new Element("domain");
-			nbDoms++;
+			numberOfDomaines++;
 			n=new Attribute("name", "DC"+i);
-		//	n=new Attribute("name", "DC_"+c.getName()); ////Nom de classe = name, DC_name
 			domaine.setAttribute(n);
 			
-			lB=  domaineSum(reader.getClassIndex(c)-1)+1;
-			uB= domaineSum(reader.getClassIndex(c)-1) + sizesMin.get(reader.getClassIndex(c)-1); 
+			lB=  reader.domaineSum(reader.getClassIndex(c)-1)+1;
+			uB=  reader.domaineSum(reader.getClassIndex(c)-1) + minSizesOfClasses.get(reader.getClassIndex(c)-1); 
 			
 			if(lB==uB)
 			v= ""+lB;
@@ -207,18 +163,17 @@ public class GenXCSP {
 			//Domaine min+1..max
 			//****************************************************
 			domaine= new Element("domain");
-			nbDoms++;
+			numberOfDomaines++;
 			n=new Attribute("name", "DC"+i+"_2");
 		//	n=new Attribute("name", "DC_"+c.getName()+"_2");
 			
 			
 			domaine.setAttribute(n);
 			
-			lB=  domaineSum(reader.getClassIndex(c)-1)+ sizesMin.get(reader.getClassIndex(c)-1)+1; 					
-			uB=  domaineSum(reader.getClassIndex(c)); 
+			lB=  reader.domaineSum(reader.getClassIndex(c)-1)+ minSizesOfClasses.get(reader.getClassIndex(c)-1)+1; 					
+			uB=  reader.domaineSum(reader.getClassIndex(c)); 
 			
-			if (lB-1==uB)
-			{
+			if (lB-1==uB){
 				v= "0 "+uB;
 				vv= uB+1;
 			}
@@ -242,15 +197,15 @@ public class GenXCSP {
 			////////////////////////////////////
 			
 			domaine= new Element("domain");
-			nbDoms++;
+			numberOfDomaines++;
 		//	n=new Attribute("name", "DC"+i+"_2");
 			n=new Attribute("name", "DC_"+c.getName());
 			
 			domaine.setAttribute(n);
 			
 			
-			lB=  domaineSum(reader.getClassIndex(c)-1)+1;
-			uB=  domaineSum(reader.getClassIndex(c)); 
+			lB=  reader.domaineSum(reader.getClassIndex(c)-1)+1;
+			uB=  reader.domaineSum(reader.getClassIndex(c)); 
 				
 			if (lB==uB)
 			{
@@ -273,18 +228,7 @@ public class GenXCSP {
 		
 	}
 	
-	///////////////////////////////////////////////////
-	///////////////////////////////////////////////
-	///////////////////////////////////////////
-	///////////////////////////////////////
-	///////////////////////////////////
-	///////////////////////////////
-	///////////////////////////          Generate Feature Domains 
-	///////////////////////
-	///////////////////
-	///////////////
-	////////////
-	/****
+	/**
 	 *
 	 *     Features Domains
 	 */
@@ -293,14 +237,14 @@ public class GenXCSP {
 		int fid=0;
 		int i=1;
 		
-		for(EClass c: lesClasses)
+		for(EClass c: listOfClasses)
 		{
 			fid=0;
 			for (EAttribute a: reader.getAllAttributesFromClass(c))
 			{
 				fid++;
 				Element domainef= new Element("domain");
-				nbDoms++;
+				numberOfDomaines++;
 				Attribute nf=new Attribute("name", "DF"+i+"_"+fid);
 				domainef.setAttribute(nf);
 			
@@ -332,26 +276,20 @@ public class GenXCSP {
 	}
 	
 	
-	/////////////////////////////////////////////////////
-	//////////////////////////////////////////////////
-	//////////////////////////////////////////
-	//////////////////////////////////////
-	////////////////////////////////           Generate Jokers interval
-	////////////////////////////
-	//////////////////////
-	/////////////////
-	///////////
-	
+	/**
+	 * 
+	 * @return
+	 */
 	public int GenJokers()
 	{
 		int max=0;
-		for(EClass c:lesClasses)
+		for(EClass c:listOfClasses)
 		{
 			for(EReference ref: reader.getAllReferencesFromClass(c))
 			{
 				int ub=ref.getUpperBound();
 				if (ub==-1)
-					ub=RefsBound;
+					ub=referencesUB;
 				int lb=ref.getLowerBound();
 				int inter= ub-lb;
 				if (inter>max) 
@@ -361,26 +299,14 @@ public class GenXCSP {
 		return max;
 	}
 		
-	///////////////////////////////////////////////////
-	///////////////////////////////////////////////
-	///////////////////////////////////////////
-	///////////////////////////////////////
-	///////////////////////////////////
-	///////////////////////////////
-	///////////////////////////          Generate Reference Domains 
-	///////////////////////
-	///////////////////
-	///////////////
-	////////////
-	/****
-	 * 
+	/**
 	 *      Generate References Domains      
 	 * 
 	 */
 	public void GenRefsDomains(int FeatureBound)
 	{
 		int i=1;
-		for(EClass c: lesClasses)
+		for(EClass c: listOfClasses)
 		{
 			
 			int refi=0;
@@ -400,30 +326,28 @@ public class GenXCSP {
 					int cindex=reader.getClassIndex(dst);
                 	    					
 					Element domaine= new Element("domain");
-        			nbDoms++;
+        			numberOfDomaines++;
         			Attribute n=new Attribute("name", "DCR_"+refi+"_"+i);
         			domaine.setAttribute(n);
         			
-        			int lB=  domaineSum(cindex-1)+1; //(i-1)*10+1; // size(class)= 10;
-        			int uB=  domaineSum(cindex); //(i)*10;   // size(class)= 10;
+        			int lB=  reader.domaineSum(cindex-1)+1; //(i-1)*10+1; // size(class)= 10;
+        			int uB=  reader.domaineSum(cindex); //(i)*10;   // size(class)= 10;
         			
         			
         			String vn= "0" + " "+ lB+ ".."+ uB;
         			String v= " "+ lB+ ".."+ uB;
         			
         			
-        			if(c.getName().equals(racine)) 
+        			if(c.getName().equals(rootClass)) 
         				{
 	        				for(int ii=lB;ii<=uB;ii++)
 	            			{
 	            				gccvals+= " "+ii;
 	            			}
         					//gccvals+= v;
-        					gccvalsarity+= uB-lB+1;
+        					gccValuesArity+= uB-lB+1;
         				}
-        //*********			
-      //  			String vn=v;         //Virer ça pour mettre le "0"
-        //*********			
+       
         			domaine.setText(v);
         			int vv= uB-lB+1; //Plus la valuer 0 de non allocation
         			
@@ -454,8 +378,8 @@ public class GenXCSP {
 						EClass dst= ref.getEReferenceType();
     					int cindex=reader.getClassIndex(cst);
     					
-    					int lB=  domaineSum(cindex-1)+1; //(i-1)*10+1; // size(class)= 10;
-    					int uB=  domaineSum(cindex); //(i)*10;   // size(class)= 10;
+    					int lB=  reader.domaineSum(cindex-1)+1; //(i-1)*10+1; // size(class)= 10;
+    					int uB=  reader.domaineSum(cindex); //(i)*10;   // size(class)= 10;
     					
     					for(int ii=lB;ii<=uB;ii++)
     					{
@@ -467,7 +391,7 @@ public class GenXCSP {
 					}
    					
 					Element domaine= new Element("domain");
-        			nbDoms++;
+        			numberOfDomaines++;
         			Attribute n=new Attribute("name", "DCR_"+refi+"_"+i);
         			domaine.setAttribute(n);
         				
@@ -486,10 +410,10 @@ public class GenXCSP {
         			Dom.setAttribute(n2);
         			Dom.setText("0" +v);	   			
         			
-        			if(c.getName().equals(racine)) 
+        			if(c.getName().equals(rootClass)) 
     				{
     					gccvals= gcc1;
-    					gccvalsarity+= vv;
+    					gccValuesArity+= vv;
     				}
         		//	Dom.setText(v);	   			//Virer ça pour mettre le 0
         			
@@ -505,25 +429,12 @@ public class GenXCSP {
 	}
 	
 
-///////////////////////////////////////////////////
-///////////////////////////////////////////////
-///////////////////////////////////////////
-///////////////////////////////////////
-///////////////////////////////////
-///////////////////////////////
-///////////////////////////          Generate Reference Domains + Jokers ******* 
-///////////////////////
-///////////////////
-///////////////
-////////////
-/****
-* 
-*      Generate References Domains      
-* 
-*/
-	public void GenRefsDomainsJokers(int FeatureBound)
-		{
-			
+
+	/**
+	*      Generate References Domains      
+	* 
+	*/
+	public void GenRefsDomainsJokers(int FeatureBound){			
 			int max= GenJokers();
 			int JSLB= maxDomains+1;
 			int JSUB= JSLB+max;
@@ -531,7 +442,7 @@ public class GenXCSP {
 			int nbvJ= JSUB-JSLB;
 			
 			int i=1;
-			for(EClass c: lesClasses)
+			for(EClass c: listOfClasses)
 				{
 
 					int refi=0;
@@ -551,26 +462,26 @@ public class GenXCSP {
 									int cindex=reader.getClassIndex(dst);
 
 									Element domaine= new Element("domain");
-									nbDoms++;
+									numberOfDomaines++;
 									Attribute n=new Attribute("name", "DCRJ_"+refi+"_"+i);
 									domaine.setAttribute(n);
 
-									int lB=  domaineSum(cindex-1)+1; //(i-1)*10+1; // size(class)= 10;
-									int uB=  domaineSum(cindex); //(i)*10;   // size(class)= 10;
+									int lB=  reader.domaineSum(cindex-1)+1; //(i-1)*10+1; // size(class)= 10;
+									int uB=  reader.domaineSum(cindex); //(i)*10;   // size(class)= 10;
 
 
 									String vn= ""+ lB+ ".."+ uB+ " "+jokerString;
 									String v= " "+ lB+ ".."+ uB;
 
 
-									if(c.getName().equals(racine)) 
+									if(c.getName().equals(rootClass)) 
 									{
 										for(int ii=lB;ii<=uB;ii++)
 											{
 												gccvals+= " "+ii;
 											}
 										//gccvals+= v;
-										gccvalsarity+= uB-lB+1;
+										gccValuesArity+= uB-lB+1;
 									}
 									//*********			
 									//  			String vn=v;         //Virer ça pour mettre le "0"
@@ -605,8 +516,8 @@ public class GenXCSP {
 										EClass dst= ref.getEReferenceType();
 										int cindex=reader.getClassIndex(cst);
 
-										int lB=  domaineSum(cindex-1)+1; //(i-1)*10+1; // size(class)= 10;
-										int uB=  domaineSum(cindex); //(i)*10;   // size(class)= 10;
+										int lB=  reader.domaineSum(cindex-1)+1; //(i-1)*10+1; // size(class)= 10;
+										int uB=  reader.domaineSum(cindex); //(i)*10;   // size(class)= 10;
 
 										for(int ii=lB;ii<=uB;ii++)
 											{
@@ -618,7 +529,7 @@ public class GenXCSP {
 									}
 
 								Element domaine= new Element("domain");
-								nbDoms++;
+								numberOfDomaines++;
 								Attribute n=new Attribute("name", "DCRJ_"+refi+"_"+i);
 								domaine.setAttribute(n);
 
@@ -637,10 +548,10 @@ public class GenXCSP {
 								Dom.setAttribute(n2);
 								Dom.setText(v + " "+ jokerString);	   			
 
-								if(c.getName().equals(racine)) 
+								if(c.getName().equals(rootClass)) 
 									{
 										gccvals= gcc1;
-										gccvalsarity+= vv;
+										gccValuesArity+= vv;
 									}
 								//	Dom.setText(v);	   			//Virer ça pour mettre le 0
 
@@ -680,127 +591,80 @@ public class GenXCSP {
 	public void GenVars()
 	{
 		int i=1;
-		for(EClass c: lesClasses)
-		{
+		for(EClass c: listOfClasses){
 			int refi=0;
-			  //Variables pour une racine (Pour la gcc)
-			   int gccarity=0;
-			   String gccvars="";
-			
+			int gccarity=0;
+			String gccvars="";
 			   
-			 //Pour la Gcc Eopposite			   
-			    int arityGcc=0;
-		    	int valsArityGcc=0;
-		    	String varsGcc="";
-		    	String valsGcc="";
-			   
-			
-			for(int j=domaineSum(reader.getClassIndex(c)-1)+1;j<=domaineSum(reader.getClassIndex(c));j++) 	
-			{	
-				//************************************            
-				//Les variables Des Attributs 
-				int fid=0;
-            	for (EAttribute a: reader.getAllAttributesFromClass(c))
-            	{
+			//Pour la Gcc Eopposite			   
+			int arityGcc=0;
+		    int valsArityGcc=0;
+		    String varsGcc="";
+		    String valsGcc="";
+		    
+			for(int j=reader.domaineSum(reader.getClassIndex(c)-1)+1;j<=reader.domaineSum(reader.getClassIndex(c));j++){	
 				
-				fid++;
-				Element variablef= new Element("variable");
-            	nbVars++;
-            	Attribute namef= new Attribute("name", "F_"+c.getName()+"_"+j+"_"+a.getName());
-            	Attribute domf= new Attribute("domain", "DF"+i+"_"+fid);
+				//Create attributes variables 
+				int fid=0;
+//            	for (EAttribute a: reader.getAllAttributesFromClass(c)){
+//					fid++;
+//					Element variablef= new Element("variable");
+//	            	numberOfVariables++;
+//	            	Attribute namef= new Attribute("name", "F_"+c.getName()+"_"+j+"_"+a.getName());
+//	            	Attribute domf= new Attribute("domain", "DF"+i+"_"+fid);
+//	            	variablef.setAttribute(domf);
+//	            	variablef.setAttribute(namef);
+//	            	variables.addContent(variablef);     		
+//            	}
             	
-            	  ///////////////////////////////////
-            	 //OCL Réseaux de Petri
-            	//////////////////////////////////
-            	if(c.getName().equals("Place") || c.getName().equals("Transition"))
-            	{
-            		if(a.getName().equals("name"))
-            		{
-            			alldiffnames+= " F_"+c.getName()+"_"+j+"_"+a.getName();
-            			Alldiffnames++;
-            		}
-            	}
-            	////////////////////////////////////
-            	////////////////////////////////////
-            	///////////////////////////////////
-            	
-            	variablef.setAttribute(domf);
-            	variablef.setAttribute(namef);
-            	variables.addContent(variablef);     		
-            	}
-            	
-            	//******************************
-            	//Les références
-    		    refi=0;
-    		    for (EReference ref: reader.getAllReferencesFromClasswithOpposite(c))
-    			{
+            	//Create variables for references
+            	refi=0;
+    		    for (EReference ref: reader.getAllReferencesFromClasswithOpposite(c)){
     		    	refi++;
-    		    	if (!ref.getEReferenceType().isAbstract())
-    				{
+    		    	if (!ref.getEReferenceType().isAbstract()){
     					int zz=ref.getUpperBound();
     					if (zz==-1)
-    						zz=RefsBound;
+    						zz=referencesUB;
     					
     					EClass dst= ref.getEReferenceType();
     					int cindex=reader.getClassIndex(dst);
                     	
     					String VarPrec="";
     					
-    					for(int z=1;z<=zz;z++)
-    					{
-    					Element variabler= new Element("variable");
-                    	nbVars++;
-                    	
-                    	Attribute namer= new Attribute("name", "Id_"+c.getName()+"_"+j+"_"+ref.getName()+"_"+z);
-                    	Attribute domr;
-                    	VarPrec="Id_"+c.getName()+"_"+j+"_"+ref.getName()+"_"+z;
-                    	//*************
-                    	gccarity++;
-                    	gccvars+= " "+ "Id_"+c.getName()+"_"+j+"_"+ref.getName()+"_"+z;
-                    	gccvals+= "";             
-                    	
-                    	
-                    	/////////////////////////////////////////////////////////////////
-                    	//Contrainte ordonne des vars des références: Breaking symmetries
-                    	/////////////////////////////////////////////////////////////////
-                    	if(Symmetries==1)
-                    	{
-                    		if(z>1)
-                    		{
-                    			int ertf=z-1;
-                    			GenConstOrd("Id_"+c.getName()+"_"+j+"_"+ref.getName()+"_"+z, "Id_"+c.getName()+"_"+j+"_"+ref.getName()+"_"+ertf);
-                    		}
-                    	}
-                    
-                    	////////////////////////
-                    	// Domaines avec 0
-                    	//////////////////////////////////////////             	
-                    	/*  	
-                		if (z<ref.getLowerBound())
-                    	{
-                    		domr= new Attribute("domain", "DCR_"+refi+"_"+i);
-                    	}
-                    	else
-                    	{
-                    		domr= new Attribute("domain", "DCR2_"+refi+"_"+i);
-                   
-                   		}
-                    	 */  		
-                    	////////////////////////// 
-                    	// Doamines avec les jokers 
-                    	//////////////                 
-                   		if (z<=ref.getLowerBound())                                        
-                        	{
-                        		domr= new Attribute("domain", "DCRJ_"+refi+"_"+i);       
-                        	}
-                        	else                                                         
-                        	{                                                            
-                        		domr= new Attribute("domain", "DCRJ2_"+refi+"_"+i);       
-                        	}	
-                    		
-                    	variabler.setAttribute(domr);
-                    	variabler.setAttribute(namer);
-                    	variables.addContent(variabler);
+    					for(int z=1;z<=zz;z++){
+	    					Element variabler= new Element("variable");
+	                    	numberOfVariables++;
+	                    	
+	                    	Attribute namer= new Attribute("name", "Id_"+c.getName()+"_"+j+"_"+ref.getName()+"_"+z);
+	                    	Attribute domr;
+	                    	VarPrec="Id_"+c.getName()+"_"+j+"_"+ref.getName()+"_"+z;
+	                    	//*************
+	                    	gccarity++;
+	                    	gccvars+= " "+ "Id_"+c.getName()+"_"+j+"_"+ref.getName()+"_"+z;
+	                    	gccvals+= "";             
+	                    	
+	                    	/////////////////////////////////////////////////////////////////
+	                    	//Contrainte ordonne des vars des références: Breaking symmetries
+	                    	/////////////////////////////////////////////////////////////////
+	                    	if(symmetries==1){
+	                    		if(z>1){
+	                    			int ertf=z-1;
+	                    			GenConstOrd("Id_"+c.getName()+"_"+j+"_"+ref.getName()+"_"+z, "Id_"+c.getName()+"_"+j+"_"+ref.getName()+"_"+ertf);
+	                    		}
+	                    	}
+	                    
+	                    	////////////////////////// 
+	                    	// Doamines avec les jokers 
+	                    	//////////////                 
+	                   		if (z<=ref.getLowerBound()){
+	                        	domr= new Attribute("domain", "DCRJ_"+refi+"_"+i);       
+	                        }else{                                                            
+	                        	domr= new Attribute("domain", "DCRJ2_"+refi+"_"+i);       
+	                        }	
+	                    		
+	                    	variabler.setAttribute(domr);
+	                    	variabler.setAttribute(namer);
+	                    	variables.addContent(variabler);
     					}
     					
     				}
@@ -808,8 +672,7 @@ public class GenXCSP {
     				{
     					//Création des variables ---- Union de domaines
     					List<EClass> ddd=reader.getConcreteSubTypes(ref.getEReferenceType());
-    					for (EClass cst: ddd)
-    					{
+    					for (EClass cst: ddd){
     						EClass dst= ref.getEReferenceType();
         					int cindex=reader.getClassIndex(cst);                        	
     					}   
@@ -817,72 +680,38 @@ public class GenXCSP {
     					if (zz==-1)
     						//zz=5;
     						//zz=FeatureBound/2;
-						    zz=RefsBound;
+						    zz=referencesUB;
     						
     					for(int z=1;z<=zz;z++)
     					{
-    					Element variabler= new Element("variable");
-                    	nbVars++;
-                    	Attribute namer= new Attribute("name", "Id_"+c.getName()+"_"+j+"_"+ref.getName()+"_"+z);                  	                    	
-                    	Attribute domr;
-                    	
-                    	//*************
-                    	gccarity++;
-                    	gccvars+= " "+ "Id_"+c.getName()+"_"+j+"_"+ref.getName()+"_"+z;
-                    	gccvals+= "";             
-                    
-                    	////////////////////////////////////////////////////////////////////
-                    	//Contrainte ordonne des vars des références: Break symmetries
-                    	////////////////////////////////////////////////////////////////////
-                    	if(Symmetries==1)
-                    	{
-                    		if(z>1)             
-                    		{
-                    			int ertf=z-1;
-                    			GenConstOrd("Id_"+c.getName()+"_"+j+"_"+ref.getName()+"_"+z, "Id_"+c.getName()+"_"+j+"_"+ref.getName()+"_"+ertf);
-                    		}
-                    	}
-                  	
-                    	
-              /*    	if (z<=ref.getLowerBound())
-                    	{
-                    		domr= new Attribute("domain", "DCR_"+refi+"_"+i);
-                    	}    
-                    	else
-                    	{
-                    		domr= new Attribute("domain", "DCR2_"+refi+"_"+i);	
-                    		//*************************************************************
-                        	//Contrainte de non allocation de la reference
-               //     		if(j>sizesMin.get(r.getClassIndex(c)-1))
-               //     		GenNoAllocConstraint(""+i+refi+z,"Id_"+c.getName()+"_"+j+ " Id_"+c.getName()+"_"+j+"_"+ref.getName()+"_"+z);
-                        	//*************************************************************
-                        	
-                    	}*/
-                   	
-                   	if (z<=ref.getLowerBound())
-                    	{
-                    		domr= new Attribute("domain", "DCRJ_"+refi+"_"+i);
-                    	}    
-                    	else
-                    	{
-                    		domr= new Attribute("domain", "DCRJ2_"+refi+"_"+i);	
-                    	}
-                    	variabler.setAttribute(domr);
-                    	variabler.setAttribute(namer);
-                    	variables.addContent(variabler);
-                    	
-                    	
-                    	//System.out.println("Class= "+c.getName()+ " index= "+ i +" ref= "+ref.getName()+" refii= " + refi + " dom= "+domr);
-        		    	
-    			}
-    				
-    					
-    		}
-    		    	
-    		    	
-				
-    	}
-  }
+	    					Element variabler= new Element("variable");
+	                    	numberOfVariables++;
+	                    	Attribute namer= new Attribute("name", "Id_"+c.getName()+"_"+j+"_"+ref.getName()+"_"+z);                  	                    	
+	                    	Attribute domr;
+	                    	
+	                    	gccarity++;
+	                    	gccvars+= " "+ "Id_"+c.getName()+"_"+j+"_"+ref.getName()+"_"+z;
+	                    	gccvals+= "";             
+	                    
+	                    	if(symmetries==1){
+	                    		if(z>1){
+	                    			int ertf=z-1;
+	                    			GenConstOrd("Id_"+c.getName()+"_"+j+"_"+ref.getName()+"_"+z, "Id_"+c.getName()+"_"+j+"_"+ref.getName()+"_"+ertf);
+	                    		}
+	                    	}
+	
+	                   		if (z<=ref.getLowerBound()){
+	                    		domr= new Attribute("domain", "DCRJ_"+refi+"_"+i);
+	                    	}else{
+	                    		domr= new Attribute("domain", "DCRJ2_"+refi+"_"+i);	
+	                    	}
+	                    	variabler.setAttribute(domr);
+	                    	variabler.setAttribute(namer);
+	                    	variables.addContent(variabler);
+	                    }
+    				}
+    		    }
+			}
 			
 			//////////////////////////////////////////////////////////////
 			///////////    Gestion des references EOpposite
@@ -907,8 +736,8 @@ public class GenXCSP {
 						EClass dst= ref.getEReferenceType();
 						//System.out.println("Class="+dst.getName());
 						int cindex=reader.getClassIndex(dst);
-						int lB=  domaineSum(cindex-1)+1; 
-						int uB=  domaineSum(cindex);
+						int lB= reader.domaineSum(cindex-1)+1; 
+						int uB= reader.domaineSum(cindex);
 										
 						//Remplir vals
 						for(int biz=lB;biz<=uB;biz++)
@@ -919,14 +748,14 @@ public class GenXCSP {
 						//Les vars et arityVars de la Gcc
 							int zz=ref.getUpperBound();
 							if (zz==-1)
-								zz=RefsBound;
+								zz=referencesUB;
 
 							EClass dst2= ref.getEReferenceType();
 							int cindex2=reader.getClassIndex(dst);
 
 							String VarPrec="";
 
-							for(int j=domaineSum(reader.getClassIndex(c)-1)+1;j<=domaineSum(reader.getClassIndex(c));j++)   //10= size(c);
+							for(int j=reader.domaineSum(reader.getClassIndex(c)-1)+1;j<=reader.domaineSum(reader.getClassIndex(c));j++)   //10= size(c);
 							{
 								for(int z=1;z<=zz;z++)
 								{
@@ -939,7 +768,7 @@ public class GenXCSP {
 							int upperBound = ref.getEOpposite().getUpperBound();
 							
 							if(upperBound ==-1) 
-								upperBound = RefsBound;
+								upperBound = referencesUB;
 							
 
 						//Créer la Gcc 	
@@ -952,47 +781,30 @@ public class GenXCSP {
 		}
 	}
 	
-
-	///////////////////////////////////////////////////
-	///////////////////////////////////////////////
-	///////////////////////////////////////////
-	///////////////////////////////////////
-	///////////////////////////////////
-	///////////////////////////////
-	///////////////////////////          Generate Class Instances GCC Constaint 
-	///////////////////////
-	///////////////////
-	///////////////
-	////////////
-	/******
-       *  
-	   *       Generate Classes Gcc Constraint
-	   */
-	
+	/** 
+	 * Generate Classes Gcc Constraint
+	 */
 	public void GenClassConstraint()
 	{
 		Element cons=new Element("constraint");
-		nbCons++;
-		int arity=domaineSum(lesClasses.size());		
+		numberOfConstraints++;
+		int arity=reader.domaineSum(listOfClasses.size());		
 		
 		//Les parametres
 		//String vars= "";
 		String vals= "",lb="",ub="";
 		
-		
 		//Valeurs et bornes inf et sup
-		int ddddd= domaineSum(lesClasses.size())-domaineSumMin(lesClasses.size());
+		int ddddd= reader.domaineSum(listOfClasses.size()) - reader.domaineSumMin(listOfClasses.size());
 		vals= vals + "0 ";
 		lb= lb+ "0 ";
 		ub= ub+ ddddd+" ";
-		for(int i=1;i<=domaineSum(lesClasses.size());i++)
-		{
+		for(int i=1; i<=reader.domaineSum(listOfClasses.size()); i++){
 			vals= vals + i+" ";
 			lb=lb+ "0 ";
 			ub=ub+"1 ";
 		}
 		
-        
 		String pText="[ "+ vars +"] ["+ vals +"] ["+lb+"] ["+ub+"]";
 		Element param= new Element("parameters");
 		param.setText(pText);
@@ -1012,26 +824,18 @@ public class GenXCSP {
 		
 	}
 
-	/*********
-	 * 
+	/** 
 	 *   Class Instances References No Allocation Constraints 
-	 * 
 	 */
-	public void GenNoAllocConstraintPred()
-	{
-		//La relation d'implication
+	public void GenNoAllocConstraintPred(){
 		Element pre1= new Element("predicate");
-		nbPre++;
-		
+		numberOfPredicates ++;
 		Element par1= new Element("parameters");
 		par1.setText("int A int B");
-		
-
 		Element exp= new Element("expression");
 		Element fct= new Element("functional");
 		fct.setText("or(neg(eq(A,0)),eq(B,0))");
 		exp.addContent(fct);
-		
 		pre1.addContent(par1);
 		pre1.addContent(exp);
 		Attribute refe1= new Attribute("name", "implies");
@@ -1039,16 +843,12 @@ public class GenXCSP {
 		predicates.addContent(pre1);
 	}
 	
-	public void GenNoAllocConstraint(String i,String var)
-	{
+	public void GenNoAllocConstraint(String i,String var){
 		Element cons = new Element("constraint");
-		nbCons++;
-		
+		numberOfConstraints++;
 		Element param= new Element("parameters");
 		param.setText(var);
-		
 		cons.addContent(param);
-		
 		Attribute name= new Attribute("name", "CNA"+i);
 		cons.setAttribute(name);
 		Attribute Arity= new Attribute("arity", "2");
@@ -1057,43 +857,31 @@ public class GenXCSP {
 		cons.setAttribute(Scope);
 		Attribute refe= new Attribute("reference", "implies");
 		cons.setAttribute(refe);
-		
-		constraints.addContent(cons);
-		
+		constraints.addContent(cons);	
 	}
 	
 	/**
-	* 
-	*    Generating a Gcc Constraint on root references' instances 
-	* 
+	*   Generating a Gcc Constraint on root references' instances 
 	*/
-	public void Gccroot(int arity,int valsarity,String vars,String vals)
-	{
+	public void Gccroot(int arity,int valsarity,String vars,String vals){
 		Element cons=new Element("constraint");
-		nbCons++;
+		numberOfConstraints++;
 		
 		//Les parametres
-		//String vars= "";
 		String lb="0 ",ub=arity+" ";
+		vals= "0"+ vals;
 		
-	    vals= "0"+ vals;
-		
-	    //System.out.println("arity vals="+valsarity);
-	    
 		//Valeurs et bornes inf et sup
-		for(int i=1;i<=valsarity;i++)
-		{
+		for(int i=1;i<=valsarity;i++){
 			lb=lb + "0 ";
 			ub=ub +"1 ";
 		}
 		
-        
 		String pText="[ "+ vars +"] ["+ vals +"] ["+lb+"] ["+ub+"]";
 		Element param= new Element("parameters");
 		param.setText(pText);
 		cons.addContent(param);
 		
-		//Les attributs
 		Attribute name= new Attribute("name", "GccRoot");
 		cons.setAttribute(name);
 		Attribute Arity= new Attribute("arity", ""+valsarity);
@@ -1102,10 +890,7 @@ public class GenXCSP {
 		cons.setAttribute(Scope);
 		Attribute refe= new Attribute("reference", "global:globalCardinality");
 		cons.setAttribute(refe);
-		
 		constraints.addContent(cons);
-		
-
 	}
 	
 	/**
@@ -1123,11 +908,10 @@ public class GenXCSP {
 	 * @param lower
 	 * @param upper
 	 */
-	
 	public void createGcc(String gccName,int variableArity, int valuesArity, String variables, String domain, int lower, int upper)
 	{
 		Element cons=new Element("constraint");
-		nbCons++;
+		numberOfConstraints++;
 		
 		String gccLowerBounds=" ",gccUpperBounds=" ";
 		Random random= new SecureRandom();
@@ -1163,7 +947,7 @@ public class GenXCSP {
 	public void GenAllDiffRoot(int arity,String vars)
 	{
 		Element cons=new Element("constraint");
-		nbCons++;
+		numberOfConstraints++;
 		
 		//Les parametres	
         
@@ -1181,307 +965,84 @@ public class GenXCSP {
 		cons.setAttribute(Scope);
 		Attribute refe= new Attribute("reference", "global:allDifferent");
 		cons.setAttribute(refe);
-		
-	//	constraints.addContent(cons);
-	
+	    constraints.addContent(cons);
 	}
 	
-	//OCL RDP
-
-	public void GenAllDiffnames(int arity,String vars)
-	{
-		Element cons=new Element("constraint");
-		nbCons++;
-		
-		//Les parametres	
-        
-		String pText="["+ vars +"]";
-		Element param= new Element("parameters");
-		param.setText(pText);
-		cons.addContent(param);
-		
-		//Les attributs
-		Attribute name= new Attribute("name", "OCLAllDiffNames");
-		cons.setAttribute(name);
-		Attribute Arity= new Attribute("arity", ""+arity);
-		cons.setAttribute(Arity);
-		Attribute Scope= new Attribute("scope", ""+vars);
-		cons.setAttribute(Scope);
-		Attribute refe= new Attribute("reference", "global:allDifferent");
-		cons.setAttribute(refe);
-		
-		constraints.addContent(cons);
-	
-	}
-
-	//Contrainte OCL : Ocltype
-	public void GenOCLtypePred()
-	{
-		//La relation d'implication
-		Element pre1= new Element("relation");
-		nbRel++;
-		
-		String tuples="";
-		int nbtup=0;
-		
-		for (EClass c : lesClasses)
-		{
-			if(c.getName().equals("Arc"))
-			{
-				int pi= reader.getClassIndex("Place");
-				int ti= reader.getClassIndex("Transition");
-				
-				int a=  domaineSum(pi-1)+1;
-				int b= domaineSum(pi-1) + sizesMin.get(pi-1); 
-				
-				int cc=  domaineSum(ti-1)+1;
-				int d= domaineSum(ti-1) + sizesMin.get(ti-1); 
-		        
-				int i=a,j=b;
-				
-				for(i=a;i<=b;i++)
-				{
-					for(j=cc;j<=d;j++)
-					{
-						tuples= tuples+ " ("+i+","+j+")";
-						nbtup++;
-					}
-				}
-				
-				
-				for(i=cc;i<=d;i++)
-				{
-					for(j=a;j<=b;j++)
-					{
-						tuples+= " ("+i+","+j+")";
-						nbtup++;
-					}
-				}
-			}
-		}
-		pre1.setText(tuples);
-		Attribute refe1= new Attribute("name", "ocltypeRelation");
-		Attribute refe2= new Attribute("nbTuples", ""+nbtup);
-		Attribute refe3= new Attribute("sementics", "supports");
-		pre1.setAttribute(refe1);
-		pre1.setAttribute(refe2);
-		pre1.setAttribute(refe3);
-		relations.addContent(pre1);
-	}
-
-	public void GenOcltypeConstraint()
-	{
-		//Les contraintes OCl type de la classe Arc
-		for (EClass c : lesClasses)
-		{
-			if(c.getName().equals("Arc"))
-			{
-				int pi= reader.getClassIndex("Place");
-				int ti= reader.getClassIndex("Transition");
-				
-				int a=  domaineSum(pi-1)+1;
-				int b= domaineSum(pi-1) + sizesMin.get(pi-1); 
-				
-				int cc=  domaineSum(ti-1)+1;
-				int d= domaineSum(ti-1) + sizesMin.get(ti-1); 
-				
-				
-				//Création des contraintes
-				for(int j=1;j<=sizes.get(reader.getClassIndex(c)-1);j++)
-				{
-					Element cons = new Element("constraint");
-					nbCons++;
-								
-					Attribute name= new Attribute("name", "ocltypeCon"+j);
-					cons.setAttribute(name);
-					Attribute Scope= new Attribute("scope", "Id_Arc_"+j+"_source_1"+" Id_Arc_"+j+"_target_1 ");
-					cons.setAttribute(Scope);
-					Attribute refe= new Attribute("reference", "ocltypeRelation");
-					cons.setAttribute(refe);
-					
-					constraints.addContent(cons);
-				}
-			}
-		}
-	    		
-		
-	}
-	
-	///////////////////////////////////////////////////
-	//////////////////////////////////////////////
-	//////////////////////////////////////////
-	/////////////////////////////////
-	////////////////////////////               Ordonner les varialbes des références
-	//////////////////////
-	//////////////
-	///////
-
+	/**
+	 * Create predicate for symmetries constraints
+	 */
 	public void GenPredOrd()
 	{
-		//La relation d'implication
-				Element pre1= new Element("predicate");
-				nbPre++;
-				
-				Element par1= new Element("parameters");
-				par1.setText("int v1 int v2");
-				
+		Element pre1= new Element("predicate");
+		numberOfPredicates ++;
+		
+		Element par1= new Element("parameters");
+		par1.setText("int v1 int v2");
+		
 
-				Element exp= new Element("expression");
-				Element fct= new Element("functional");
-				fct.setText("lt(v1,v2)");
-				exp.addContent(fct);
-				
-				pre1.addContent(par1);
-				pre1.addContent(exp);
-				Attribute refe1= new Attribute("name", "inf");
-				pre1.setAttribute(refe1);
-				predicates.addContent(pre1);
-
+		Element exp= new Element("expression");
+		Element fct= new Element("functional");
+		fct.setText("lt(v1,v2)");
+		exp.addContent(fct);
+		
+		pre1.addContent(par1);
+		pre1.addContent(exp);
+		Attribute refe1= new Attribute("name", "inf");
+		pre1.setAttribute(refe1);
+		predicates.addContent(pre1);
 	}
 	
-	public void GenConstOrd(String v1,String v2)
-	{
+	/**
+	 * Create symmetries ordering constraints
+	 * 
+	 * @param variable1
+	 * @param variable2
+	 */
+	public void GenConstOrd(String variable1, String variable2){
+		numberOfConstraints++;
 		Element cons = new Element("constraint");
-		nbCons++;
-		
 		Element param= new Element("parameters");
-		param.setText(v2+" "+v1);
 		
+		param.setText(variable2+" "+variable1);
 		cons.addContent(param);
 		
-		Attribute name= new Attribute("name", "Cons"+v1+v2);
+		Attribute name= new Attribute("name", "Cons"+variable1+variable2);
 		cons.setAttribute(name);
 		Attribute Arity= new Attribute("arity", "2");
 		cons.setAttribute(Arity);
-		Attribute Scope= new Attribute("scope", v1+" "+v2);
+		Attribute Scope= new Attribute("scope", variable1+" "+variable2);
 		cons.setAttribute(Scope);
 		Attribute refe= new Attribute("reference", "inf");
 		cons.setAttribute(refe);
 		
 		constraints.addContent(cons);
-	
 	}
 	
-	
-	///////////////////////////////////////////////////
-	///////////////////////////////////////////////
-	///////////////////////////////////////////
-	///////////////////////////////////////
-	///////////////////////////////////
-	///////////////////////////////
-	///////////////////////////          Generate CSP XML Document Method 
-	///////////////////////
-	///////////////////
-	///////////////
-	////////////
-	/*****
-	 * 
-	 * Generate Meta-model CSP XML code  
-	 * 
+	/**
+	 * This method saves the xcsp document an an XML file
+	 * @param XCSP
+	 * @param file
 	 */
-	
-	public Document GenerateXCSP(String file)
-	{
-		//Construire les dommaines des classes
-		GenDomains();
-		
-		//Construire les domaines des features des classes
-		GenFeaturesDomains(FeatureBound);//FeatureBound);
-		
-		//Construire les domaines des références
-		GenRefsDomainsJokers(RefsBound);
-		
-		//Construire les variables des classes et de leurs Features et de leurs Références
-		GenVars();
-							
-        //Construire la contrainte Gcc sur les classes
-  //  	GenClassConstraint();
-		
-		//Construire la contrainte de non allocation des References si l'instance = 0
-//		GenNoAllocConstraintPred();
-	
-    	//La contrainte qui ordonne les var des références
-    	GenPredOrd();
-    	
-//    	if(racine.equals("PetriNet"))
-//    	{
-//    		//Contrainte OCL All diff des Rdp
-//    		GenAllDiffnames(Alldiffnames, alldiffnames);
-//    	
-//    		//Contrainte OCL: Ocltype des Rdp
-//    //		GenOCLtypePred();
-//    //		GenOcltypeConstraint();
-//    	}
-    
-		//Nombre de variables, de domaines, ... etc
-		Attribute nbvars= new Attribute("nbVariables", ""+nbVars);
-		Attribute nbdom= new Attribute("nbDomains", ""+nbDoms);
-		Attribute nbpre= new Attribute("nbPredicates", ""+nbPre);
-		Attribute nbrel= new Attribute("nbRelationss", ""+nbRel);
-		Attribute nbcons= new Attribute("nbConstraints", ""+nbCons);
-		domains.setAttribute(nbdom);
-		variables.setAttribute(nbvars);
-		predicates.setAttribute(nbpre);
-		relations.setAttribute(nbrel);
-		constraints.setAttribute(nbcons);
-		
-		//Ajout des Variables, des domaines, des contraintes au XML
-		instance.addContent(domains);
-		instance.addContent(variables);
-//		instance.addContent(relations);
-		instance.addContent(predicates);
-		instance.addContent(constraints);
-		
-		//Sauver le XML
-		saveXML(getXCSPinstance(), file);
-		return getXCSPinstance();
+	public void saveXML(Document XCSP,String file){
+		try{
+			XMLOutputter sortie = new XMLOutputter(Format.getPrettyFormat());
+		    sortie.output(XCSP, new FileOutputStream(file));
+		}
+		catch (Exception e){
+			System.out.println("\t[PROBLEM] impossible to save XCSP instance file");
+		}
 	}
 	
-	
-	
-	///////////////////////////////////////////////////
-	///////////////////////////////////////////////
-	///////////////////////////////////////////
-	///////////////////////////////////////
-	///////////////////////////////////
-	///////////////////////////////
-	///////////////////////////          Manipulate XML (SAVING, READING) 
-	///////////////////////
-	///////////////////
-	///////////////
-	////////////
-
-	public void saveXML(Document XCSP,String file)
+	public int getMaxDomains()
 	{
-		
-		 try
-		   {
-		      //On utilise ici un affichage classique avec getPrettyFormat()
-		      XMLOutputter sortie = new XMLOutputter(Format.getPrettyFormat());
-		      //Remarquez qu'il suffit simplement de créer une instance de FileOutputStream
-		      //avec en argument le nom du fichier pour effectuer la sérialisation.
-		      sortie.output(XCSP, new FileOutputStream(file));
-		   }
-		   catch (java.io.IOException e){}
-		
+		return maxDomains;
 	}
 	
-	public void PrintIt()
-	{
-		try
-		   {
-		      //On utilise ici un affichage classique avec getPrettyFormat()
-		      XMLOutputter sortie = new XMLOutputter(Format.getPrettyFormat());
-		      sortie.output(getXCSPinstance(), System.out);
-		   }
-		   catch (java.io.IOException e){}
-	}
-
-	public static org.jdom2.Document getXCSPinstance() {
+	public org.jdom2.Document getXCSPinstance() {
 		return XCSPinstance;
 	}
 
-	public static void setXCSPinstance(org.jdom2.Document xCSPinstance) {
+	public void setXCSPinstance(org.jdom2.Document xCSPinstance){
 		XCSPinstance = xCSPinstance;
 	}	
 }

@@ -54,7 +54,7 @@ public class Reconstruct {
 		debut=System.nanoTime();
 				
 		//Sa racine est Petrinet
-	    GenXCSP generation= new GenXCSP(ModelFile,racine,r,ub,rb,sym);
+	    GenXCSP generation= new GenXCSP(r,rb,sym);
 		generation.GenerateXCSP(InstanceFile);
 				
 		duree=(System.nanoTime()-debut)/1000000;

@@ -16,8 +16,8 @@ public class OclTest extends TestCase{
 	String ecoreFile = "model/Simple.ecore";
 	String racine = "Root";
 	
-	MetaModelReader _modelReader;
-	GenXCSP _generation;
+	MetaModelReader modelReader;
+	GenXCSP generation;
 	
 	public OclTest(String name) {
 		super(name);
@@ -27,16 +27,16 @@ public class OclTest extends TestCase{
 		super.setUp();
 		OclConstraints.XCSPFile = "model/" + racine + ".xml";
 
-		_modelReader = new MetaModelReader(ecoreFile, racine, 2, 2);
-	    _generation = new GenXCSP(ecoreFile, racine, _modelReader, 2, 4, 1);
-		_generation.GenerateXCSP(OclConstraints.XCSPFile);
+		modelReader = new MetaModelReader(ecoreFile, racine, 2, 2);
+	    generation = new GenXCSP(modelReader, 4, 1);
+		generation.GenerateXCSP(OclConstraints.XCSPFile);
 	}
 	
 	@Override
 	protected void tearDown() throws Exception {
-		GenXCSP.setXCSPinstance(null);
-		_generation = null;
-		_modelReader = null;
+		generation.setXCSPinstance(null);
+		generation = null;
+		modelReader = null;
 	}
 	
 	@Test
@@ -130,10 +130,10 @@ public class OclTest extends TestCase{
 	}
 
 	private void doTheTest(String ecoreFilePath, String oclFilePath, String className, String attributeName, String theoreticalDomain) {
-		OclConstraints oclCons = new OclConstraints(_modelReader, oclFilePath, GenXCSP.getXCSPinstance());
+		OclConstraints oclCons = new OclConstraints(modelReader, oclFilePath, generation.getXCSPinstance());
 		try {
 			oclCons.getConstraintsXCSP();
-			OclDomain oclDomain = new OclDomain(_modelReader, GenXCSP.getXCSPinstance(), className, attributeName);
+			OclDomain oclDomain = new OclDomain(modelReader, generation.getXCSPinstance(), className, attributeName);
 
 			assertEquals(theoreticalDomain, oclDomain.getDomainsAsStringList());
 		} catch (FileNotFoundException | ParserException e) {
@@ -145,7 +145,7 @@ public class OclTest extends TestCase{
 	@Test
 	public void testOclConstraintGetDomainAsList(){
 		
-		OclConstraints oclCons = new OclConstraints(null, "ocl/Test/inv_le.ocl", GenXCSP.getXCSPinstance());
+		OclConstraints oclCons = new OclConstraints(null, "ocl/Test/inv_le.ocl", generation.getXCSPinstance());
 		
 		LinkedList<Integer> resExpected = new LinkedList<>();
 		for(int i = -12; i < 6; i++)
@@ -153,7 +153,7 @@ public class OclTest extends TestCase{
 		
 		try {
 			oclCons.getConstraintsXCSP();
-			OclDomain oclDomain = new OclDomain(null, GenXCSP.getXCSPinstance(), "Student", "age");
+			OclDomain oclDomain = new OclDomain(null, generation.getXCSPinstance(), "Student", "age");
 
 			assertEquals(resExpected, oclDomain.getDomainsAsIntegerList());
 		} catch (FileNotFoundException | ParserException e) {
@@ -164,13 +164,13 @@ public class OclTest extends TestCase{
 	@Test
 	public void testOclConstraintGetDomainAsString(){
 		
-		OclConstraints oclCons = new OclConstraints(null, "ocl/Test/inv_le.ocl", GenXCSP.getXCSPinstance());
+		OclConstraints oclCons = new OclConstraints(null, "ocl/Test/inv_le.ocl", generation.getXCSPinstance());
 		
 		String resExpected = "-12..5";
 		
 		try {
 			oclCons.getConstraintsXCSP();
-			OclDomain oclDomain = new OclDomain(null, GenXCSP.getXCSPinstance(), "Student", "age");
+			OclDomain oclDomain = new OclDomain(null, generation.getXCSPinstance(), "Student", "age");
 
 			assertEquals(resExpected, oclDomain.getDomainsAsStringList());
 		} catch (FileNotFoundException | ParserException e) {

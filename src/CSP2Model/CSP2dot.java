@@ -27,9 +27,7 @@ public class CSP2dot extends ModelBuilder{
 	 * @param InstanceFile: .XML file path of the produced CSP instance
 	 */
 	public CSP2dot(String ModelFile, String racine,String InstanceFile, String oclFilePath){
-		
 		super(ModelFile, racine,InstanceFile,oclFilePath);
-		
 	}
 	
 	/***
@@ -41,8 +39,7 @@ public class CSP2dot extends ModelBuilder{
 	 * @param sol: Solutions number ?
 	 * @throws IOException
 	 */
-	public void generateModel(int lb, int ub, int rb, int sym, int sol) throws IOException 
-	{
+	public void generateModel(int lb, int ub, int rb, int sym, int sol) throws IOException{
 		super.CallCSPGenrator(lb, ub, rb, sym, sol);
 		Solutions2Models();
 	}
@@ -54,17 +51,15 @@ public class CSP2dot extends ModelBuilder{
 	 * @param sol: Solutions number ?
 	 * @throws IOException
 	 */
-	public void generateModel(String configFilePath, int sym, int sol) throws IOException
-	{
+	public void generateModel(String configFilePath, int sym, int sol) throws IOException{
 		super.CallCSPGenrator(configFilePath, sym, sol);
 		Solutions2Models();
 	}
 	
 	public void Solutions2Models() {
+		
 		System.out.println("Model Builder is running");
-		
 		int ID=0;
-		
 		for(FoundSolution solution: foundSolutions) {
 			ID++;
 			try {
@@ -138,7 +133,7 @@ public class CSP2dot extends ModelBuilder{
 						}
 						
 					}
-					variable++;
+					//variable++;
 				}	
 				
 				for (EReference ref: reader.getAllReferencesFromClasswithOpposite(c)){
@@ -161,8 +156,8 @@ public class CSP2dot extends ModelBuilder{
 				//////////////////////////////////////////////
 				// Creating the instances of other classes
 				//////////////////////////////////////////////
-				classDomBegin=  domaineSum(reader.getClassIndex(c)-1)+1;
-				classDomEnd=  domaineSum(reader.getClassIndex(c)); 
+				classDomBegin=  reader.domaineSum(reader.getClassIndex(c)-1)+1;
+				classDomEnd=  reader.domaineSum(reader.getClassIndex(c)); 
 				
 				for(int instanceOID=classDomBegin;instanceOID<=classDomEnd;instanceOID++)
 				{
@@ -201,7 +196,7 @@ public class CSP2dot extends ModelBuilder{
 								AttrDots= AttrDots+" "+ a.getName()+"="+ enume.getEEnumLiteral(vals.get(variable)-1)+" \\n";
 							}							
 						}
-						variable++;
+						//variable++;
 					}
 		    
 					//////////////////////
