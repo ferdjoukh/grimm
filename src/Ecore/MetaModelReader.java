@@ -22,6 +22,7 @@ public class MetaModelReader {
 	private ArrayList<Integer> minSizesOfClasses;
 	private ConfigFileReader configFileReader;
 	private String metamodelFilePath;
+	private Hashtable<String,ArrayList<String>> attributesDomains; 
 	
 	public void loadRootPackage(String metamodel,String rootClass) {
 		Resource.Factory.Registry reg=Resource.Factory.Registry.INSTANCE;
@@ -36,6 +37,7 @@ public class MetaModelReader {
 		this.rootClassName=rootClass;
 		this.resource=resource;
 		this.BasePackage= rootpackage;
+		this.attributesDomains = new Hashtable<String, ArrayList<String>>();
 	}
 	
 	public MetaModelReader(String metamodel,String rootClass){
@@ -53,6 +55,7 @@ public class MetaModelReader {
 		loadRootPackage(metamodel, rootClass);	
 		
 		this.configFileReader=cfr;
+		this.attributesDomains = cfr.getAttributesDomains();
 		sizeClassMinRead();
 		sizeClassRead();
 	}
@@ -96,7 +99,6 @@ public class MetaModelReader {
 		}
 		
 		pos=0;
-		
 		for (EClass ec:cls){
 			
 			if(ec.getName().equals(rootClassName)) {
@@ -107,7 +109,6 @@ public class MetaModelReader {
 			}
 			pos++;		   
 		}
-		
 		this.sizeOfClasses=sizes;
 	}
 
@@ -130,42 +131,38 @@ public class MetaModelReader {
 	 * @param classID
 	 * @return
 	 */
-	public int domaineSum(int classID)
-	{
-		int begin=0;
-		if (classID==0)
+	public int domaineSum(int classID){
+		int end=0;
+		if (classID <= 0)
 			return 0;
-		for(int i=0;i<=classID-1;i++)
-		{
-			begin+= sizeOfClasses.get(i);
+		
+		for(int i=0;i<=classID-1;i++){
+			end+= sizeOfClasses.get(i);
 		}
-		return begin;
+		return end;
 	}
 	
-	public int domaineSumMin(int k){
-		int s=0;
-		if (k==0) return 0;
+	public int domaineSumMin(int classID){
+		int end=0;
+		if (classID <= 0)
+			return 0;
 	
-		for(int i=0;i<=k-1;i++){
-			s+= minSizesOfClasses.get(i);
+		for(int i=0;i<=classID-1;i++){
+			end+= minSizesOfClasses.get(i);
 		}
-		return s;
+		return end;
 	}
 	
-	public List<EClass> getClasses()
-	{
+	public List<EClass> getClasses(){
+		
 		ArrayList<EClass> cls= new ArrayList<EClass>();
-		for( EClassifier cf :BasePackage.getEClassifiers())
-		{
-			if (cf instanceof EClass)
-			{
-					if (!((EClass) cf).isAbstract())
-						cls.add((EClass) cf);
-										
+		for( EClassifier cf :BasePackage.getEClassifiers()){
+			
+			if (cf instanceof EClass){		
+				if (!((EClass) cf).isAbstract())
+					cls.add((EClass) cf);						
 			}
 		}
-		
-		
 		return cls;
 	}
 	
@@ -179,60 +176,50 @@ public class MetaModelReader {
 		return null;
 	}
 	
-	public List<EClass> getAbtractClasses()
-	{
+	public List<EClass> getAbtractClasses(){
+		
 		ArrayList<EClass> cls= new ArrayList<EClass>();
-		for( EClassifier cf :BasePackage.getEClassifiers())
-		{
-			if (cf instanceof EClass)
-			{
+		for( EClassifier cf :BasePackage.getEClassifiers()){
+			
+			if (cf instanceof EClass){
 					if (((EClass) cf).isAbstract())
 						cls.add((EClass) cf);										
 			}
 		}
-		
-		
 		return cls;
 	}
 	
-	public int getClassIndex(EClass c)
-	{
+	public int getClassIndex(EClass c){
+		
 		int i=1;
 		ArrayList<EClass> cls= (ArrayList<EClass>) getClasses();
-		for (EClass cc: cls)
-		{
-			if(cc==c)
-				return i;
-			else
-				i++;
+		for (EClass cc: cls){
+			
+			if(cc==c) return i;
+			else i++;
 		}
 		return -1;
 	}
 	
-	public int getClassIndex(String c)
-	{
+	public int getClassIndex(String c){
+		
 		int i=1;
 		ArrayList<EClass> cls= (ArrayList<EClass>) getClasses();
-		for (EClass cc: cls)
-		{
-			if(cc.getName().equals(c))
-				return i;
-			else
-				i++;
+		for (EClass cc: cls){
+			
+			if(cc.getName().equals(c))	return i;
+			else	i++;
 		}
 		return -1;
 	}
 		
 	//Méthode initialisant les size(class)
 	//Met 1 à la racine: size(racine)= 1
-	private void sizeClassInit(int moy,int upperb)
-	{
+	private void sizeClassInit(int moy,int upperb){
 		
 		ArrayList<EClass> cls= (ArrayList<EClass>) getClasses();
 		ArrayList<Integer> sizes= new ArrayList<Integer>(cls.size());
-		for (int i=0; i<=cls.size();i++)
-		{
-			//Générer un size entre 5 et 10
+		for (int i=0; i<=cls.size();i++){			
 			int random = (int)(Math.random() * (upperb-moy)) + moy;
 			sizes.add(i, random);
 		}

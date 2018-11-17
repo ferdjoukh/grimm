@@ -33,12 +33,10 @@ public class Reconstruct {
 	
 	public Reconstruct(String ModelFile, String racine,String InstanceFile,String Model){
 		
-		
 		this.ModelFile=ModelFile;
 		this.racine=racine;
 		this.InstanceFile=InstanceFile;
-		this.Model=Model;
-		
+		this.Model=Model;		
 	}
 	
 	public void CallCSPGenrator(int lb,int ub,int rb,int sym)
@@ -85,31 +83,6 @@ public class Reconstruct {
 		}
 	
 		
-	}
-	
-	
-	public int domaineSum(int k)
-	{
-		int s=0;
-		if (k==0)
-			return 0;
-		for(int i=0;i<=k-1;i++)
-		{
-			s+= sizes.get(i);
-		}
-		return s;
-	}
-	
-	public int domaineSumMin(int k)
-	{
-		int s=0;
-		if (k==0)
-			return 0;
-		for(int i=0;i<=k-1;i++)
-		{
-			s+= sizesMin.get(i);
-		}
-		return s;
 	}
 	
 	public BufferedReader Execute(String Instancefile,String conFile){
@@ -247,8 +220,8 @@ public class Reconstruct {
 			{
 				//Les autres classes
 			
-				lb=  domaineSum(r.getClassIndex(c)-1)+1;
-				ub=  domaineSum(r.getClassIndex(c)); 
+				lb=  r.domaineSum(r.getClassIndex(c)-1)+1;
+				ub=  r.domaineSum(r.getClassIndex(c)); 
 				
 				for(int j=lb;j<=ub;j++)
 				{
@@ -379,8 +352,8 @@ public class Reconstruct {
 			else
 			{
 				//Les autres classes
-				lb=  domaineSum(r.getClassIndex(c)-1)+1;
-				ub=  domaineSum(r.getClassIndex(c)); 
+				lb=  r.domaineSum(r.getClassIndex(c)-1)+1;
+				ub=  r.domaineSum(r.getClassIndex(c)); 
 				
 				for(int j=lb;j<=ub;j++)
 				{
@@ -530,8 +503,8 @@ public class Reconstruct {
 			else
 			{
 				//Les autres classes
-				lb=  domaineSum(r.getClassIndex(c)-1)+1;
-				ub=  domaineSum(r.getClassIndex(c)); 
+				lb=  r.domaineSum(r.getClassIndex(c)-1)+1;
+				ub=  r.domaineSum(r.getClassIndex(c)); 
 				
 				for(int j=lb;j<=ub;j++)
 				{	
