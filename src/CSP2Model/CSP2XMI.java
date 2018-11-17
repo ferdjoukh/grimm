@@ -130,9 +130,6 @@ public class CSP2XMI extends ModelBuilder{
 	
 	public void createEObjects(ArrayList<Integer> solutionValues) {
 		
-		//init currentVar to 1 in order to skip first variable
-		int currentVar = 1;
-		
 		EPackage rootPackage= super.reader.getModelPackage();
 		List<EClass> cls= super.reader.getClasses();
 		
@@ -147,26 +144,7 @@ public class CSP2XMI extends ModelBuilder{
 				/////////////////////////////////////
 				//   Attributes of rootClass
 				////////////////////////////////////
-				rootObject = instantiateAttributes(rootObject, c, 1);
-				
-				/////////////////////////////////////////////////////
-				// At this step, skip links of rootClass instance
-				/////////////////////////////////////////////////////
-				for (EReference ref: super.reader.getAllReferencesFromClasswithOpposite(c)){
-					int zz=ref.getUpperBound();
-					if (zz==-1){	
-						if(!ref.getEReferenceType().isAbstract())
-							zz=referenceUpperBound;
-						else
-							zz=referenceUpperBound;
-					}
-					EClass dst= ref.getEReferenceType();
-					ArrayList<EObject> rr= new ArrayList<EObject>(); 
-					for(int z=1;z<=zz;z++)
-					{
-						currentVar++;
-					}
-    			}
+				rootObject = instantiateAttributes(rootObject, c, 1);				
 			}
 			else
 			{
@@ -189,22 +167,6 @@ public class CSP2XMI extends ModelBuilder{
 					///////////////////////////////////////
 					createdObject = instantiateAttributes(createdObject, c, OID);
 					
-					////////////////////////////////////////////////////
-					// Skip the links of current EObject
-					////////////////////////////////////////////////////
-					for (EReference ref: reader.getAllReferencesFromClasswithOpposite(c)){
-						
-						int zz=ref.getUpperBound();
-	    				if (zz==-1){
-	    					
-	    					if(ref.getEReferenceType().isAbstract())
-	    						zz=referenceUpperBound;
-	    					else
-	    						zz=referenceUpperBound;
-	    				}
-	    				for(int z=1;z<=zz;z++) {currentVar++;}
-	    			}
-					
 					//Add current EObject to list of all instances 
 					allCreatedEObjects.add(new ClassInstance(OID, createdObject));
 				}
@@ -213,7 +175,9 @@ public class CSP2XMI extends ModelBuilder{
 	}
 	
 	public void createReferenceLinks(ArrayList<Integer> solutionValues) {
-		int currentVar=0;
+		//init currentVar to 1 in order to skip first variable
+		int currentVar=1;
+		
 		List<EClass> cls= super.reader.getClasses();
 		ArrayList<ClassInstance> linkedInstances= new ArrayList<ClassInstance>(); 
 		
