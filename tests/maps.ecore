@@ -9,6 +9,7 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="isCity" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="country" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="size" eType="#//cards"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Road" abstract="true">
     <eStructuralFeatures xsi:type="ecore:EReference" name="border" upperBound="-1"
@@ -28,4 +29,9 @@
   <eClassifiers xsi:type="ecore:EClass" name="Pedestrian" eSuperTypes="#//Road"/>
   <eClassifiers xsi:type="ecore:EClass" name="Garden" eSuperTypes="#//PublicSpace"/>
   <eClassifiers xsi:type="ecore:EClass" name="Square" eSuperTypes="#//PublicSpace"/>
+  <eClassifiers xsi:type="ecore:EEnum" name="cards">
+    <eLiterals name="small"/>
+    <eLiterals name="medium"/>
+    <eLiterals name="big"/>
+  </eClassifiers>
 </ecore:EPackage>

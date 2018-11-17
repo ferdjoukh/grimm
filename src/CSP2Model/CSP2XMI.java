@@ -93,7 +93,7 @@ public class CSP2XMI extends ModelBuilder{
 		for(EAttribute a: reader.getAllAttributesFromClass(currentclass))
 		{
 			if(a.isChangeable()) {
-			    
+				
 				if(a.getEType().getName().equals("EBoolean")) {
 					Boolean bool = AttributeInstantiator.generateBoolean();
 					currentobject.eSet(a, bool);
@@ -111,17 +111,17 @@ public class CSP2XMI extends ModelBuilder{
 					int value =  AttributeInstantiator.randomInt(0,100);
 					currentobject.eSet(a, value);	
 				}
-				else{
-					// Enumeration
-					EEnum enume= null;
-					try{enume=(EEnum) a.getEType();} catch(Exception e){}
-					EClass etype=null;
-					try{etype=(EClass) a.getEType();} catch(Exception e){}				
-					if(enume!=null){
-					
-						currentobject.eSet(a, enume.getEEnumLiteral(1));
-					}
-					if(etype!=null) {}
+				else if (a.getEType().eClass().getName().equals("EEnum")){
+									
+					EEnum enume= (EEnum) a.getEType();
+					if (enume.getELiterals() != null) {
+						int numberOfLiterals = enume.getELiterals().size();
+						int value =  AttributeInstantiator.randomInt(0, numberOfLiterals);	
+						System.out.println("map enum "+ value);
+						currentobject.eSet(a, enume.getELiterals().get(value));
+					}										
+				}else {
+					System.out.println("\t[WARNING] Class "+ currentclassname+ " Attribute "+ a.getName() +"  type not supported: "+a.getEType().getName());
 				}
 			}			
 		}
