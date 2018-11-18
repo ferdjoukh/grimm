@@ -97,16 +97,50 @@ public class CSP2XMI extends ModelBuilder{
 				
 				}else if(a.getEType().getName().equals("EString")) {
 					if(a.getName().toLowerCase().equals("name")) {
-						String nameValue = AttributeInstantiator.generateBasicName(currentclassname, OID);
-						currentobject.eSet(a, nameValue);
+						String value = ""+OID;
+						if(!reader.getAttributesDomains().containsKey(currentclassname+"/"+a.getName())) {
+							
+							value = AttributeInstantiator.generateBasicName(currentclassname, OID);							
+						}else {
+							
+							ArrayList<String> customDomain = reader.getAttributesDomains().
+									get(currentclassname+"/"+a.getName());
+							value= AttributeInstantiator.chooseString(customDomain,OID);
+						}
+						currentobject.eSet(a, value);
 					}
 					else {
-						String value= AttributeInstantiator.randomString();
+						String value = "";
+						if(!reader.getAttributesDomains().containsKey(currentclassname+"/"+a.getName())) {							
+							value= AttributeInstantiator.randomString();							
+						}else {
+							ArrayList<String> customDomain = reader.getAttributesDomains().
+									get(currentclassname+"/"+a.getName());
+							value= AttributeInstantiator.chooseString(customDomain,OID);
+						}
 						currentobject.eSet(a, value);
 					}
 			    }else if (a.getEType().getName().equals("EInt")) {
-					int value =  AttributeInstantiator.randomInt(0,100);
-					currentobject.eSet(a, value);	
+			    	int value=0;
+			    	if(!reader.getAttributesDomains().containsKey(currentclassname+"/"+a.getName())) {						
+			    		
+			    		value =  AttributeInstantiator.randomInt(0,100);			    		
+			    	}else {
+			    		
+			    		ArrayList<String> customDomain = reader.getAttributesDomains().get(currentclassname+"/"+a.getName());
+			    		
+			    		//Check if the custom domain is in interval(=i) or a list(=l) for EInt attribute
+			    		if(customDomain.get(0).equals("i")) {
+			    			
+			    			int begin = Integer.parseInt(customDomain.get(1));
+			    			int end = Integer.parseInt(customDomain.get(2));
+			    			value = AttributeInstantiator.randomInt(begin, end);
+			    		}else if(customDomain.get(0).equals("l")) {
+			    			
+			    			value = AttributeInstantiator.chooseInteger(customDomain);
+			    		}
+			    	}
+			    	currentobject.eSet(a, value);
 				}
 				else if (a.getEType().eClass().getName().equals("EEnum")){
 									

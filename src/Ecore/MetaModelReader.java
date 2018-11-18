@@ -116,6 +116,10 @@ public class MetaModelReader {
 		return this.BasePackage;
 	}
 	
+	public Hashtable<String, ArrayList<String>> getAttributesDomains() {
+		return attributesDomains;
+	}
+
 	/**
 	 * This method read class sizes and returns the begin of the domain of each class
 	 * 

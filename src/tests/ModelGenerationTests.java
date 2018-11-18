@@ -16,6 +16,12 @@ public class ModelGenerationTests {
 		String [] args= {"g","tests/generation/ecore4ATL-conf.params"};
 		GrimmLauncher.main(args);
 	}
+	
+	@Test
+	public void ecore_conf_use_domains() throws Exception{
+		String [] args= {"g","tests/generation/ecore4ATL-conf-user-domains.params"};
+		GrimmLauncher.main(args);
+	}
 
 	@Test
 	public void generationScaffold() throws Exception{
