@@ -18,7 +18,7 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 
 import Ecore.MetaModelReader;
-import Ecore2CSP.GenXCSP;
+import Ecore2CSP.XCSPgenerator;
 
 public class Reconstruct {
 
@@ -52,7 +52,7 @@ public class Reconstruct {
 		debut=System.nanoTime();
 				
 		//Sa racine est Petrinet
-	    GenXCSP generation= new GenXCSP(r,rb,sym);
+	    XCSPgenerator generation= new XCSPgenerator(r,rb,sym);
 		generation.generateXCSP(InstanceFile);
 				
 		duree=(System.nanoTime()-debut)/1000000;

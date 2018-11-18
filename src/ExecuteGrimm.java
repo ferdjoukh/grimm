@@ -10,7 +10,7 @@ import CSP2Model.CSP2dot;
 import CSP2Model.ModelBuilder;
 import Ecore.MetaModelReader;
 import Ecore2CSP.ConfigFileGenerator;
-import Ecore2CSP.GenXCSP;
+import Ecore2CSP.XCSPgenerator;
 import exceptions.MetaModelNotFoundException;
 
 

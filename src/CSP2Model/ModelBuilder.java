@@ -12,7 +12,7 @@ import org.eclipse.ocl.ParserException;
 
 import Ecore.MetaModelReader;
 import Ecore2CSP.ConfigFileReader;
-import Ecore2CSP.GenXCSP;
+import Ecore2CSP.XCSPgenerator;
 import Utils.ClassInstance;
 import Utils.OCL.OclConstraints;
 
@@ -73,7 +73,7 @@ public abstract class ModelBuilder {
 		// Generate CSP instance
 		///////////////////////////////////////////////////////////////
 		System.out.println("CSP instance generator is running");
-		GenXCSP CSPgenerator = new GenXCSP(reader, rb, sym);
+		XCSPgenerator CSPgenerator = new XCSPgenerator(reader, rb, sym);
 		CSPgenerator.generateXCSP(CSPInstanceFile);
 		maxDomains=CSPgenerator.getMaxDomains();
 				
@@ -133,7 +133,7 @@ public abstract class ModelBuilder {
 		// Generate CSP instance
 		/////////////////////////////////////////////////////////
 		System.out.println("CSP instance generator is running");
-	    GenXCSP CSPgenerator = new GenXCSP(reader, cfr, sym);
+	    XCSPgenerator CSPgenerator = new XCSPgenerator(reader, cfr, sym);
 		CSPgenerator.generateXCSP(CSPInstanceFile);
 		maxDomains = CSPgenerator.getMaxDomains();
 				

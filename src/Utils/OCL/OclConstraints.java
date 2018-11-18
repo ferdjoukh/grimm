@@ -13,7 +13,7 @@ import org.jdom2.output.Format;
 import org.jdom2.output.XMLOutputter;
 
 import Ecore.MetaModelReader;
-import Ecore2CSP.GenXCSP;
+import Ecore2CSP.XCSPgenerator;
 import Utils.GrimmLogger;
 
 public class OclConstraints {
@@ -171,7 +171,7 @@ public class OclConstraints {
 
 		MetaModelReader modelReader = new MetaModelReader(ecoreFile, racine, 2, 2);
 		
-	    GenXCSP generation = new GenXCSP(modelReader, 4, 1);
+	    XCSPgenerator generation = new XCSPgenerator(modelReader, 4, 1);
 		generation.generateXCSP(OclConstraints.XCSPFile);
 
 		XMLOutputter outputXML = new XMLOutputter(Format.getPrettyFormat());
