@@ -3,15 +3,10 @@ package Ecore2CSP;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
-
-import com.sun.corba.se.spi.orbutil.fsm.InputImpl;
-
 import Ecore.MetaModelReader;
 import exceptions.ConfigurationFileNotFoundException;
 import exceptions.IncorrectOutputFormatException;
@@ -464,8 +459,6 @@ public class ParametersFile {
 		}else {
 			throw new UnknownCSPSolverException(value);
 		}
-			
-		
 	}
 	
 	private boolean rootClassExists(String value) throws MissingMetaModelElementException {

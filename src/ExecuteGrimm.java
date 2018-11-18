@@ -1,18 +1,10 @@
 import java.io.File;
 import java.io.IOException;
-import java.util.*;
-
-import org.eclipse.emf.ecore.*;
-import org.eclipse.emf.ecore.resource.Resource;
-
 import CSP2Model.CSP2XMI;
 import CSP2Model.CSP2dot;
 import CSP2Model.ModelBuilder;
-import Ecore.MetaModelReader;
 import Ecore2CSP.ConfigFileGenerator;
-import Ecore2CSP.XCSPgenerator;
 import exceptions.MetaModelNotFoundException;
-
 
 public class ExecuteGrimm {
 

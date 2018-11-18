@@ -39,7 +39,6 @@ import org.jdom2.Document;
 import org.jdom2.Element;
 
 import Ecore.MetaModelReader;
-import Utils.GrimmLogger;
 import Utils.OCL.exceptions.VariableNotFoundException;
 
 public class OclTools {

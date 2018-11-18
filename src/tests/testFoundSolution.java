@@ -1,12 +1,8 @@
 package tests;
 
 import static org.junit.Assert.*;
-
 import java.io.BufferedReader;
-import java.util.ArrayList;
-
 import org.junit.Test;
-
 import CSP2Model.CSP2XMI;
 import CSP2Model.ModelBuilder;
 

@@ -8,14 +8,10 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EEnum;
-import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
-
 import Utils.AttributeInstantiator;
 
 public class CSP2dot extends ModelBuilder{
@@ -189,8 +185,8 @@ public class CSP2dot extends ModelBuilder{
 							else
 								zz=referenceUpperBound;
 						}
-						for(int z=1;z<=zz;z++)
-						{
+						for(int z=1;z<=zz;z++){
+							
 							int precedente= vals.get(variable);
 							if(vals.get(variable)<=this.maxDomains){
 									if(ref.isContainment())

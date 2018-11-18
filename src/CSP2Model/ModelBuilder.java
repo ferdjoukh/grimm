@@ -4,12 +4,11 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.ocl.ParserException;
-
 import Ecore.MetaModelReader;
 import Ecore2CSP.ConfigFileReader;
 import Ecore2CSP.XCSPgenerator;
@@ -43,7 +42,11 @@ public abstract class ModelBuilder {
 		this.root = root;
 		this.CSPInstanceFile = CSPInstanceFile;
 		this.oclFilePath = oclFilePath;
-		this.modelFilePath= root+new Date().getDate()+new Date().getHours()+new Date().getMinutes()+ new Date().getSeconds()+"UB"+referenceUpperBound;
+		
+		DateFormat df = new SimpleDateFormat("-kkmmss-ddMMyy");
+		Date date = new Date();
+		String dateF = df.format(date.getTime());
+		this.modelFilePath= root+dateF;
 	}
 	
 	public ArrayList<FoundSolution> getFoundSolutions() {

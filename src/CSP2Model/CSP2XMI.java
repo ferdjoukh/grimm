@@ -8,8 +8,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
-
-import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.*;
 import org.eclipse.emf.ecore.impl.DynamicEObjectImpl;
@@ -18,7 +16,6 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 import org.eclipse.emf.ecore.xmi.impl.XMLResourceImpl;
-
 import Utils.AttributeInstantiator;
 import Utils.ClassInstance;
 import Utils.Utils;
@@ -411,14 +408,13 @@ public class CSP2XMI extends ModelBuilder{
 		}
 		
 		try{
-			container.eSet(containment, objectstoCompose);
+			container.eSet(containment, objectstoCompose);			
 		}
 		catch(Exception e){
 			System.out.println("Containment Error: "+containment.getName());
 		}
-		finally {
-			return container;
-		}	
+		
+		return container;
 	}
 		
 	/**

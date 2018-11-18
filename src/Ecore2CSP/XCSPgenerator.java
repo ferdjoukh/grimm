@@ -1,20 +1,11 @@
 package Ecore2CSP;
 import java.io.*;
-import java.lang.reflect.Array;
-import java.security.SecureRandom;
 import java.util.ArrayList;
-import java.util.Hashtable;
 import java.util.List;
-import java.util.Random;
-
-import org.eclipse.emf.ecore.EAnnotation;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EEnum;
-import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
-import org.eclipse.emf.ecore.resource.Resource;
 import org.jdom2.*;
 import org.jdom2.output.Format;
 import org.jdom2.output.XMLOutputter;
@@ -31,28 +22,16 @@ public class XCSPgenerator {
     private Element relations= new Element("relations");
     private Element constraints= new Element("constraints");
 	
-	private MetaModelReader reader;
-	private ConfigFileReader cfr;
-	private String rootClass;
-	private String metamodel;
+    private MetaModelReader reader;
 	private ArrayList<EClass> listOfClasses;
-	private ArrayList<Integer> sizesOfClasses;
-	private ArrayList<Integer> minSizesOfClasses;
 	private int numberOfVariables = 0;
 	private int numberOfDomaines = 0;
 	private int numberOfPredicates = 0;
 	private int numberOfRelations = 0;
 	private int numberOfConstraints = 0;
-	private int featuresBound = 10;
 	private int referencesUB = 2;
 	private int maxDomains = 0;
 	private int symmetries = 1;
-	
-	private String vars="";
-	private int gccValuesArity = 0;
-	private int alldiffNames = 0;
-	private String gccvals = "";
-	private String alldiffnames = "";
 	
 	public void createRootElement(MetaModelReader reader, int sym) {
 		Document document= new Document(instance);
@@ -67,11 +46,7 @@ public class XCSPgenerator {
 		
 		this.instance.addContent(rac1);
 		this.reader=reader;
-		this.rootClass=reader.getRootClass();
-		this.metamodel=reader.getMetamodel();
 		this.listOfClasses= (ArrayList<EClass>) reader.getClasses();
-		this.sizesOfClasses= reader.getClassSize();
-		this.minSizesOfClasses= reader.getClassSizeMin();
 		this.symmetries=sym;
 	}
 	
@@ -82,7 +57,6 @@ public class XCSPgenerator {
 	
 	public XCSPgenerator(MetaModelReader reader, ConfigFileReader cfr, int sym){
 		createRootElement(reader,sym);
-		this.cfr=cfr;
 		this.referencesUB= cfr.getReferencesUB();	
 	}
 	
@@ -149,7 +123,6 @@ public class XCSPgenerator {
 	 */
 	public void genenerateClassDomains(){
 		
-		int i=1;
 		for(EClass c: listOfClasses){	
 			
 			int domainStart=  reader.domaineSum(reader.getClassIndex(c)-1)+1;
@@ -168,8 +141,7 @@ public class XCSPgenerator {
 			domain.setText(body);
 			domains.addContent(domain);
 			
-			maxDomains=domainEnd;
-			i++;
+			maxDomains=domainEnd;			
 		}
 	}
 	
@@ -194,19 +166,13 @@ public class XCSPgenerator {
 				EEnum enume = null;
 				try{enume= (EEnum) a.getEType();} catch(Exception e){}
 			
-				if(enume!=null)
-				{
+				if(enume!=null){
 					domainef.setText("1.."+enume.getELiterals().size());
 				}
-				else
-				{
+				else{
       			   domainef.setText(-borne+".."+borne); 
 				}
 				
-				if(cfr!=null)
-				{
-					//domainef.setText(featuresDomains.get(c.getName()+"/"+a.getName()));
-				}	
 				int vf= borne+borne+1;
 				Attribute n2f=new Attribute("nbValues", ""+vf);
 				domainef.setAttribute(n2f);
@@ -255,8 +221,7 @@ public class XCSPgenerator {
 		    		
 					int zz=ref.getUpperBound();
 					if (zz==-1)
-						//zz=5;
-					    zz=FeatureBound;
+						zz=FeatureBound;
 
                 	//Domaine de la réf
 					EClass dst= ref.getEReferenceType();
@@ -273,17 +238,6 @@ public class XCSPgenerator {
         			
         			String vn= "0" + " "+ lB+ ".."+ uB;
         			String v= " "+ lB+ ".."+ uB;
-        			
-        			
-        			if(c.getName().equals(rootClass)) {
-        				
-        				for(int ii=lB;ii<=uB;ii++){
-            				gccvals+= " "+ii;
-            			}
-    					//gccvals+= v;
-    					gccValuesArity+= uB-lB+1;
-        			}
-       
         			domaine.setText(v);
         			int vv= uB-lB+1; //Plus la valuer 0 de non allocation
         			
@@ -303,22 +257,14 @@ public class XCSPgenerator {
 				else{
 					//Union des domaines
 					List<EClass> ddd=reader.getConcreteSubTypes(ref.getEReferenceType());
-					String v="",gcc1 = "";
+					String v="";
 					int vv=0;
 					int vvv=0;
 					for (EClass cst: ddd){
-						
-						EClass dst= ref.getEReferenceType();
-    					int cindex=reader.getClassIndex(cst);
+						int cindex=reader.getClassIndex(cst);
     					int lB=  reader.domaineSum(cindex-1)+1; //(i-1)*10+1; // size(class)= 10;
     					int uB=  reader.domaineSum(cindex); //(i)*10;   // size(class)= 10;
-    					
-    					for(int ii=lB;ii<=uB;ii++){
-    						
-    						gcc1+=" "+ii;
-    					}
-    					
-           			v+= " "+ lB+ ".."+ uB;
+    					v+= " "+ lB+ ".."+ uB;
             			vv+= uB-lB+1;           		           					
 					}
    					
@@ -341,10 +287,6 @@ public class XCSPgenerator {
         			Dom.setAttribute(n2);
         			Dom.setText("0" +v);	   			
         			
-        			if(c.getName().equals(rootClass)){
-    					gccvals= gcc1;
-    					gccValuesArity+= vv;
-    				}
         			domains.addContent(Dom);        		
 				}				
 			}
@@ -387,14 +329,6 @@ public class XCSPgenerator {
 
 					String vn= ""+ lB+ ".."+ uB+ " "+jokerString;
 					String v= " "+ lB+ ".."+ uB;
-
-					if(c.getName().equals(rootClass)){
-						
-						for(int ii=lB;ii<=uB;ii++){
-							gccvals+= " "+ii;
-						}
-						gccValuesArity+= uB-lB+1;
-					}
 					
 					domaine.setText(v);
 					int vv= uB-lB+1;
@@ -415,20 +349,13 @@ public class XCSPgenerator {
 				else{
 					//Union des domaines
 					List<EClass> ddd=reader.getConcreteSubTypes(ref.getEReferenceType());
-					String v="",gcc1 = "";
+					String v="";
 					int vv=0;
 					int vvv=0;
 					for (EClass cst: ddd){
-						EClass dst= ref.getEReferenceType();
 						int cindex=reader.getClassIndex(cst);
-
 						int lB=  reader.domaineSum(cindex-1)+1; //(i-1)*10+1; // size(class)= 10;
 						int uB=  reader.domaineSum(cindex); //(i)*10;   // size(class)= 10;
-
-						for(int ii=lB;ii<=uB;ii++){
-							gcc1+=" "+ii;
-						}
-
 						v+= " "+ lB+ ".."+ uB;
 						vv+= uB-lB+1;           		           					
 					}
@@ -437,8 +364,6 @@ public class XCSPgenerator {
 					numberOfDomaines++;
 					Attribute n=new Attribute("name", "DCRJ_"+refi+"_"+i);
 					domaine.setAttribute(n);
-
-					//String vn= " "+ lB+ ".."+ uB;
 					domaine.setText(v);
 
 					Attribute n2=new Attribute("nbValues", ""+vv);
@@ -452,11 +377,6 @@ public class XCSPgenerator {
 					n2=new Attribute("nbValues", ""+vvv);
 					Dom.setAttribute(n2);
 					Dom.setText(v + " "+ jokerString);	   			
-
-					if(c.getName().equals(rootClass)){
-						gccvals= gcc1;
-						gccValuesArity+= vv;
-					}
 					domains.addContent(Dom);
 				}
 			}
@@ -474,8 +394,6 @@ public class XCSPgenerator {
 		int i=1;
 		for(EClass c: listOfClasses){
 			int refi=0;
-			int gccarity=0;
-			String gccvars="";
 			   
 			//Pour la Gcc Eopposite			   
 			int arityGcc=0;
@@ -486,8 +404,7 @@ public class XCSPgenerator {
 			for(int j=reader.domaineSum(reader.getClassIndex(c)-1)+1;j<=reader.domaineSum(reader.getClassIndex(c));j++){	
 				
 				//Create attributes variables 
-				int fid=0;
-//            	for (EAttribute a: reader.getAllAttributesFromClass(c)){
+				//for (EAttribute a: reader.getAllAttributesFromClass(c)){
 //					fid++;
 //					Element variablef= new Element("variable");
 //	            	numberOfVariables++;
@@ -507,23 +424,13 @@ public class XCSPgenerator {
     					if (zz==-1)
     						zz=referencesUB;
     					
-    					EClass dst= ref.getEReferenceType();
-    					int cindex=reader.getClassIndex(dst);
-                    	
-    					String VarPrec="";
-    					
     					for(int z=1;z<=zz;z++){
 	    					Element variabler= new Element("variable");
 	                    	numberOfVariables++;
 	                    	
 	                    	Attribute namer= new Attribute("name", "Id_"+c.getName()+"_"+j+"_"+ref.getName()+"_"+z);
 	                    	Attribute domr;
-	                    	VarPrec="Id_"+c.getName()+"_"+j+"_"+ref.getName()+"_"+z;
-	                    	//*************
-	                    	gccarity++;
-	                    	gccvars+= " "+ "Id_"+c.getName()+"_"+j+"_"+ref.getName()+"_"+z;
-	                    	gccvals+= "";             
-	                    	
+
 	                    	/////////////////////////////////////////////////////////////////
 	                    	//Contrainte ordonne des vars des références: Breaking symmetries
 	                    	/////////////////////////////////////////////////////////////////
@@ -537,9 +444,9 @@ public class XCSPgenerator {
 	                    		}
 	                    	}
 	                    
-	                    	////////////////////////// 
+	                    	////////////////////////////////
 	                    	// Doamines avec les jokers 
-	                    	//////////////                 
+	                    	////////////////////////////////                 
 	                   		if (z<=ref.getLowerBound()){
 	                        	domr= new Attribute("domain", "DCRJ_"+refi+"_"+i);       
 	                        }else{                                                            
@@ -555,11 +462,6 @@ public class XCSPgenerator {
     				else
     				{
     					//Création des variables ---- Union de domaines
-    					List<EClass> ddd=reader.getConcreteSubTypes(ref.getEReferenceType());
-    					for (EClass cst: ddd){
-    						EClass dst= ref.getEReferenceType();
-        					int cindex=reader.getClassIndex(cst);                        	
-    					}   
     					int zz=ref.getUpperBound();
     					if (zz==-1)
     						//zz=5;
@@ -573,10 +475,6 @@ public class XCSPgenerator {
 	                    	Attribute namer= new Attribute("name", "Id_"+c.getName()+"_"+j+"_"+ref.getName()+"_"+z);                  	                    	
 	                    	Attribute domr;
 	                    	
-	                    	gccarity++;
-	                    	gccvars+= " "+ "Id_"+c.getName()+"_"+j+"_"+ref.getName()+"_"+z;
-	                    	gccvals+= "";             
-	                    
 	                    	if(symmetries==1){
 	                    		if(z>1){
 	                    			int ertf=z-1;
@@ -636,11 +534,6 @@ public class XCSPgenerator {
 							int zz=ref.getUpperBound();
 							if (zz==-1)
 								zz=referencesUB;
-
-							EClass dst2= ref.getEReferenceType();
-							int cindex2=reader.getClassIndex(dst);
-
-							String VarPrec="";
 
 							for(int j=reader.domaineSum(reader.getClassIndex(c)-1)+1;j<=reader.domaineSum(reader.getClassIndex(c));j++)   //10= size(c);
 							{

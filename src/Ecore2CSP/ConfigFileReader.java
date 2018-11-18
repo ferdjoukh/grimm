@@ -1,18 +1,12 @@
 package Ecore2CSP;
 
-import java.io.BufferedInputStream;
 import java.io.BufferedReader;
-import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Hashtable;
-
-import org.omg.CORBA.portable.InputStream;
-
-import com.sun.xml.internal.bind.v2.schemagen.xmlschema.List;
 
 public class ConfigFileReader {
 

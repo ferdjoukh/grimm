@@ -1,8 +1,6 @@
 package Utils.OCL;
 
-import java.util.Arrays;
 import java.util.List;
-
 import org.eclipse.ocl.cst.CSTNode;
 import org.eclipse.ocl.cst.FeatureCallExpCS;
 import org.eclipse.ocl.cst.OperationCallExpCS;
