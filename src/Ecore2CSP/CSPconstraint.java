@@ -182,7 +182,7 @@ public class CSPconstraint {
 		return cons;	
 	}
 	
-	public static Element Gccroot(int arity,int valsarity,String vars,String vals){
+	public static Element Gccroot(int arity, int valsarity, String vars, String vals){
 		Element cons=new Element("constraint");
 		
 		//Les parametres
@@ -230,7 +230,4 @@ public class CSPconstraint {
 		
 		return cons;
 	}
-
-
-
 }
