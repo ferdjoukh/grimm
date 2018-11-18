@@ -13,7 +13,7 @@ upperBound for classes =3
 upperBound for references =3
 #
 #
-number of solutions =5
+number of solutions =2
 #
 output format =xmi
 CSP solver =abscon

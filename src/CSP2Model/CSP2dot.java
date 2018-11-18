@@ -141,8 +141,10 @@ public class CSP2dot extends ModelBuilder{
 			/////////////////////////////////////
 			if(currentClassName.equals(root))		
 			{
+				int rootObjectOID=  reader.domaineSum(reader.getClassIndex(c)-1)+1;
+				
 				//Attributes
-				AttrDots = instantiateAttributes(c, 1);
+				AttrDots = instantiateAttributes(c, rootObjectOID);
 				
 				for (EReference ref: reader.getAllReferencesFromClasswithOpposite(c)){
 					int zz=ref.getUpperBound();

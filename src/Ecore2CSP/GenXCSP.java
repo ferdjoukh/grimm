@@ -96,7 +96,7 @@ public class GenXCSP {
 		
 		createFakeVariable();
 		genenerateClassDomains();
-		GenRefsDomainsJokers(referencesUB);
+		GenRefsDomainsJokers();
 		GenVars();
 		GenPredOrd();
     	
@@ -219,13 +219,10 @@ public class GenXCSP {
 	 * 
 	 * @return
 	 */
-	public int GenJokers()
-	{
+	public int GenJokers(){
 		int max=0;
-		for(EClass c:listOfClasses)
-		{
-			for(EReference ref: reader.getAllReferencesFromClass(c))
-			{
+		for(EClass c:listOfClasses){
+			for(EReference ref: reader.getAllReferencesFromClass(c)){
 				int ub=ref.getUpperBound();
 				if (ub==-1)
 					ub=referencesUB;
@@ -242,19 +239,18 @@ public class GenXCSP {
 	 *      Generate References Domains      
 	 * 
 	 */
-	public void GenRefsDomains(int FeatureBound)
-	{
+	public void GenRefsDomains(int FeatureBound){
+		
 		int i=1;
-		for(EClass c: listOfClasses)
-		{
+		for(EClass c: listOfClasses){
 			
 			int refi=0;
 		    // Création des domaines pour Les références
-		    for (EReference ref: reader.getAllReferencesFromClass(c))
-			{
+		    for (EReference ref: reader.getAllReferencesFromClass(c)){
+		    	
 		    	refi++;
-		    	if (!ref.getEReferenceType().isAbstract())
-				{
+		    	if (!ref.getEReferenceType().isAbstract()){
+		    		
 					int zz=ref.getUpperBound();
 					if (zz==-1)
 						//zz=5;
@@ -277,15 +273,14 @@ public class GenXCSP {
         			String v= " "+ lB+ ".."+ uB;
         			
         			
-        			if(c.getName().equals(rootClass)) 
-        				{
-	        				for(int ii=lB;ii<=uB;ii++)
-	            			{
-	            				gccvals+= " "+ii;
-	            			}
-        					//gccvals+= v;
-        					gccValuesArity+= uB-lB+1;
-        				}
+        			if(c.getName().equals(rootClass)) {
+        				
+        				for(int ii=lB;ii<=uB;ii++){
+            				gccvals+= " "+ii;
+            			}
+    					//gccvals+= v;
+    					gccValuesArity+= uB-lB+1;
+        			}
        
         			domaine.setText(v);
         			int vv= uB-lB+1; //Plus la valuer 0 de non allocation
@@ -302,11 +297,8 @@ public class GenXCSP {
         			Dom.setAttribute(n2);
         			Dom.setText(vn);	   			
         			domains.addContent(Dom);
-        		
-						
-				}
-				else
-				{
+        		}
+				else{
 					//Union des domaines
 					List<EClass> ddd=reader.getConcreteSubTypes(ref.getEReferenceType());
 					String v="",gcc1 = "";
@@ -316,7 +308,6 @@ public class GenXCSP {
 						
 						EClass dst= ref.getEReferenceType();
     					int cindex=reader.getClassIndex(cst);
-    					
     					int lB=  reader.domaineSum(cindex-1)+1; //(i-1)*10+1; // size(class)= 10;
     					int uB=  reader.domaineSum(cindex); //(i)*10;   // size(class)= 10;
     					
@@ -325,7 +316,7 @@ public class GenXCSP {
     						gcc1+=" "+ii;
     					}
     					
-            			v+= " "+ lB+ ".."+ uB;
+           			v+= " "+ lB+ ".."+ uB;
             			vv+= uB-lB+1;           		           					
 					}
    					
@@ -363,7 +354,7 @@ public class GenXCSP {
 	*      Generate References Domains      
 	* 
 	*/
-	public void GenRefsDomainsJokers(int FeatureBound){			
+	public void GenRefsDomainsJokers(){			
 		int max= GenJokers();
 		int JSLB= maxDomains+1;
 		int JSUB= JSLB+max;
@@ -378,7 +369,7 @@ public class GenXCSP {
 				refi++;
 				if (!ref.getEReferenceType().isAbstract()){
 					int zz=ref.getUpperBound();
-					if (zz==-1)	zz=FeatureBound;
+					if (zz==-1)	zz = referencesUB;
 
 					//Domaine de la réf
 					EClass dst= ref.getEReferenceType();

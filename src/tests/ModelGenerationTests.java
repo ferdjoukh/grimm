@@ -9,7 +9,7 @@ import org.junit.Test;
 import exceptions.CSPSolverNotFoundException;
 import gui.GrimmLauncher;
 
-public class EcoreMMUnchangeableValuesTests {
+public class ModelGenerationTests {
 
 	@Test
 	public void generationEcore4ATL() throws Exception{
@@ -22,13 +22,7 @@ public class EcoreMMUnchangeableValuesTests {
 		String [] args= {"g","tests/generation/ecore4ATL-conf.params"};
 		GrimmLauncher.main(args);
 	}
-	
-	@Test
-	public void generationEcore4ATLconf() throws Exception{
-		String [] args= {"g","tests/generation/ecore4ATL-conf.params"};
-		GrimmLauncher.main(args);
-	}
-	
+
 	@Test
 	public void generationScaffold() throws Exception{
 		String [] args= {"g","tests/generation/scaffold1.params"};

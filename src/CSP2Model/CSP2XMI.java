@@ -140,10 +140,12 @@ public class CSP2XMI extends ModelBuilder{
 				//Create instance of rootClass
 				rootObject= rootPackage.getEFactoryInstance().create(c);
 				
+				int rootObjectOID=  reader.domaineSum(reader.getClassIndex(c)-1)+1;
+				
 				/////////////////////////////////////
 				//   Attributes of rootClass
 				////////////////////////////////////
-				rootObject = instantiateAttributes(rootObject, c, 1);				
+				rootObject = instantiateAttributes(rootObject, c, rootObjectOID);				
 			}
 			else
 			{
@@ -152,7 +154,7 @@ public class CSP2XMI extends ModelBuilder{
 				////////////////////////////////////////////
 				int classDomainBegin=  reader.domaineSum(reader.getClassIndex(c)-1)+1;
 				int classDomainEnd=  reader.domaineSum(reader.getClassIndex(c)); 
-				
+								
 				for(int OID=classDomainBegin;OID<=classDomainEnd;OID++){
 					///////////////////////////////////////
 					// Create the EObject
