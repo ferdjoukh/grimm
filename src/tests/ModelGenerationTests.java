@@ -1,10 +1,27 @@
 package tests;
 
+import java.io.IOException;
+
 import org.junit.Test;
+
+import exceptions.CSPSolverNotFoundException;
 import gui.GrimmLauncher;
 
 public class ModelGenerationTests {
 
+	
+	@Test
+	public void mapCustomAttributesDot() throws Exception{
+		String [] args= {"g","parameters-files/maps-custom-attributes-dot.params"};
+		GrimmLauncher.main(args);
+	}
+	
+	@Test
+	public void Ecore1() throws Exception{
+		String [] args= {"g","tests/generation/ecore1.params"};
+		GrimmLauncher.main(args);
+	}
+	
 	@Test
 	public void generationEcore4ATL() throws Exception{
 		String [] args= {"g","tests/generation/ecore4ATL.params"};

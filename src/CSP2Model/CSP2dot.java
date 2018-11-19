@@ -79,18 +79,42 @@ public class CSP2dot extends ModelBuilder{
 				attributes= attributes+ " "+ a.getName()+"="+ value +" \\n";
 				
 			}else if(a.getEType().getName().equals("EString")) {
-				if(a.getName().toLowerCase().equals("name")) {
-					String value = AttributeInstantiator.generateBasicName(currentclassname, OID);
-					attributes= attributes+ " "+ a.getName()+"="+ value +" \\n";
+				String value = ""+OID;
+				if(!reader.getAttributesDomains().containsKey(currentclassname+"/"+a.getName())) {
+					
+					value = AttributeInstantiator.generateBasicName(currentclassname, OID);							
 				}else {
-					String value = AttributeInstantiator.randomString();
-					attributes= attributes+ " "+ a.getName()+"="+ value +" \\n";
+					
+					ArrayList<String> customDomain = reader.getAttributesDomains().
+							get(currentclassname+"/"+a.getName());
+					value= AttributeInstantiator.chooseString(customDomain,OID);
 				}
-				
+				attributes= attributes+ " "+ a.getName()+"="+ value +" \\n";							
 			}
 			else if (a.getEType().getName().equals("EInt")) {
-				int value = AttributeInstantiator.randomInt(1, 100);
+			
+				int value=0;
+		    	if(!reader.getAttributesDomains().containsKey(currentclassname+"/"+a.getName())) {						
+		    		
+		    		value =  AttributeInstantiator.randomInt(0,100);			    		
+		    	}else {
+		    		
+		    		ArrayList<String> customDomain = reader.getAttributesDomains().get(currentclassname+"/"+a.getName());
+		    		
+		    		//Check if the custom domain is in interval(=i) or a list(=l) for EInt attribute
+		    		if(customDomain.get(0).equals("i")) {
+		    			
+		    			int begin = Integer.parseInt(customDomain.get(1));
+		    			int end = Integer.parseInt(customDomain.get(2));
+		    			value = AttributeInstantiator.randomInt(begin, end);
+		    		}else if(customDomain.get(0).equals("l")) {
+		    			
+		    			value = AttributeInstantiator.chooseInteger(customDomain);
+		    		}
+		    	}
+				
 				attributes= attributes+ " "+ a.getName()+"="+ value +" \\n";
+			
 			}else if (a.getEType().eClass().getName().equals("EEnum")){
 				
 				EEnum enume= (EEnum) a.getEType();

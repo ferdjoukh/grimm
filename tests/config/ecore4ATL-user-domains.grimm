@@ -9,10 +9,10 @@
 EAttribute=5
 EClass=3
 EDataType=1
-EEnum=0
-EEnumLiteral=0
-EOperation=0
-EParameter=0
+EEnum=2
+EEnumLiteral=5
+EOperation=5
+EParameter=5
 EReference=7
 EStringToStringMapEntry=0
 %---------------------------------
@@ -60,4 +60,4 @@ EReference/upperBound=-1 2 3 4 7
 %---------------------------------
 % References upper bound
 %---------------------------------
-RefsBound=2
+RefsBound=4

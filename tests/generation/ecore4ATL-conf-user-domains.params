@@ -10,7 +10,7 @@
 #(2)
 configuration file =tests/config/ecore4ATL-user-domains.grimm
 #
-number of solutions =3
+number of solutions =10
 #
 output format =xmi
 CSP solver =abscon
