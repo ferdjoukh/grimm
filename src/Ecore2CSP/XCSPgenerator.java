@@ -551,12 +551,14 @@ public class XCSPgenerator {
 								upperBound = referencesUB;
 							
 
-						//Créer la Gcc 	
-						Element gccconstraint = CSPconstraint.createGcc(ref.getName()+"_"+ref.getEOpposite().getName(),
+						//Create GCC for EOpposite Reference
+						if(!varsGcc.equals("")) {	
+							Element gccconstraint = CSPconstraint.createGcc(ref.getName()+"_"+ref.getEOpposite().getName(),
 								arityGcc,valsArityGcc,varsGcc,valsGcc,
 								ref.getEOpposite().getLowerBound(),upperBound);
-						numberOfConstraints++;
-						constraints.addContent(gccconstraint);
+							numberOfConstraints++;
+							constraints.addContent(gccconstraint);
+						}
 					}
 				}
 			}

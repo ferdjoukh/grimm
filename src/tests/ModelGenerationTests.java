@@ -20,6 +20,13 @@ public class ModelGenerationTests {
 		GrimmLauncher.main(args);
 	}
 	
+	@Test
+	public void mapNoPublicSpacesXmi() throws Exception{
+		//Testing size 0 for some classes
+		String [] args= {"g","parameters-files/maps-noPublicSpaces.params"};
+		GrimmLauncher.main(args);
+	}
+	
 	//////////////////////////////
 	//     Scaffoldgraph.ecore
 	//////////////////////////////
@@ -36,6 +43,15 @@ public class ModelGenerationTests {
 	}
 	
 	
+	/////////////////////
+	//  Ecore.ecore
+	////////////////////
+	@Test
+	public void Ecore4ATL1() throws Exception{
+		String [] args= {"g","parameters-files/ecore4ATL1.params"};
+		GrimmLauncher.main(args);
+	}
+	
 	//Old tests
 	@Test
 	public void Ecore1() throws Exception{
@@ -43,11 +59,6 @@ public class ModelGenerationTests {
 		GrimmLauncher.main(args);
 	}
 	
-	@Test
-	public void generationEcore4ATL() throws Exception{
-		String [] args= {"g","tests/generation/ecore4ATL.params"};
-		GrimmLauncher.main(args);
-	}
 	
 	@Test
 	public void generationEcore4ATLconf1() throws Exception{

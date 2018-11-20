@@ -214,8 +214,6 @@ public class CSP2XMI extends ModelBuilder{
 		
 		for(EClass currentClass: cls){
 			if(currentClass.getName().equals(root)){
-				//Skip attributes of rootClass
-				//for(EAttribute a:reader.getAllAttributesFromClass(currentClass)) currentVar++;		
 				
 				//Skip references of rootClass
 				for (EReference ref: reader.getAllReferencesFromClasswithOpposite(currentClass)){
@@ -239,9 +237,6 @@ public class CSP2XMI extends ModelBuilder{
 				for(int objectOID=classDomBegin;objectOID<=classDomEnd;objectOID++)
 				{
 					EObject currentEObject = Utils.searchIns(allCreatedEObjects, objectOID);
-					
-					//Skip attributes
-					//for(EAttribute a:reader.getAllAttributesFromClass(currentClass)) currentVar++;
 					
 					for (EReference ref: reader.getAllReferencesFromClasswithOpposite(currentClass))	
 					{
@@ -280,9 +275,11 @@ public class CSP2XMI extends ModelBuilder{
 			    				
 			    				if(solutionValues.get(currentVar)!=0){
 			    					
-			    					EObject targetEObject= Utils.searchInstanceByClass(allCreatedEObjects, targetClass).getObj();
+			    					ClassInstance targetInstance = Utils.searchInstanceByClass(allCreatedEObjects, targetClass);
 			    					
-			    					if(targetEObject!=null) {
+			    					if(targetInstance!=null) {
+			    						
+			    						EObject targetEObject= targetInstance.getObj();
 			    						EClass targetEObjectClass= ((DynamicEObjectImpl) targetEObject).eClass();
 				    					
 			    						if(targetEObjectClass.equals(targetClass) ||
@@ -396,8 +393,6 @@ public class CSP2XMI extends ModelBuilder{
 		
 		for(EReference ref: reader.getAllContainmentFromClass(rootClass)) {
 			
-			System.out.println("  "+ref.getName());
-			
 			int refUpperBound=ref.getUpperBound();
 			if (refUpperBound==-1){	
 				refUpperBound=referenceUpperBound;				
@@ -416,7 +411,6 @@ public class CSP2XMI extends ModelBuilder{
    						System.out.println("Class:"+rootClass.getName()+" Ref:"+ref.getName()+ " 1 component add error !");
    					}   				
    			}else {
-   				System.out.println("    root 0..* Composition");
    				rootObject = setRootContainment(rootObject, ref);
    			}	
 		}		
@@ -434,8 +428,6 @@ public class CSP2XMI extends ModelBuilder{
 		
 		List<EObject> objectstoCompose= new ArrayList<EObject>(); 
 		
-		System.out.println("      "+containment.getEType().getName());
-		
 		//Add the appropriate instances for each reference of rootClass
 		for(ClassInstance clInst: allCreatedEObjects){
 			
@@ -444,7 +436,6 @@ public class CSP2XMI extends ModelBuilder{
 			
 			if(classOfObject.equals(containment.getEType()) ||
 				classOfObject.getEAllSuperTypes().contains(containment.getEType())) {
-				System.out.println(object);
 				objectstoCompose.add(object);
 			}
 		}

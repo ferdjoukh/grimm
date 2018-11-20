@@ -28,10 +28,10 @@ public class ConfigFileGenerator {
 	}
 	
 	public ConfigFileGenerator(String filePath, String metamodel, String rootClass) {
-		this.metamodel= metamodel;
-		this.rootClass= rootClass;
+		this.metamodel = metamodel;
+		this.rootClass = rootClass;
 		this.modelReader = new MetaModelReader(metamodel, rootClass, 2, 2);
-		this.filePath= rootClass+"/"+filePath;
+		this.filePath = filePath;
 	}
 	
 	public void createConfigFile() throws MetaModelNotFoundException {
