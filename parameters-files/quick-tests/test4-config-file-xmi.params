@@ -5,11 +5,10 @@
 #   - must be filled or removed
 #   (1) and (2) block must not appear at the same time
 #
-+meta-model =examples/test.ecore
++meta-model =meta-models/test.ecore
 +rootClass =Compo
--ocl file =examples/test.ocl
 #(2)
-configuration file =examples/testMM1.grimm
+configuration file =config-files/test-metamodel1.grimm
 #
 #
 number of solutions =2

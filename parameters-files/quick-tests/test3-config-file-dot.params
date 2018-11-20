@@ -5,15 +5,13 @@
 #   - must be filled or removed
 #   (1) and (2) block must not appear at the same time
 #
-+meta-model =examples/ecore.ecore
-+rootClass =EPackage
-#(1)
-lowerBound for classes =1
-upperBound for classes =3
-upperBound for references =3
++meta-model =meta-models/test.ecore
++rootClass =Compo
+#(2)
+configuration file =config-files/test-metamodel1.grimm
 #
 #
-number of solutions =1
+number of solutions =2
 #
-output format =xmi
+output format =dot
 CSP solver =abscon
