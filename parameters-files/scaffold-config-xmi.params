@@ -1,0 +1,17 @@
+# This file contains all the generation parameters of GRIMM tool
+#
+# Fill the file with your own information
+#   + are mondatory
+#   - must be filled or removed
+#   (1) and (2) block must not appear at the same time
+#
++meta-model =meta-models/ScaffoldGraph.ecore
++rootClass =Graph
+#(2)
+configuration file =config-files/scaffold-50-Vertex.grimm
+#
+#
+number of solutions =1
+#
+output format =xmi
+CSP solver =abscon

@@ -1,0 +1,16 @@
+# This file contains all the generation parameters of GRIMM tool
+#
+# Fill the file with your own information
+#   + are mondatory
+#   - must be filled or removed
+#   (1) and (2) block must not appear at the same time
+#
++meta-model =meta-models/Ecore.ecore
++rootClass =EPackage
+#(2)
+configuration file =config-files/ecore4ATL1.grimm
+#
+number of solutions =1
+#
+output format =xmi
+CSP solver =abscon

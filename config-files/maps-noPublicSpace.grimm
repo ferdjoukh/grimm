@@ -1,0 +1,41 @@
+% Configuration file for grimm tool 
+%	Please specify detailed information on your models:
+%		(1) precise number of class intances
+%		(2) domain for attributes
+%		(3) reference upper bound
+%---------------------------------
+% Number of instances for Classes
+%---------------------------------
+Street=30
+Boulevard=100
+Pedestrian=40
+Garden=0
+Square=0
+%---------------------------------
+% Domains of the features
+%---------------------------------
+%	Strings: choose: random, name or give a list of values (space separated)
+%	Integer: choose: 1..100, custom interval or  list of values (space separated)
+%---------------------------------
+% String
+%--------
+map/name=Ouagadougou
+map/country=Burkina-faso
+Street/name=name
+Street/district=random
+Boulevard/name=name
+Boulevard/district=random
+Pedestrian/name=name
+Pedestrian/district=random
+Garden/name=name
+Square/name=name
+%---------------------------------
+% Integer
+%---------
+Street/length=500..1000
+Boulevard/length=1000..4000
+Pedestrian/length=300..1000
+%---------------------------------
+% References upper bound
+%---------------------------------
+RefsBound=5
