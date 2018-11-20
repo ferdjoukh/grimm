@@ -1,21 +1,42 @@
 package tests;
 
-import java.io.IOException;
-
 import org.junit.Test;
-
-import exceptions.CSPSolverNotFoundException;
 import gui.GrimmLauncher;
 
 public class ModelGenerationTests {
 
-	
+	//////////////////////////////
+	//      maps.ecore
+	//////////////////////////////
 	@Test
 	public void mapCustomAttributesDot() throws Exception{
 		String [] args= {"g","parameters-files/maps-custom-attributes-dot.params"};
 		GrimmLauncher.main(args);
 	}
 	
+	@Test
+	public void mapCustomAttributesXmiDot() throws Exception{
+		String [] args= {"g","parameters-files/maps-custom-attributes-xmi.params"};
+		GrimmLauncher.main(args);
+	}
+	
+	//////////////////////////////
+	//     Scaffoldgraph.ecore
+	//////////////////////////////
+	@Test
+	public void scaffoldConfigDot() throws Exception{
+		String [] args= {"g","parameters-files/scaffold-config-dot.params"};
+		GrimmLauncher.main(args);
+	}
+	
+	@Test
+	public void scaffoldConfigXmi() throws Exception{
+		String [] args= {"g","parameters-files/scaffold-config-xmi.params"};
+		GrimmLauncher.main(args);
+	}
+	
+	
+	//Old tests
 	@Test
 	public void Ecore1() throws Exception{
 		String [] args= {"g","tests/generation/ecore1.params"};

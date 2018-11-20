@@ -193,7 +193,6 @@ public class CSP2XMI extends ModelBuilder{
 					EObject createdObject;
 					createdObject= rootPackage.getEFactoryInstance().create(c);
 					
-					
 					///////////////////////////////////////
 					// Set values for attributes
 					///////////////////////////////////////
@@ -266,7 +265,8 @@ public class CSP2XMI extends ModelBuilder{
 		    							
 		    							EClass targetEObjectClass= ((DynamicEObjectImpl) targetEObject).eClass();
 				    					
-		    							if(targetEObjectClass.getEAllSuperTypes().contains(targetClass)) {
+		    							if(targetEObjectClass.equals(targetClass) ||
+ 		    									targetEObjectClass.getEAllSuperTypes().contains(targetClass)) {
 		    								currentEObject.eSet(ref, targetEObject);				    								
 		    							}
 		    						}				    										    				
@@ -285,7 +285,8 @@ public class CSP2XMI extends ModelBuilder{
 			    					if(targetEObject!=null) {
 			    						EClass targetEObjectClass= ((DynamicEObjectImpl) targetEObject).eClass();
 				    					
-			    						if(targetEObjectClass.getEAllSuperTypes().contains(targetClass)) {
+			    						if(targetEObjectClass.equals(targetClass) ||
+			    								targetEObjectClass.getEAllSuperTypes().contains(targetClass)) {
 			    							objectsToLink.add(targetEObject);				    							
 			    						}
 			    					}				    									    				
@@ -395,12 +396,14 @@ public class CSP2XMI extends ModelBuilder{
 		
 		for(EReference ref: reader.getAllContainmentFromClass(rootClass)) {
 			
+			System.out.println("  "+ref.getName());
+			
 			int refUpperBound=ref.getUpperBound();
 			if (refUpperBound==-1){	
 				refUpperBound=referenceUpperBound;				
 			}
 			
-			if(ref.getUpperBound()==1){
+			if(ref.getUpperBound() == 1){
    				try {
    						String targetedClassName=ref.getEType().getName();
    						EObject target = Utils.searchInstanceByClass(allCreatedEObjects, targetedClassName).getObj();
@@ -413,6 +416,7 @@ public class CSP2XMI extends ModelBuilder{
    						System.out.println("Class:"+rootClass.getName()+" Ref:"+ref.getName()+ " 1 component add error !");
    					}   				
    			}else {
+   				System.out.println("    root 0..* Composition");
    				rootObject = setRootContainment(rootObject, ref);
    			}	
 		}		
@@ -430,13 +434,17 @@ public class CSP2XMI extends ModelBuilder{
 		
 		List<EObject> objectstoCompose= new ArrayList<EObject>(); 
 		
+		System.out.println("      "+containment.getEType().getName());
+		
 		//Add the appropriate instances for each reference of rootClass
-		for(ClassInstance clInst: allCreatedEObjects)
-		{
+		for(ClassInstance clInst: allCreatedEObjects){
+			
 			EObject object= clInst.getObj();
 			EClass classOfObject= ((DynamicEObjectImpl) object).eClass();
 			
-			if(classOfObject.getEAllSuperTypes().contains(containment.getEType())) {
+			if(classOfObject.equals(containment.getEType()) ||
+				classOfObject.getEAllSuperTypes().contains(containment.getEType())) {
+				System.out.println(object);
 				objectstoCompose.add(object);
 			}
 		}
