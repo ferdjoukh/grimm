@@ -83,7 +83,7 @@ grimm is the centerpiece of more other works (papers and tools) done by the same
 1. Go to the release page [here](https://github.com/ferdjoukh/grimm/releases)
 2. Choose the desired release (*the last release is recommended*) and download it (zip file).Unpack the zip file.
 
-3. Inside the folder, another zip called **grimm-executable.zip** contains: **a runnable jar**, **the CSP solver** (*abssol.jar*), and **examples**: Meta-models (.ecore, .ocl files), Parameters files (.params) and Configuration files (.grimm).
+3. Inside the folder, another zip called **grimm-executable.zip** contains: **a runnable jar**, **the CSP solver** (*abssol.jar*), and **examples**: meta-models (.ecore, .ocl files), parameters-files (.params) and config-files (.grimm).
 
 4. Unpack this zip.
 5. Now you are ready to start using **grimm**.
@@ -93,7 +93,7 @@ grimm is the centerpiece of more other works (papers and tools) done by the same
 
 8. Run this quick start command to verify that everything is okay:
 
-	`java -jar grimm.jar g examples/testMM1.params`
+	`java -jar grimm.jar g parameters-files/quick-tests/test1-quick-xmi.params`
 
 	1. If everything worked well, two first models are generated and stored in the following folder:
 
@@ -101,17 +101,17 @@ grimm is the centerpiece of more other works (papers and tools) done by the same
 
 9. Install **graphviz** if you want to create object diagrams for your generated models.
 
-	`sudo apt-get install graphivz` (on ubuntu for example)
+	`sudo apt-get install graphivz` (*on ubuntu for example*)
 
 10. Run this 2nd quick start command to verify that **graphviz** is running without problems:
 
-	`java -jar grimm.jar g examples/testMM2.params`
+	`java -jar grimm.jar g parameters-files/quick-tests/test2-quick-dot.params`
 
 	1. Again a model is generated and stored in:
 
 		`currentfolder/Compo/`
 
-Now you are ready to use grimm. If you have your own meta-model, you can creates you own [Parameters file](#parameters-file) and a [Configuration File](#configuration-file) in order to start generation.
+Now you are ready to use grimm. If you have your own meta-model, you can create you own [Parameters file](#parameters-file) and a [Configuration File](#configuration-file) in order to start generation.
 
 ## Parameters File
 
@@ -168,7 +168,7 @@ Configuration files contain detailed information about the size of desired model
 These information are:
 
 1. number of instances for each class
-2. domain of values for each attribute
+2. custom domains for attributes (EInt, EString, EBoolean and EEnum are supported)
 3. bound for unbounded references
 
 ### Create a pre-filled Configuration file
@@ -222,7 +222,6 @@ Pedestrian/length=100 20 50 65
 %---------------------------------
 RefsBound=3
 ```
-
 
 ## More help and tutorials
 
