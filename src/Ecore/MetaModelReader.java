@@ -55,7 +55,11 @@ public class MetaModelReader {
 		sizeClassMinRead();
 		sizeClassRead();
 	}
-		
+				
+	public ConfigFileReader getConfigFileReader() {
+		return configFileReader;
+	}
+
 	public String getMetamodel(){
 		return metamodelFilePath;
 	}

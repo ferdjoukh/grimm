@@ -66,7 +66,6 @@ public class CSP2dot extends ModelBuilder{
 		}
 	}
 	
-	
 	public String instantiateAttributes(EClass c, int OID) {
 		
 		String attributes="";
@@ -132,8 +131,6 @@ public class CSP2dot extends ModelBuilder{
 		
 	public void generateDot(ArrayList<Integer> values, int ID) throws IOException
 	{
-		ArrayList<Integer> vals= values;
-		
 		//init variable to 1 in order to skip first variable
 		int variable=1;
 		List<EClass> cls= reader.getClasses();
@@ -211,16 +208,16 @@ public class CSP2dot extends ModelBuilder{
 						}
 						for(int z=1;z<=zz;z++){
 							
-							int precedente= vals.get(variable);
-							if(vals.get(variable)<=this.maxDomains){
+							int precedente= values.get(variable);
+							if(values.get(variable)<=this.maxDomains){
 									if(ref.isContainment())
-										ecrivain.write("struct"+OID+" -- "+"struct"+vals.get(variable) +" [arrowtail=diamond,arrowhead=none,dir=both,label=\""+ref.getName()+"\"]   ;\n");
+										ecrivain.write("struct"+OID+" -- "+"struct"+values.get(variable) +" [arrowtail=diamond,arrowhead=none,dir=both,label=\""+ref.getName()+"\"]   ;\n");
 									else if(ref.getEOpposite() != null)
-										ecrivain.write("struct"+OID+" -- "+"struct"+vals.get(variable) +" [arrowhead=open,arrowtail=open,dir=both,label=\""+ref.getName()+"\"]   ;\n");
+										ecrivain.write("struct"+OID+" -- "+"struct"+values.get(variable) +" [arrowhead=open,arrowtail=open,dir=both,label=\""+ref.getName()+"\"]   ;\n");
 									else
-										ecrivain.write("struct"+OID+" -- "+"struct"+vals.get(variable) +" [arrowhead=open,arrowtail=open,dir=forward,label=\""+ref.getName()+"\"]   ;\n");
+										ecrivain.write("struct"+OID+" -- "+"struct"+values.get(variable) +" [arrowhead=open,arrowtail=open,dir=forward,label=\""+ref.getName()+"\"]   ;\n");
 									
-									references.add(OID+"-"+vals.get(variable));								
+									references.add(OID+"-"+values.get(variable));								
 							}
 							variable++;
 						}
@@ -237,21 +234,84 @@ public class CSP2dot extends ModelBuilder{
 		}
 		ecrivain.write("} \n");
 		ecrivain.close();
-				
+		
 		/////////////////////////////////////////////////////
 		// Call graphViz in order to generate 
 		// an object diagram in pdf file
 		/////////////////////////////////////////////////////
 		String cmd = "dot -Tpdf "+root+"/"+this.modelFilePath+ID+".dot -o "+root+ "/"+ this.modelFilePath+ID+".pdf";
 		
-		Process p = null;
 		try {
-			p = Runtime.getRuntime().exec(cmd);
-			System.out.println("\t[OK] Model :"+root+"/"+this.modelFilePath+ID+".pdf was generated");
+			Process p = Runtime.getRuntime().exec(cmd);
+			System.out.println("\t[OK] model generated >> "+root+"/"+this.modelFilePath+ID+".pdf");
 		}
 		catch(Exception e){
-			System.out.println("\\t[OK] MODEL "+root+"/"+this.modelFilePath+ID+".dot was generated");
+			System.out.println("\\t[OK] model generated >> "+root+"/"+this.modelFilePath+ID+".dot");
 		}
 		
+		/////////////////////////////////////////////////////
+		//   Create the chromosome
+		/////////////////////////////////////////////////////
+		if(reader.getConfigFileReader()!=null) {
+			CSP2CHR(values, this.modelFilePath+ID);
+		}		
+	}
+	
+	/***
+	 * This method generates a text file .chr that contains the 
+	 *  chromosome of each generated graph
+	 * 
+	 * @param values: the ArrayList<Integer> that was given by the solver
+	 * @param outputFileName: the name of generated .chr file
+	 * @throws IOException
+	 */
+	public void CSP2CHR(ArrayList<Integer> values, String outputFileName) throws IOException{
+		
+		///////////////////////////////////////
+		// Move the xcsp file and config file
+		///////////////////////////////////////
+		String xcspFilePath = root+"/"+root+".xml";
+		String configFilePath = reader.getConfigFileReader().getConfigFilePath();
+		
+		String moveXMLcmd = "cp "+ xcspFilePath+ " " +root+"/"+outputFileName+".xml";
+		String moveGrimmcmd = "cp "+ configFilePath + " " +root+"/"+outputFileName+".grimm";
+		
+		Process p = null;
+		try {
+			p = Runtime.getRuntime().exec(moveXMLcmd);
+		    p = Runtime.getRuntime().exec(moveGrimmcmd);
+		}
+		catch(Exception e){
+			
+			System.out.println("\t[PROBLEM] moving xcsp and config files");
+		}
+
+		PrintWriter printwriter =  new PrintWriter(new BufferedWriter(new FileWriter(root+"/"+outputFileName +".chr")));
+		
+		String chromosome= ArrayList2CHR(values);
+		printwriter.write(chromosome+"\n");
+		printwriter.write(root+"/"+ outputFileName +".xml\n");
+		printwriter.write(root+"/"+ outputFileName +".grimm\n");
+		printwriter.write(reader.getMetamodel()+"\n");
+		printwriter.write(root+"\n");
+		printwriter.close();
+		
+		System.out.println("\t[OK] chromosome generated >> "+root+"/"+outputFileName +".chr");
+	}
+	
+	/**
+	 * This method transforms an ArrayList of integer into a chromosome
+	 * 
+	 * @param values
+	 * @return
+	 */
+	private String ArrayList2CHR(ArrayList<Integer> values) {
+		String res= "";
+		
+		for (Integer i: values) {
+			res= res+ i +" ";
+		}
+		
+		return res;	
 	}
 }

@@ -11,7 +11,7 @@
 configuration file =config-files/scaffold-50-Vertex.grimm
 #
 #
-number of solutions =2
+number of solutions =1
 #
 output format =dot
 CSP solver =abscon
