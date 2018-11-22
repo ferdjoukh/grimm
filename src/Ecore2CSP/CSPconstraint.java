@@ -12,6 +12,53 @@ import Ecore.MetaModelReader;
 
 public class CSPconstraint {
 	
+	/**
+	 * Create predicate for equality A=B
+	 */
+	public static Element equalityPredicate()
+	{
+		Element pre1= new Element("predicate");
+		
+		Element par1= new Element("parameters");
+		par1.setText("int A int B");
+		
+		Element exp= new Element("expression");
+		Element fct= new Element("functional");
+		fct.setText("eq(A,B)");
+		exp.addContent(fct);
+		
+		pre1.addContent(par1);
+		pre1.addContent(exp);
+		Attribute refe1= new Attribute("name", "equal");
+		pre1.setAttribute(refe1);
+		return pre1;
+	}
+	
+	/**
+	 * Create symmetries ordering constraints
+	 * 
+	 * @param variable1
+	 * @param variable2
+	 */
+	public static Element equalityVarValConstraint(String variable, int value){
+		Element cons = new Element("constraint");
+		Element param= new Element("parameters");
+		
+		param.setText(variable+ " "+ value);
+		cons.addContent(param);
+		
+		Attribute name= new Attribute("name", "value_of_"+variable);
+		cons.setAttribute(name);
+		Attribute Arity= new Attribute("arity", "2");
+		cons.setAttribute(Arity);
+		Attribute Scope= new Attribute("scope", variable);
+		cons.setAttribute(Scope);
+		Attribute refe= new Attribute("reference", "equal");
+		cons.setAttribute(refe);
+		
+		return cons;
+	}
+
 	
 	/**
 	 * Create predicate for symmetries constraints
