@@ -1,6 +1,6 @@
 package tests;
 
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 import Ecore2CSP.ConfigFileGenerator;
 import exceptions.MetaModelNotFoundException;
 

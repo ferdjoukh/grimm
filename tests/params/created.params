@@ -5,18 +5,18 @@
 #   - must be filled or removed
 #   (1) and (2) block must not appear at the same time
 #
-+meta-model =examples/test.ecore
++meta-model =meta-models/test.ecore
 +rootClass =Compo
--ocl file =examples/test.ocl
+-ocl file =meta-models/test.ocl
 #(1)
 lowerBound for classes =2
 upperBound for classes =4
 upperBound for references =2
 #(2)
-configuration file =examples/testMM1.grimm
+configuration file =config-files/testMM1.grimm
 #
 #
-number of solutions =5
+number of solutions =2
 #
 output format =xmi or dot
 CSP solver =abscon
