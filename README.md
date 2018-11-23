@@ -30,6 +30,13 @@ grimm is the centerpiece of more other works (papers and tools) done by the same
 
 ## Releases
 
+- [v6.0-d23112018](https://github.com/ferdjoukh/grimm/releases/tag/v6.0-d23112018) (November 23th 2018). This version add following features:
+
+	- Generation of Chromosomes for Genetic Algorithms. it consists of a .chr file generated when a dot file is asked. This is an example of [.chr](https://github.com/ferdjoukh/grimm/blob/master/CHR/Graph-211339-2211181.chr) files.
+	- validate (v): add a new option for grimm. It is used to check the validity of a given chromosome (.chr file). If the chromosome is valid then a model is generated (dot format). To use this option, write the following command: 
+
+		`java -jar grimm.jar v your-chromosome.chr`
+
 - [v5.0-d20112018](https://github.com/ferdjoukh/grimm/releases/tag/v5.0-d20112018) (November 20th 2018). This version add following features:
 
 	- Adding random diversity when assigning values for attributes of type: EEnum, EInt, EBoolean and EString.
