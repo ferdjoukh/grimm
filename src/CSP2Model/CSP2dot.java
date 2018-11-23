@@ -274,10 +274,9 @@ public class CSP2dot extends ModelBuilder{
 		///////////////////////////////////////
 		// Move the xcsp file and config file
 		///////////////////////////////////////
-		String xcspFilePath = root+".xml";
 		String configFilePath = reader.getConfigFileReader().getConfigFilePath();
 		
-		String moveXMLcmd = "cp "+ xcspFilePath+ " " +outputFileName+".xml";
+		String moveXMLcmd = "cp "+ CSPInstanceFile+ " " +outputFileName+".xml";
 		String moveGrimmcmd = "cp "+ configFilePath +" "+ outputFileName+".grimm";
 		
 		Process p = null;
