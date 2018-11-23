@@ -1,10 +1,14 @@
 package Utils;
 
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.impl.DynamicEObjectImpl;
+import org.jdom2.Document;
+import org.jdom2.output.Format;
+import org.jdom2.output.XMLOutputter;
 
 public class Utils {
 	
@@ -104,5 +108,20 @@ public class Utils {
 			cc.add(c.obj);
 		}
 		return cc;
-	}	
+	}
+	
+	/**
+	 * This method saves the xcsp document an an XML file
+	 * @param XCSP
+	 * @param file
+	 */
+	public static void saveXML(Document XCSP,String file){
+		try{
+			XMLOutputter sortie = new XMLOutputter(Format.getPrettyFormat());
+		    sortie.output(XCSP, new FileOutputStream(file));
+		}
+		catch (Exception e){
+			System.out.println("\t[PROBLEM] impossible to save XCSP instance file");
+		}
+	}
 }

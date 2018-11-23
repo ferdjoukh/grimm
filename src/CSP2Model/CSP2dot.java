@@ -26,6 +26,10 @@ public class CSP2dot extends ModelBuilder{
 		super(ModelFile, racine,InstanceFile,oclFilePath);
 	}
 	
+	public CSP2dot(String ModelFile, String racine,String InstanceFile, String oclFilePath, String modelFile) {
+		super(ModelFile, racine,InstanceFile,oclFilePath, modelFile);
+	}
+
 	/***
 	 * 
 	 * @param lb: Class instance number lower bound
@@ -37,7 +41,7 @@ public class CSP2dot extends ModelBuilder{
 	 */
 	public void generateModel(int lb, int ub, int rb, int sym, int sol) throws IOException{
 		super.CallCSPGenrator(lb, ub, rb, sym, sol);
-		Solutions2Models();
+		Solutions2Models(false);
 	}
 	
 	/***
@@ -49,19 +53,19 @@ public class CSP2dot extends ModelBuilder{
 	 */
 	public void generateModel(String configFilePath, int sym, int sol) throws IOException{
 		super.CallCSPGenrator(configFilePath, sym, sol);
-		Solutions2Models();
+		Solutions2Models(true);
 	}
 	
-	public void Solutions2Models() {
+	public void Solutions2Models(boolean chr) {
 		
 		System.out.println("Model Builder is running");
 		int ID=0;
 		for(FoundSolution solution: foundSolutions) {
 			ID++;
 			try {
-				generateDot(solution.getValues(),ID);
+				generateDot(solution.getValues(),ID, chr);
 			} catch (IOException e) {
-				
+				System.out.println(e.getMessage());
 			}
 		}
 	}
@@ -129,7 +133,7 @@ public class CSP2dot extends ModelBuilder{
 		return attributes;
 	}
 		
-	public void generateDot(ArrayList<Integer> values, int ID) throws IOException
+	public void generateDot(ArrayList<Integer> values, int ID, boolean chr) throws IOException
 	{
 		//init variable to 1 in order to skip first variable
 		int variable=1;
@@ -139,7 +143,7 @@ public class CSP2dot extends ModelBuilder{
 		ArrayList<String> references= new ArrayList<String>();
 				
 		new File(root).mkdir();
-		ecrivain =  new PrintWriter(new BufferedWriter(new FileWriter(root+"/"+this.modelFilePath+ID+".dot")));
+		ecrivain =  new PrintWriter(new BufferedWriter(new FileWriter(this.modelFilePath+ID+".dot")));
 		
 		ecrivain.write("Graph g{ \n");
 		
@@ -200,16 +204,16 @@ public class CSP2dot extends ModelBuilder{
 					for (EReference ref: reader.getAllReferencesFromClasswithOpposite(c)){
 						int zz=ref.getUpperBound();
 						if (zz==-1)
-						{	//zz=5;
-							if(ref.getEReferenceType().isAbstract())
+						{	if(ref.getEReferenceType().isAbstract())
 								zz=referenceUpperBound;
 							else
 								zz=referenceUpperBound;
 						}
+						
 						for(int z=1;z<=zz;z++){
 							
 							int precedente= values.get(variable);
-							if(values.get(variable)<=this.maxDomains){
+							if(values.get(variable) <= this.maxDomains){
 									if(ref.isContainment())
 										ecrivain.write("struct"+OID+" -- "+"struct"+values.get(variable) +" [arrowtail=diamond,arrowhead=none,dir=both,label=\""+ref.getName()+"\"]   ;\n");
 									else if(ref.getEOpposite() != null)
@@ -239,20 +243,20 @@ public class CSP2dot extends ModelBuilder{
 		// Call graphViz in order to generate 
 		// an object diagram in pdf file
 		/////////////////////////////////////////////////////
-		String cmd = "dot -Tpdf "+root+"/"+this.modelFilePath+ID+".dot -o "+root+ "/"+ this.modelFilePath+ID+".pdf";
+		String cmd = "dot -Tpdf "+this.modelFilePath+ID+".dot -o "+this.modelFilePath+ID+".pdf";
 		
 		try {
 			Process p = Runtime.getRuntime().exec(cmd);
-			System.out.println("\t[OK] model generated >> "+root+"/"+this.modelFilePath+ID+".pdf");
+			System.out.println("\t[OK] model generated >> "+this.modelFilePath+ID+".pdf");
 		}
 		catch(Exception e){
-			System.out.println("\\t[OK] model generated >> "+root+"/"+this.modelFilePath+ID+".dot");
+			System.out.println("\\t[OK] model generated >> "+this.modelFilePath+ID+".dot");
 		}
 		
 		/////////////////////////////////////////////////////
 		//   Create the chromosome
 		/////////////////////////////////////////////////////
-		if(reader.getConfigFileReader()!=null) {
+		if(reader.getConfigFileReader()!=null && chr) {
 			CSP2CHR(values, this.modelFilePath+ID);
 		}		
 	}
@@ -270,11 +274,11 @@ public class CSP2dot extends ModelBuilder{
 		///////////////////////////////////////
 		// Move the xcsp file and config file
 		///////////////////////////////////////
-		String xcspFilePath = root+"/"+root+".xml";
+		String xcspFilePath = root+".xml";
 		String configFilePath = reader.getConfigFileReader().getConfigFilePath();
 		
-		String moveXMLcmd = "cp "+ xcspFilePath+ " " +root+"/"+outputFileName+".xml";
-		String moveGrimmcmd = "cp "+ configFilePath + " " +root+"/"+outputFileName+".grimm";
+		String moveXMLcmd = "cp "+ xcspFilePath+ " " +outputFileName+".xml";
+		String moveGrimmcmd = "cp "+ configFilePath +" "+ outputFileName+".grimm";
 		
 		Process p = null;
 		try {
@@ -286,17 +290,17 @@ public class CSP2dot extends ModelBuilder{
 			System.out.println("\t[PROBLEM] moving xcsp and config files");
 		}
 
-		PrintWriter printwriter =  new PrintWriter(new BufferedWriter(new FileWriter(root+"/"+outputFileName +".chr")));
+		PrintWriter printwriter =  new PrintWriter(new BufferedWriter(new FileWriter(outputFileName +".chr")));
 		
 		String chromosome= ArrayList2CHR(values);
 		printwriter.write(chromosome+"\n");
-		printwriter.write(root+"/"+ outputFileName +".xml\n");
-		printwriter.write(root+"/"+ outputFileName +".grimm\n");
+		printwriter.write(outputFileName +".xml\n");
+		printwriter.write(outputFileName +".grimm\n");
 		printwriter.write(reader.getMetamodel()+"\n");
 		printwriter.write(root+"\n");
 		printwriter.close();
 		
-		System.out.println("\t[OK] chromosome generated >> "+root+"/"+outputFileName +".chr");
+		System.out.println("\t[OK] chromosome generated >> "+outputFileName +".chr");
 	}
 	
 	/**

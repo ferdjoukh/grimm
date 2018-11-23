@@ -29,8 +29,11 @@ echo "5) Add example parameters files"
 cp -r "config-files" "$grimmExecutable/"
 echo "6) Add example config files"
 
+cp -r "CHR" "$grimmExecutable/"
+echo "7) Add example CHR files"
+
 zip -rm "$grimmExecutable.zip" "$grimmExecutable/" > /dev/null
-echo "7) Create $grimmExecutable.zip"
+echo "8) Create $grimmExecutable.zip"
 
 echo ""
 

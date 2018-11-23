@@ -13,6 +13,7 @@ import Ecore.MetaModelReader;
 import Ecore2CSP.ConfigFileReader;
 import Ecore2CSP.XCSPgenerator;
 import Utils.ClassInstance;
+import Utils.Utils;
 import Utils.OCL.OclConstraints;
 
 public abstract class ModelBuilder {
@@ -20,6 +21,7 @@ public abstract class ModelBuilder {
 	protected MetaModelReader reader;
 	protected String metaModelFile;
 	protected String root;
+	protected ConfigFileReader configfilereader;
 	protected String CSPInstanceFile;
 	protected String modelFilePath;
 	protected int referenceUpperBound;
@@ -46,13 +48,45 @@ public abstract class ModelBuilder {
 		DateFormat df = new SimpleDateFormat("-kkmmss-ddMMyy");
 		Date date = new Date();
 		String dateF = df.format(date.getTime());
-		this.modelFilePath= root+dateF;
+		this.modelFilePath= root+"/"+root+dateF;
+	}
+	
+	public ModelBuilder(String metaModelFile, String root, String CSPInstanceFile, String oclFilePath, String modelFile){
+		
+		this.metaModelFile = metaModelFile;
+		this.root = root;
+		this.CSPInstanceFile = CSPInstanceFile;
+		this.oclFilePath = oclFilePath;
+		
+		DateFormat df = new SimpleDateFormat("-kkmmss-ddMMyy");
+		Date date = new Date();
+		String dateF = df.format(date.getTime());
+		this.modelFilePath = modelFile;
 	}
 	
 	public ArrayList<FoundSolution> getFoundSolutions() {
 		return foundSolutions;
 	}
 
+	public void initMetamodelReader(int lb, int ub, int rb) {
+		this.reader= new MetaModelReader(metaModelFile, root,lb,ub);
+		this.referenceUpperBound=rb;
+		this.classSizes=reader.getClassSize();
+		this.classMinSizes=reader.getClassSizeMin();
+		this.maxDomains = computeMaxDomain();
+	}
+	
+	public void initMetaModelReader(String configFilePath) {
+		ConfigFileReader cfr= new ConfigFileReader(configFilePath);
+		cfr.read();
+		this.configfilereader = cfr;
+		this.reader= new MetaModelReader(metaModelFile, root, cfr);
+		this.classSizes= reader.getClassSize();
+		this.classMinSizes= reader.getClassSizeMin();
+		this.referenceUpperBound= cfr.getReferencesUB();
+		this.maxDomains = computeMaxDomain();
+	}
+	
 	/***
 	 * 
 	 * @param lb: Class instance number lower bound
@@ -64,10 +98,7 @@ public abstract class ModelBuilder {
 	 */
 	public void CallCSPGenrator(int lb, int ub, int rb, int sym, int sol) throws IOException
 	{
-		this.reader= new MetaModelReader(metaModelFile, root,lb,ub);
-		this.referenceUpperBound=rb;
-		this.classSizes=reader.getClassSize();
-		this.classMinSizes=reader.getClassSizeMin();
+		initMetamodelReader(lb, ub, rb);
 		
 		long timeBegin; double timeCounter;
 		timeBegin=System.nanoTime();
@@ -78,7 +109,6 @@ public abstract class ModelBuilder {
 		System.out.println("CSP instance generator is running");
 		XCSPgenerator CSPgenerator = new XCSPgenerator(reader, rb, sym);
 		CSPgenerator.generateXCSP(CSPInstanceFile);
-		maxDomains=CSPgenerator.getMaxDomains();
 				
 		timeCounter=(System.nanoTime()-timeBegin)/1000000;
 		System.out.println("\t[OK] CSP istance generation time = "+ timeCounter+ " (ms)");
@@ -92,7 +122,7 @@ public abstract class ModelBuilder {
 				System.out.println("OCL parser is running");
 			
 				OclConstraints oclCons = new OclConstraints(reader, oclFilePath, CSPgenerator.getXCSPinstance());
-				CSPgenerator.saveXML(oclCons.getResultDocumentXCSP(), CSPInstanceFile);
+				Utils.saveXML(oclCons.getResultDocumentXCSP(), CSPInstanceFile);
 				
 				timeCounter = (System.nanoTime()-timeBegin)/1000000;
 				System.out.println("\t[OK] OCL constraints parsing duration = "+ timeCounter+ " ms");
@@ -122,13 +152,8 @@ public abstract class ModelBuilder {
 		////////////////////////////////////////////////////////
 		// Init and read the configuration file
 		/////////////////////////////////////////////////////////
-		ConfigFileReader cfr= new ConfigFileReader(configFilePath);
-		cfr.read();
-		this.reader= new MetaModelReader(metaModelFile, root, cfr);
-		classSizes= reader.getClassSize();
-		classMinSizes= reader.getClassSizeMin();
-		this.referenceUpperBound= cfr.getReferencesUB();
-						
+		initMetaModelReader(configFilePath);
+		
 		long debut; double duree;
 		debut=System.nanoTime();
 		
@@ -136,9 +161,8 @@ public abstract class ModelBuilder {
 		// Generate CSP instance
 		/////////////////////////////////////////////////////////
 		System.out.println("CSP instance generator is running");
-	    XCSPgenerator CSPgenerator = new XCSPgenerator(reader, cfr, sym);
+	    XCSPgenerator CSPgenerator = new XCSPgenerator(reader, this.configfilereader, sym);
 		CSPgenerator.generateXCSP(CSPInstanceFile);
-		maxDomains = CSPgenerator.getMaxDomains();
 				
 		duree=(System.nanoTime()-debut)/1000000;
 		System.out.println("\t[OK] CSP instance generation time = "+ duree+ " ms");
@@ -152,8 +176,7 @@ public abstract class ModelBuilder {
 				debut = System.nanoTime();
 				System.out.println("OCL parser is running");	
 				OclConstraints oclCons = new OclConstraints(reader, oclFilePath, CSPgenerator.getXCSPinstance());
-				CSPgenerator.saveXML(oclCons.getResultDocumentXCSP(), CSPInstanceFile);
-
+				Utils.saveXML(oclCons.getResultDocumentXCSP(), CSPInstanceFile);
 				duree = (System.nanoTime()-debut)/1000000;
 				System.out.println("\t[OK] OCL constraints treatment duration= "+ duree+ " ms");
 			} catch (FileNotFoundException | ParserException e) {
@@ -170,20 +193,28 @@ public abstract class ModelBuilder {
 		findAllSolutions(bufferedreader);
 	}
 	
+	public int computeMaxDomain() {
+		int max=0;
+		for(Integer i: classSizes) {
+			max= max + i;
+		}
+		return max;
+	}
+	
 	public BufferedReader executeAbsconSolver(String Instancefile, int sol){
 			
-			String cmd = "java -jar abssol.jar " + Instancefile +" -s="+ sol;
-	
-			Process process = null;
-			try {
-				process = Runtime.getRuntime().exec(cmd);
-				BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
-				return reader;
-			} catch (IOException e) {
-				System.err.println("\tProblem when excecuting the CSP solver !");
-			}
-	        return null;
+		String cmd = "java -jar abssol.jar " + Instancefile +" -s="+ sol;
+
+		Process process = null;
+		try {
+			process = Runtime.getRuntime().exec(cmd);
+			BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+			return reader;
+		} catch (IOException e) {
+			System.err.println("\tProblem when excecuting the CSP solver !");
 		}
+        return null;
+	}
 	
 	/**
 	 * This method reads the output of execution of Abscon solver 

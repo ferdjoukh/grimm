@@ -11,6 +11,7 @@ import org.jdom2.output.Format;
 import org.jdom2.output.XMLOutputter;
 
 import Ecore.MetaModelReader;
+import Utils.Utils;
 
 public class XCSPgenerator {
 
@@ -91,7 +92,7 @@ public class XCSPgenerator {
 		instance.addContent(predicates);
 		instance.addContent(constraints);
 		
-		saveXML(getXCSPinstance(), file);
+		Utils.saveXML(getXCSPinstance(), file);
 	}
 	
 	/**
@@ -564,21 +565,6 @@ public class XCSPgenerator {
 			}
 			
 			i++;
-		}
-	}
-	
-	/**
-	 * This method saves the xcsp document an an XML file
-	 * @param XCSP
-	 * @param file
-	 */
-	public void saveXML(Document XCSP,String file){
-		try{
-			XMLOutputter sortie = new XMLOutputter(Format.getPrettyFormat());
-		    sortie.output(XCSP, new FileOutputStream(file));
-		}
-		catch (Exception e){
-			System.out.println("\t[PROBLEM] impossible to save XCSP instance file");
 		}
 	}
 	

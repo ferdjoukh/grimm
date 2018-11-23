@@ -15,6 +15,7 @@ import org.jdom2.output.XMLOutputter;
 import Ecore.MetaModelReader;
 import Ecore2CSP.XCSPgenerator;
 import Utils.GrimmLogger;
+import Utils.Utils;
 
 public class OclConstraints {
 
@@ -193,7 +194,7 @@ public class OclConstraints {
 			for (Element elt : oclCons.getConstraintsXCSP())
 				System.out.println(outputXML.outputString(elt));
 			
-			generation.saveXML(oclCons.getResultDocumentXCSP(), XCSPFile);
+			Utils.saveXML(oclCons.getResultDocumentXCSP(), XCSPFile);
 		} catch (FileNotFoundException | ParserException e) {
 			e.printStackTrace();
 		}

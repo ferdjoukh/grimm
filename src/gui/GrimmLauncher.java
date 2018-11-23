@@ -20,6 +20,7 @@ import exceptions.ParameterFileDoesNotFileException;
 import exceptions.PositiveIntegerInputException;
 import exceptions.UnknownCSPSolverException;
 import exceptions.UnknownParameterException;
+import genetic.ChromosomeReader;
 
 public class GrimmLauncher {
 
@@ -108,9 +109,19 @@ public class GrimmLauncher {
 	 * 
 	 * @param args: 0: option = v or validate
 	 * 				1: chr file path
+	 * @throws Exception 
 	 */
-	private static void validateChromosome(String[] args) {
+	private static void validateChromosome(String[] args) throws Exception {
 		
+		if(args.length != 2) {
+			throw new MissingGrimmParameterException("validation requires a chromosome file");
+		}else {
+			System.out.println("VALIDATION of CHROMOSOME");
+			System.out.println("");
+			
+			ChromosomeReader chrReader = new ChromosomeReader(args[1]);
+			chrReader.validateCHR();
+		}
 	}
 
 	/**

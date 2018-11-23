@@ -464,7 +464,7 @@ public class CSP2XMI extends ModelBuilder{
 		 try{
 			 resourceSet = new ResourceSetImpl();
 			 resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put("xmi",new XMIResourceFactoryImpl());
-			 URI uri=URI.createURI(root+"/"+this.modelFilePath+ID+".xmi");
+			 URI uri=URI.createURI(this.modelFilePath+ID+".xmi");
 			 resource=resourceSet.createResource(uri);
 			 
 			 resource.getContents().add(rootObject);
@@ -473,7 +473,7 @@ public class CSP2XMI extends ModelBuilder{
 			 opts.put(XMLResourceImpl.OPTION_SCHEMA_LOCATION, Boolean.TRUE);
 			 
 			 resource.save(opts); 
-			 System.out.println("\t[OK] Model: "+root+"/"+this.modelFilePath+ID+".xmi was generated");
+			 System.out.println("\t[OK] Model: "+this.modelFilePath+ID+".xmi was generated");
 		 }
 		 catch(Exception e){
 			 e.printStackTrace();
