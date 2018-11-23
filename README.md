@@ -24,7 +24,7 @@ This document describes all what you need to know about **grimm**.
 
 grimm is the centerpiece of more other works (papers and tools) done by the same team. This section gives a small overview of all this work.
 
-- [last news](https://adel-ferdjoukh.ovh/) to get the last news about grimm and its ecosystem.
+- [last news](https://www.adel-ferdjoukh.ovh/) to get the last news about grimm and its ecosystem.
 - [grimm](https://github.com/ferdjoukh/grimm)
 - [COMODI](https://github.com/ferdjoukh/comodi) (**CO**unting **MO**del **DI**fferences) is a tool for comparing models.
 - [TIWIZI](https://github.com/ferdjoukh/tiwizi/) is a fault localizer for debugging meta-models.
