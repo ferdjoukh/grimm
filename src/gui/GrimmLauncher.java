@@ -42,46 +42,24 @@ public class GrimmLauncher {
 		}else {
 			switch(args[0]) {
 			
+				case "h":
 				case "help":{
 					Help.printHelp();
 				}
 				break;
 				
-				case "h":{
-					Help.printHelp();
-				}
-				break;
-				
+				case "p":
 				case "parameter":{
 					try {
 						createParameterFile(args);
-					}catch(MissingGrimmParameterException e) {
+					}catch(Exception e) {
 						System.out.println(e.getMessage());
 					}
 				}
 				break;
 				
-				case "p":{
-					try {
-						createParameterFile(args);
-					}catch(MissingGrimmParameterException e) {
-						System.out.println(e.getMessage());
-					}					
-				}
-				break;
-				
+				case "c":
 				case "config":{
-					try {
-						createConfigFile(args);
-					}catch(MissingGrimmParameterException e) {
-						System.out.println(e.getMessage());
-					}catch (MetaModelNotFoundException e) {						
-						System.out.println(e.getMessage());
-					}
-				}
-				break;
-				
-				case "c":{
 					try {
 						createConfigFile(args);
 					}catch(Exception e) {
@@ -90,6 +68,7 @@ public class GrimmLauncher {
 				}
 				break;
 				
+				case "g":
 				case "generate":{
 					try {
 						generateModels(args);
@@ -99,9 +78,10 @@ public class GrimmLauncher {
 				}
 				break;
 				
-				case "g":{
+				case "v":
+				case "validate":{
 					try {
-						generateModels(args);
+						validateChromosome(args);
 					}catch(Exception e) {
 						System.out.println(e.getMessage());
 					}
@@ -119,6 +99,18 @@ public class GrimmLauncher {
 			}
 		}
 
+	}
+
+	/**
+	 * This method is used to validate a given Chromosome (.chr file)
+	 * 
+	 * If the chromosome is valid then, generate a corresponding dot file. 
+	 * 
+	 * @param args: 0: option = v or validate
+	 * 				1: chr file path
+	 */
+	private static void validateChromosome(String[] args) {
+		
 	}
 
 	/**

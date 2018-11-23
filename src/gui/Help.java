@@ -44,6 +44,11 @@ public class Help {
 	
 		
 		System.out.println("");
+		System.out.println("    validate chromosome.chr (shortcut: v)");
+		System.out.println("         Checks the validity of a chromosome and generates a corresponding model");
+	
+		
+		System.out.println("");
 		System.out.println("QUICK START");
 		
 		System.out.println("");
