@@ -265,8 +265,7 @@ public class CSP2XMI extends ModelBuilder{
 			    							if(targetEObjectClass.equals(targetClass) ||
 	 		    									targetEObjectClass.getEAllSuperTypes().contains(targetClass)) {
 			    								currentEObject.eSet(ref, targetEObject);
-			    								System.out.println(objectOID+ ">"+ targetOID);
-			    								System.out.println(currentEObject+ ">"+ targetEObject);
+			    								
 			    							}
 		    							}
 		    						}				    										    				
@@ -292,8 +291,7 @@ public class CSP2XMI extends ModelBuilder{
 				    						if(targetEObjectClass.equals(targetClass) ||
 				    								targetEObjectClass.getEAllSuperTypes().contains(targetClass)) {
 				    							objectsToLink.add(targetEObject);
-				    							System.out.println(objectOID+ ">"+ targetOID);
-				    							System.out.println(currentEObject+ ">"+ targetEObject);
+				    							
 				    						}
 			    						}
 			    					}				    									    				
@@ -429,7 +427,7 @@ public class CSP2XMI extends ModelBuilder{
 		///////////////////////////////////////////
 		createReferenceLinks(solutionValues);
 		
-		System.out.println(containedOIDs);
+		
 		
 		System.out.println("\t[OK] Model EObject built with success");
 		return rootObject;

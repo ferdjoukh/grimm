@@ -1,0 +1,70 @@
+% Configuration file for grimm tool 
+%	Please specify detailed information on your models:
+%		(1) precise number of class intances
+%		(2) domain for attributes
+%		(3) reference upper bound
+%---------------------------------
+% Number of instances for Classes
+%---------------------------------
+EAttribute=0
+EAnnotation=0
+EClass=3
+EDataType=0
+EEnum=0
+EEnumLiteral=0
+EFactory=0
+EObject=0
+EOperation=0
+EParameter=0
+EReference=0
+EStringToStringMapEntry=0
+EGenericType=0
+ETypeParameter=0
+%---------------------------------
+% Domains of the features
+%---------------------------------
+%	Strings: choose: random, name or give a list of values (space separated)
+%	Integer: choose: 1..100, custom interval or  list of values (space separated)
+%---------------------------------
+% String
+%--------
+EAttribute/name=name
+EAttribute/defaultValueLiteral=random
+EAnnotation/source=random
+EClass/name=name
+EClass/instanceClassName=random
+EClass/instanceTypeName=random
+EDataType/name=name
+EDataType/instanceClassName=random
+EDataType/instanceTypeName=random
+EEnum/name=name
+EEnum/instanceClassName=random
+EEnum/instanceTypeName=random
+EEnumLiteral/name=name
+EEnumLiteral/literal=random
+EOperation/name=name
+EPackage/name=name
+EPackage/nsURI=random
+EPackage/nsPrefix=random
+EParameter/name=name
+EReference/name=name
+EReference/defaultValueLiteral=random
+EStringToStringMapEntry/key=random
+EStringToStringMapEntry/value=random
+ETypeParameter/name=name
+%---------------------------------
+% Integer
+%---------
+EAttribute/lowerBound=1..100
+EAttribute/upperBound=1..100
+EEnumLiteral/value=1..100
+EOperation/lowerBound=1..100
+EOperation/upperBound=1..100
+EParameter/lowerBound=1..100
+EParameter/upperBound=1..100
+EReference/lowerBound=1..100
+EReference/upperBound=1..100
+%---------------------------------
+% References upper bound
+%---------------------------------
+RefsBound=1
