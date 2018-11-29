@@ -31,6 +31,11 @@ grimm is the centerpiece of more other works (papers and tools) done by the same
 
 ## Releases
 
+- [v6.1-d29112018](https://github.com/ferdjoukh/grimm/releases/tag/v6.1-d29112018) (November 29th 2018). This version corrects the following bugs:
+	- Clear workspace variables when creating more than 1 solution.
+	- Start building by containment tree than normal references.
+	- When creating a link *A->B*, check that *A* and *B* are contained by an other resource, otherwise, *xmi* file cannot be saved.
+
 - [v6.0-d23112018](https://github.com/ferdjoukh/grimm/releases/tag/v6.0-d23112018) (November 23th 2018). This version add following features:
 
 	- Generation of Chromosomes for Genetic Algorithms. it consists of a .chr file generated when a dot file is asked. This is an example of [.chr](https://github.com/ferdjoukh/grimm/blob/master/CHR/Graph-211339-2211181.chr) files.
