@@ -10,7 +10,7 @@
 #(2)
 configuration file =config-files/Ecore-full-1.grimm
 #
-number of solutions =1
+number of solutions =2
 #
 output format =xmi
 CSP solver =abscon

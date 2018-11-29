@@ -23,6 +23,7 @@ import Utils.Utils;
 public class CSP2XMI extends ModelBuilder{
 	
 	private EObject rootObject = null;
+	private ArrayList<Integer> containedOIDs = new ArrayList<Integer>();
 	
 	/**
 	 * 
@@ -59,11 +60,9 @@ public class CSP2XMI extends ModelBuilder{
 	 * @param sol: solution number
 	 * @throws IOException
 	 */
-	public void generateModel(String configFilePath, int sym, int numberOfSolutions) throws IOException
-	{
+	public void generateModel(String configFilePath, int sym, int numberOfSolutions) throws IOException{
 		super.CallCSPGenrator(configFilePath, sym, numberOfSolutions);
 		Solutions2Models();
-
 	}
 	
 	public void Solutions2Models() {
@@ -254,15 +253,21 @@ public class CSP2XMI extends ModelBuilder{
 			    			if(solutionValues.get(currentVar)!=0)
 			    			{
 			    				try{
-		    						EObject targetEObject= Utils.searchInstanceByClass(allCreatedEObjects, targetClass).getObj();
-		    						
-		    						if(targetEObject != null) {
+		    						ClassInstance targetInstance = Utils.searchInstanceByClass(allCreatedEObjects, targetClass);
+			    					
+		    						if(targetInstance != null) {
 		    							
-		    							EClass targetEObjectClass= ((DynamicEObjectImpl) targetEObject).eClass();
+		    							EObject targetEObject= targetInstance.getObj();
+				    					int targetOID = targetInstance.getId();
+			    						EClass targetEObjectClass= ((DynamicEObjectImpl) targetEObject).eClass();
 				    					
-		    							if(targetEObjectClass.equals(targetClass) ||
- 		    									targetEObjectClass.getEAllSuperTypes().contains(targetClass)) {
-		    								currentEObject.eSet(ref, targetEObject);				    								
+		    							if(containedOIDs.contains(targetOID) && containedOIDs.contains(objectOID)) {
+			    							if(targetEObjectClass.equals(targetClass) ||
+	 		    									targetEObjectClass.getEAllSuperTypes().contains(targetClass)) {
+			    								currentEObject.eSet(ref, targetEObject);
+			    								System.out.println(objectOID+ ">"+ targetOID);
+			    								System.out.println(currentEObject+ ">"+ targetEObject);
+			    							}
 		    							}
 		    						}				    										    				
 			    				}catch(Exception e){}
@@ -278,13 +283,18 @@ public class CSP2XMI extends ModelBuilder{
 			    					ClassInstance targetInstance = Utils.searchInstanceByClass(allCreatedEObjects, targetClass);
 			    					
 			    					if(targetInstance!=null) {
-			    						
+			    					
 			    						EObject targetEObject= targetInstance.getObj();
+				    					int targetOID = targetInstance.getId();
 			    						EClass targetEObjectClass= ((DynamicEObjectImpl) targetEObject).eClass();
 				    					
-			    						if(targetEObjectClass.equals(targetClass) ||
-			    								targetEObjectClass.getEAllSuperTypes().contains(targetClass)) {
-			    							objectsToLink.add(targetEObject);				    							
+			    						if(containedOIDs.contains(targetOID) && containedOIDs.contains(objectOID)) {
+				    						if(targetEObjectClass.equals(targetClass) ||
+				    								targetEObjectClass.getEAllSuperTypes().contains(targetClass)) {
+				    							objectsToLink.add(targetEObject);
+				    							System.out.println(objectOID+ ">"+ targetOID);
+				    							System.out.println(currentEObject+ ">"+ targetEObject);
+				    						}
 			    						}
 			    					}				    									    				
 			    				}	
@@ -367,25 +377,19 @@ public class CSP2XMI extends ModelBuilder{
 				}
 			}
 		}
+		containedOIDs.addAll(oidUsedInContainment);
 	}
 	
-	public EObject CSP2XMIBuild(ArrayList<Integer> solutionValues)
-	{	
+	public EObject CSP2XMIBuild(ArrayList<Integer> solutionValues){
+		
+		allCreatedEObjects.clear();
+		containedOIDs.clear();
+		
 		/////////////////////////////////////////////
 		// STEP 1 : Create all EObjects
 		////////////////////////////////////////////
 		createEObjects(solutionValues);
-		
-		///////////////////////////////////////////
-		// STEP 2: Create pointers for references
-		///////////////////////////////////////////
-		createReferenceLinks(solutionValues);
-		
-		/////////////////////////////////////////////////////////////
-		// STEP 3 : containment relations of non-root Classes
-		/////////////////////////////////////////////////////////////
-		createNonRootCompositions();
-		
+				
 		//////////////////////////////////////////////
 		// STEP 4 : containment relations of rootClass
 		//////////////////////////////////////////////
@@ -414,6 +418,19 @@ public class CSP2XMI extends ModelBuilder{
    				rootObject = setRootContainment(rootObject, ref);
    			}	
 		}		
+
+		/////////////////////////////////////////////////////////////
+		// STEP 3 : containment relations of non-root Classes
+		/////////////////////////////////////////////////////////////
+		createNonRootCompositions();
+		
+		///////////////////////////////////////////
+		// STEP 2: Create pointers for references
+		///////////////////////////////////////////
+		createReferenceLinks(solutionValues);
+		
+		System.out.println(containedOIDs);
+		
 		System.out.println("\t[OK] Model EObject built with success");
 		return rootObject;
 	}
@@ -432,11 +449,13 @@ public class CSP2XMI extends ModelBuilder{
 		for(ClassInstance clInst: allCreatedEObjects){
 			
 			EObject object= clInst.getObj();
+			int containedOID = clInst.getId();
 			EClass classOfObject= ((DynamicEObjectImpl) object).eClass();
 			
 			if(classOfObject.equals(containment.getEType()) ||
 				classOfObject.getEAllSuperTypes().contains(containment.getEType())) {
 				objectstoCompose.add(object);
+				containedOIDs.add(containedOID);
 			}
 		}
 		
