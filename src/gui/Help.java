@@ -62,7 +62,7 @@ public class Help {
 		
 		System.out.println("");
 		System.out.println("CREDITS");
-		System.out.println("    version : v6.0-d23112018 (November 2018)");
+		System.out.println("    version : v6.1-d29112018 (November 29, 2018)");
 		System.out.println("    author  : grimm is developped by Adel Ferdjoukh (ferdjoukh@gmail.com)");
 		
 	}
