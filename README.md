@@ -31,6 +31,10 @@ grimm is the centerpiece of more other works (papers and tools) done by the same
 
 ## Releases
 
+- [v6.2-d18122018](https://github.com/ferdjoukh/grimm/releases/tag/v6.2-d18122018) (December 18th 2018). This version corrects the following bugs:
+	- Treating unique references in ecore. This is done by creation of symmetry breaking constraints in the CSP.
+	- Now attributes of type EInt can be of kind name. The OID of the object is then used.
+
 - [v6.1-d29112018](https://github.com/ferdjoukh/grimm/releases/tag/v6.1-d29112018) (November 29th 2018). This version corrects the following bugs:
 	- Clear workspace variables when creating more than 1 solution.
 	- Start building by containment tree than normal references.

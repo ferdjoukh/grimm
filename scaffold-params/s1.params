@@ -5,7 +5,7 @@
 #   - must be filled or removed
 #   (1) and (2) block must not appear at the same time
 #
-+meta-model =scaffoldsAC.ecore
++meta-model =meta-models/scaffoldsAC.ecore
 +rootClass =ScaffoldGraph
 configuration file =scaffold-params/s1.grimm
 #
