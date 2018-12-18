@@ -1,0 +1,16 @@
+# This file contains all the generation parameters of GRIMM tool
+#
+# Fill the file with your own information
+#   + are mondatory
+#   - must be filled or removed
+#   (1) and (2) block must not appear at the same time
+#
++meta-model =meta-models/ScaffoldGraph.ecore
++rootClass =ScaffoldGraph
+configuration file =parameters-files/ScaffoldGraph/ScaffoldGraph1.grimm
+#
+#
+number of solutions =1
+#
+output format =xmi
+CSP solver =abscon
