@@ -115,7 +115,11 @@ public class CSP2XMI extends ModelBuilder{
 						}else {
 							ArrayList<String> customDomain = reader.getAttributesDomains().
 									get(currentclassname+"/"+a.getName());
-							value= AttributeInstantiator.chooseString(customDomain,OID);
+							if(customDomain.get(0).equals("n")) {
+									value = AttributeInstantiator.generateBasicName(currentclassname, OID);
+							}else {
+								value= AttributeInstantiator.chooseString(customDomain,OID);
+							}
 						}
 						currentobject.eSet(a, value);
 					}
@@ -135,8 +139,10 @@ public class CSP2XMI extends ModelBuilder{
 			    			int end = Integer.parseInt(customDomain.get(2));
 			    			value = AttributeInstantiator.randomInt(begin, end);
 			    		}else if(customDomain.get(0).equals("l")) {
-			    			
+			    		
 			    			value = AttributeInstantiator.chooseInteger(customDomain);
+			    		}else if(customDomain.get(0).equals("n")) {
+			    			value = OID;
 			    		}
 			    	}
 			    	currentobject.eSet(a, value);
@@ -322,9 +328,11 @@ public class CSP2XMI extends ModelBuilder{
 				int oidStart=  reader.domaineSum(reader.getClassIndex(currentClass)-1)+1;
 				int oidEnd=  reader.domaineSum(reader.getClassIndex(currentClass)); 
 				
+				
 				for(int currentOID=oidStart; currentOID<=oidEnd; currentOID++){
 					
 					EObject currentEObject = Utils.searchIns(allCreatedEObjects, currentOID);
+					
 					
 					for(EReference ref: reader.getAllContainmentFromClass(currentClass)) {
 						
@@ -335,10 +343,17 @@ public class CSP2XMI extends ModelBuilder{
 						}
 						
 						Random random= new SecureRandom();
-						int actualLinks =  random.nextInt(maxLinks-minLinks) + minLinks;
+						int actualLinks = 0;
+						if(minLinks == maxLinks) {
+							actualLinks = maxLinks;
+						}else {
+							actualLinks =  random.nextInt(maxLinks-minLinks) + minLinks;
+						}
+						
 						
 						EClass targetClass= ref.getEReferenceType();
 						ArrayList<ClassInstance> candidatesObject= Utils.findAllinstancesOfClass(allCreatedEObjects, targetClass);
+						
 						
 						//Do something only if actualLinks > 0
 						if( actualLinks > 0) {
@@ -375,6 +390,8 @@ public class CSP2XMI extends ModelBuilder{
 				}
 			}
 		}
+		
+		
 		containedOIDs.addAll(oidUsedInContainment);
 	}
 	
@@ -426,7 +443,6 @@ public class CSP2XMI extends ModelBuilder{
 		// STEP 2: Create pointers for references
 		///////////////////////////////////////////
 		createReferenceLinks(solutionValues);
-		
 		
 		
 		System.out.println("\t[OK] Model EObject built with success");

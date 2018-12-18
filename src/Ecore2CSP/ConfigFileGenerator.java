@@ -63,7 +63,7 @@ public class ConfigFileGenerator {
 			ecrivain.write("% Domains of the features\n");
 			ecrivain.write("%---------------------------------\n");
 			ecrivain.write("%	Strings: choose: random, name or give a list of values (space separated)\n");
-			ecrivain.write("%	Integer: choose: 1..100, custom interval or  list of values (space separated)\n");
+			ecrivain.write("%	Integer: choose: name, 1..100, custom interval or  list of values (space separated)\n");
 			ecrivain.write("%---------------------------------\n");
 			ArrayList<EAttribute> attributes= new ArrayList<EAttribute>();
 			ecrivain.write("% String\n");

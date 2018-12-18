@@ -59,10 +59,9 @@ public class Help {
 		System.out.println("");
 		System.out.println("     The results of execution are stored in Compo folder (named after rootClass)");
 		
-		
 		System.out.println("");
 		System.out.println("CREDITS");
-		System.out.println("    version : v6.1-d29112018 (November 29, 2018)");
+		System.out.println("    version : v6.2-d18122018 (December 18, 2018)");
 		System.out.println("    author  : grimm is developped by Adel Ferdjoukh (ferdjoukh@gmail.com)");
 		
 	}

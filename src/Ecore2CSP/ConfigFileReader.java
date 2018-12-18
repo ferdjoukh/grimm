@@ -120,6 +120,7 @@ public class ConfigFileReader {
 	 * 
 	 * ArrayList<String> = [i,23,100]
 	 * ArrayList<String> = [l,a,b,c,d,e]
+	 * ArrayList<String> = [n] (if used for identification name-like)
 	 * 	
 	 */
 	private void setAttributesDomains(){
@@ -133,7 +134,7 @@ public class ConfigFileReader {
 			domainS = attributedomain.substring(attributedomain.indexOf("=")+1);
 			ArrayList<String> value = new ArrayList<String>();
 			
-			//If default value is set: random, name or 1..100 is found, the attribute is ignored
+			//if default value is set: random, name or 1..100 is found, the attribute is ignored
 			if(!domainS.equals("random") && !domainS.equals("name") && !domainS.equals("1..100") ) {
 			
 				if(domainS.contains("..")) {
@@ -151,8 +152,12 @@ public class ConfigFileReader {
 				}
 				
 				attributesDomains.put(attrName, value);
+				
+			}else if (domainS.equals("name")) {
+				value.add("n");
+				
+				attributesDomains.put(attrName, value);
 			}
-			
 		}	
 	}
 	

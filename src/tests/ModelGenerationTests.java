@@ -31,6 +31,15 @@ public class ModelGenerationTests {
 	//     Scaffoldgraph.ecore
 	//////////////////////////////
 	@Test
+	public void newScaffold1() throws Exception{
+		String [] args= {"g","scaffold-params/s1.params"};
+		GrimmLauncher.main(args);
+	}
+	
+	//////////////////////////////
+	//     Scaffoldgraph.ecore
+	//////////////////////////////
+	@Test
 	public void scaffoldConfigDot() throws Exception{
 		String [] args= {"g","parameters-files/ScaffoldGraph/scaffold-config-dot.params"};
 		GrimmLauncher.main(args);
