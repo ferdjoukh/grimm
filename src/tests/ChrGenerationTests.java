@@ -13,5 +13,11 @@ public class ChrGenerationTests {
 		String [] args= {"chr","parameters-files/ScaffoldGraph/ScaffoldGraph1.params"};
 		GrimmLauncher.main(args);
 	}
+	
+	@Test
+	public void validate() throws Exception{
+		String [] args= {"v","ScaffoldGraph/ScaffoldGraph-111348-2012181.chr"};
+		GrimmLauncher.main(args);
+	}
 
 }

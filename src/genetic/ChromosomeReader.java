@@ -55,13 +55,13 @@ public class ChromosomeReader {
 			lines.add(line);
 		}
 		
-		if(lines.size() == 5) {
+		if(lines.size() == 6) {
 			this.valuesLine= lines.get(0);
 			this.values = line2values();
-			this.xcspFile= lines.get(1);
-			this.grimmFile= lines.get(2);
-			this.metamodel= lines.get(3);
-			this.rootClass= lines.get(4);
+			this.xcspFile= lines.get(2);
+			this.grimmFile= lines.get(3);
+			this.metamodel= lines.get(4);
+			this.rootClass= lines.get(5);
 		}else {
 			throw new MissingInputValueException("chromosome");
 		}
