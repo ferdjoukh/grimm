@@ -49,11 +49,13 @@ public class CSP2dot extends ModelBuilder{
 	 * @param configFilePath: Input a Configuration file 
 	 * @param sym: To break or not to break symmetries {0,1} 
 	 * @param sol: Solutions number ?
+	 * @param chr: say if the chr should be generated or not
+	 * 
 	 * @throws IOException
 	 */
-	public void generateModel(String configFilePath, int sym, int sol) throws IOException{
+	public void generateModel(String configFilePath, int sym, int sol, boolean chr) throws IOException{
 		super.CallCSPGenrator(configFilePath, sym, sol);
-		Solutions2Models(true);
+		Solutions2Models(chr);
 	}
 	
 	public void Solutions2Models(boolean chr) {
@@ -259,62 +261,5 @@ public class CSP2dot extends ModelBuilder{
 		if(reader.getConfigFileReader()!=null && chr) {
 			CSP2CHR(values, this.modelFilePath+ID);
 		}		
-	}
-	
-	/***
-	 * This method generates a text file .chr that contains the 
-	 *  chromosome of each generated graph
-	 * 
-	 * @param values: the ArrayList<Integer> that was given by the solver
-	 * @param outputFileName: the name of generated .chr file
-	 * @throws IOException
-	 */
-	public void CSP2CHR(ArrayList<Integer> values, String outputFileName) throws IOException{
-		
-		///////////////////////////////////////
-		// Move the xcsp file and config file
-		///////////////////////////////////////
-		String configFilePath = reader.getConfigFileReader().getConfigFilePath();
-		
-		String moveXMLcmd = "cp "+ CSPInstanceFile+ " " +outputFileName+".xml";
-		String moveGrimmcmd = "cp "+ configFilePath +" "+ outputFileName+".grimm";
-		
-		Process p = null;
-		try {
-			p = Runtime.getRuntime().exec(moveXMLcmd);
-		    p = Runtime.getRuntime().exec(moveGrimmcmd);
-		}
-		catch(Exception e){
-			
-			System.out.println("\t[PROBLEM] moving xcsp and config files");
-		}
-
-		PrintWriter printwriter =  new PrintWriter(new BufferedWriter(new FileWriter(outputFileName +".chr")));
-		
-		String chromosome= ArrayList2CHR(values);
-		printwriter.write(chromosome+"\n");
-		printwriter.write(outputFileName +".xml\n");
-		printwriter.write(outputFileName +".grimm\n");
-		printwriter.write(reader.getMetamodel()+"\n");
-		printwriter.write(root+"\n");
-		printwriter.close();
-		
-		System.out.println("\t[OK] chromosome generated >> "+outputFileName +".chr");
-	}
-	
-	/**
-	 * This method transforms an ArrayList of integer into a chromosome
-	 * 
-	 * @param values
-	 * @return
-	 */
-	private String ArrayList2CHR(ArrayList<Integer> values) {
-		String res= "";
-		
-		for (Integer i: values) {
-			res= res+ i +" ";
-		}
-		
-		return res;	
 	}
 }

@@ -10,10 +10,9 @@ public class ExecuteGrimm {
 
 	/**
 	 * @param args
-	 * @throws IOException 
-	 * @throws MetaModelNotFoundException 
+	 * @throws Exception 
 	 */
-	public static void main(String[] args) throws IOException, MetaModelNotFoundException {
+	public static void main(String[] args) throws Exception {
 		// TODO Auto-generated method stub
       		
 		String mm = "";
@@ -235,14 +234,14 @@ public class ExecuteGrimm {
 					if(xmiOrDot=='x')
 					{
 						mb=new CSP2XMI(mm,root,root+"/"+root+".xml", oclFilePath);
-						mb.generateModel(confFilePath, sym, Nsol);
+						mb.generateModel(confFilePath, sym, Nsol,false);
 					   return;	
 					}
 					
 					if(xmiOrDot=='d')
 					{
 						mb=new CSP2dot(mm,root,root+"/"+root+".xml", oclFilePath);
-						mb.generateModel(confFilePath, sym, Nsol);
+						mb.generateModel(confFilePath, sym, Nsol,false);
 						return;
 					}
 					

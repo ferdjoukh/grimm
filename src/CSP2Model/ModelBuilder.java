@@ -1,9 +1,12 @@
 package CSP2Model;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -255,6 +258,63 @@ public abstract class ModelBuilder {
 		}
 	}
 	
+	/***
+	 * This method generates a text file .chr that contains the 
+	 *  chromosome of each generated graph
+	 * 
+	 * @param values: the ArrayList<Integer> that was given by the solver
+	 * @param outputFileName: the name of generated .chr file
+	 * @throws IOException
+	 */
+	protected void CSP2CHR(ArrayList<Integer> values, String outputFileName) throws IOException{
+		
+		///////////////////////////////////////
+		// Move the xcsp file and config file
+		///////////////////////////////////////
+		String configFilePath = reader.getConfigFileReader().getConfigFilePath();
+		
+		String moveXMLcmd = "cp "+ CSPInstanceFile+ " " +outputFileName+".xml";
+		String moveGrimmcmd = "cp "+ configFilePath +" "+ outputFileName+".grimm";
+		
+		Process p = null;
+		try {
+			p = Runtime.getRuntime().exec(moveXMLcmd);
+		    p = Runtime.getRuntime().exec(moveGrimmcmd);
+		}
+		catch(Exception e){
+			
+			System.out.println("\t[PROBLEM] moving xcsp and config files");
+		}
+
+		PrintWriter printwriter =  new PrintWriter(new BufferedWriter(new FileWriter(outputFileName +".chr")));
+		
+		String chromosome= ArrayList2CHR(values);
+		printwriter.write(chromosome+"\n");
+		printwriter.write(outputFileName +".xml\n");
+		printwriter.write(outputFileName +".grimm\n");
+		printwriter.write(reader.getMetamodel()+"\n");
+		printwriter.write(root+"\n");
+		printwriter.close();
+		
+		System.out.println("\t[OK] chromosome generated >> "+outputFileName +".chr");
+	}
+	
+	/**
+	 * This method transforms an ArrayList of integer into a chromosome
+	 * 
+	 * @param values
+	 * @return
+	 */
+	protected String ArrayList2CHR(ArrayList<Integer> values) {
+		String res= "";
+		
+		for (Integer i: values) {
+			res= res+ i +" ";
+		}
+		
+		return res;	
+	}
+	
 	/**
 	 * This method generate models using a detailed configuration file
 	 * 
@@ -262,8 +322,9 @@ public abstract class ModelBuilder {
 	 * @param sym
 	 * @param numberOfSolutions
 	 * @throws IOException
+	 * @throws Exception 
 	 */
-	public void generateModel(String string, int sym, int numberOfSolutions) throws IOException {}
+	public void generateModel(String string, int sym, int numberOfSolutions, boolean chr) throws IOException, Exception {}
 	
 	/**
 	 * This method is called for generating model using the quick launch mode

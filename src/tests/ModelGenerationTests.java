@@ -26,16 +26,7 @@ public class ModelGenerationTests {
 		String [] args= {"g","parameters-files/maps/maps-noPublicSpaces.params"};
 		GrimmLauncher.main(args);
 	}
-	
-	//////////////////////////////
-	//     Scaffoldgraph.ecore
-	//////////////////////////////
-	@Test
-	public void newScaffold1() throws Exception{
-		String [] args= {"g","scaffold-params/s1.params"};
-		GrimmLauncher.main(args);
-	}
-	
+			
 	//////////////////////////////
 	//     Scaffoldgraph.ecore
 	//////////////////////////////

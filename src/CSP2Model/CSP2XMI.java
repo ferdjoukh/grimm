@@ -58,14 +58,14 @@ public class CSP2XMI extends ModelBuilder{
 	 * @param configFilePath: path for a configuration file
 	 * @param sym: break or not symmetries
 	 * @param sol: solution number
-	 * @throws IOException
+	 * @throws Exception 
 	 */
-	public void generateModel(String configFilePath, int sym, int numberOfSolutions) throws IOException{
+	public void generateModel(String configFilePath, int sym, int numberOfSolutions, boolean chr) throws Exception{
 		super.CallCSPGenrator(configFilePath, sym, numberOfSolutions);
-		Solutions2Models();
+		Solutions2Models(chr);
 	}
 	
-	public void Solutions2Models() {
+	public void Solutions2Models(boolean chr) throws Exception {
 		System.out.println("Model Builder is running...");
 		
 		if(foundSolutions.size()==0) {
@@ -79,6 +79,7 @@ public class CSP2XMI extends ModelBuilder{
 			
 			EObject object= CSP2XMIBuild(solution.getValues());
 			generateXMIfile(object,ID);
+			CSP2CHR(solution.getValues(), this.modelFilePath+ID);
 		}
 	}
 	

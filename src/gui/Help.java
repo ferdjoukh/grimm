@@ -42,6 +42,9 @@ public class Help {
 		System.out.println("    generate filePath.params (shortcut: g)");
 		System.out.println("         Generate models using the given parameters file");
 	
+		System.out.println("");
+		System.out.println("    generate--chr filePath.params (shortcut: chr)");
+		System.out.println("         Generate models and corresponding chromosomes using the given parameters file");
 		
 		System.out.println("");
 		System.out.println("    validate chromosome.chr (shortcut: v)");

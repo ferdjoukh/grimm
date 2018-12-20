@@ -72,7 +72,17 @@ public class GrimmLauncher {
 				case "g":
 				case "generate":{
 					try {
-						generateModels(args);
+						generateModels(args,false);
+					} catch (Exception e) {
+						System.out.println(e.getMessage());
+					}
+				}
+				break;
+				
+				case "chr":
+				case "generate--chr":{
+					try {
+						generateModels(args,true);
 					} catch (Exception e) {
 						System.out.println(e.getMessage());
 					}
@@ -172,22 +182,13 @@ public class GrimmLauncher {
 	}
 	
 	/**
-	 * Generates models using Grimm for a given parameters file
+	 * Generates models using grimm for a given parameters file
 	 * 
 	 * @param args
-	 * @throws MissingGrimmParameterException
-	 * @throws UnknownCSPSolverException 
-	 * @throws IncorrectOutputFormatException 
-	 * @throws MissingInputValueException 
-	 * @throws ParameterFileDoesNotFileException 
-	 * @throws PositiveIntegerInputException 
-	 * @throws ConfigurationFileNotFoundException 
-	 * @throws OCLFileNotFoundException 
-	 * @throws MetaModelNotFoundException 
-	 * @throws IOException 
-	 * @throws MissingMetaModelElementException 
+	 * @param chr: a boolean that says if the chromosome should be generated or not
+	 * @throws Exception 
 	 */
-	private static void generateModels(String[] args) throws MissingGrimmParameterException, MetaModelNotFoundException, OCLFileNotFoundException, ConfigurationFileNotFoundException, PositiveIntegerInputException, ParameterFileDoesNotFileException, MissingInputValueException, IncorrectOutputFormatException, UnknownCSPSolverException, IOException, MissingMetaModelElementException {
+	private static void generateModels(String[] args, boolean chr) throws Exception {
 		
 		if(args.length != 2) {
 			throw new MissingGrimmParameterException("generation of models requires a parameters file");
@@ -243,7 +244,7 @@ public class GrimmLauncher {
 							params.getRootClass()+"/"+params.getRootClass()+".xml", 
 							params.getOclFile());
 					
-					modelbuilder.generateModel(params.getConfFile(), 1, params.getNumberOfSolutions());
+					modelbuilder.generateModel(params.getConfFile(), 1, params.getNumberOfSolutions(),chr);
 					
 				}else if (params.getOutputFormat().equals("dot")) {
 					
@@ -251,7 +252,7 @@ public class GrimmLauncher {
 							params.getRootClass()+"/"+params.getRootClass()+".xml", 
 							params.getOclFile());
 					
-					modelbuilder.generateModel(params.getConfFile(), 1, params.getNumberOfSolutions());
+					modelbuilder.generateModel(params.getConfFile(), 1, params.getNumberOfSolutions(),chr);
 				}
 			}
 		}	
