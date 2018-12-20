@@ -38,6 +38,10 @@ public class CSP2XMI extends ModelBuilder{
 		super(ModelFile, root, CSPInstanceFile, oclFilePath);
 	}
 	
+	public CSP2XMI(String ModelFile, String racine,String InstanceFile, String oclFilePath, String modelFile) {
+		super(ModelFile, racine,InstanceFile,oclFilePath, modelFile);
+	}
+	
 	/***
 	 * 
 	 * @param lb: lower bound for class instances

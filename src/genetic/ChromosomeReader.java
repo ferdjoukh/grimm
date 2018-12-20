@@ -15,6 +15,7 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.jdom2.input.DOMBuilder;
 
+import CSP2Model.CSP2XMI;
 import CSP2Model.CSP2dot;
 import Ecore2CSP.CSPconstraint;
 
@@ -67,7 +68,7 @@ public class ChromosomeReader {
 		}
 	}
 	
-	public void validateCHR() {
+	public void validateCHR() throws Exception {
 		
 		System.out.println("Loading xcp file");
 		
@@ -103,15 +104,16 @@ public class ChromosomeReader {
 		System.out.println("\t [OK] validation constraints added");
 		
 		//Check the validity
-		CSP2dot csp2dot = new CSP2dot(metamodel, rootClass, this.fileName+"-extended.xml", "", fileName+"-VALIDATED-");
-		csp2dot.initMetaModelReader(grimmFile);
+		CSP2XMI csp2xmi = new CSP2XMI(metamodel, rootClass, this.fileName+"-extended.xml", "", fileName+"-VALIDATED-");
+		csp2xmi.initMetaModelReader(grimmFile);
 		
 		System.out.println("CSP Solver is running");
 		BufferedReader bufferedreader;
-		bufferedreader=csp2dot.executeAbsconSolver(this.fileName+"-extended.xml", 1);
-		csp2dot.findAllSolutions(bufferedreader);
-		if(csp2dot.getFoundSolutions().size() > 0) {
-			csp2dot.Solutions2Models(false);
+		
+		bufferedreader=csp2xmi.executeAbsconSolver(this.fileName+"-extended.xml", 1);
+		csp2xmi.findAllSolutions(bufferedreader);
+		if(csp2xmi.getFoundSolutions().size() > 0) {
+			csp2xmi.Solutions2Models(false);
 		}
 	}
 	
