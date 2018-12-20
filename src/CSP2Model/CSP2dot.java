@@ -66,6 +66,15 @@ public class CSP2dot extends ModelBuilder{
 			ID++;
 			try {
 				generateDot(solution.getValues(),ID, chr);
+				
+				if(chr) {
+					if (this.configfilereader != null) {
+						CSP2CHR(solution.getValues(), this.modelFilePath+ID);
+					}
+					else {
+						System.out.println("\t[Problem] cannot generate chr for quick parameters mode, use config file !");
+					}
+				}
 			} catch (IOException e) {
 				System.out.println(e.getMessage());
 			}
@@ -253,13 +262,6 @@ public class CSP2dot extends ModelBuilder{
 		}
 		catch(Exception e){
 			System.out.println("\\t[OK] model generated >> "+this.modelFilePath+ID+".dot");
-		}
-		
-		/////////////////////////////////////////////////////
-		//   Create the chromosome
-		/////////////////////////////////////////////////////
-		if(reader.getConfigFileReader()!=null && chr) {
-			CSP2CHR(values, this.modelFilePath+ID);
-		}		
+		}	
 	}
 }

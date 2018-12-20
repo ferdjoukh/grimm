@@ -79,7 +79,15 @@ public class CSP2XMI extends ModelBuilder{
 			
 			EObject object= CSP2XMIBuild(solution.getValues());
 			generateXMIfile(object,ID);
-			CSP2CHR(solution.getValues(), this.modelFilePath+ID);
+			
+			if(chr) {
+				if (this.configfilereader != null) {
+					CSP2CHR(solution.getValues(), this.modelFilePath+ID);
+				}
+				else {
+					System.out.println("\t[Problem] cannot generate chr for quick parameters mode, use config file !");
+				}
+			}
 		}
 	}
 	
