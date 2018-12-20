@@ -123,21 +123,45 @@ public class CSPconstraint {
 	 * @param domain
 	 * @param lower
 	 * @param upper
+	 * @param kind: choose the diveristy of upper bounds:
+	 * 	0 = upper
+	 *  1 = uniform random
 	 */
-	public static Element createGcc(String gccName,int variableArity, int valuesArity, String variables, String domain, int lower, int upper)
+	public static Element createGcc(String gccName,int variableArity, int valuesArity, String variables, String domain, int lower, int upper, int kind)
 	{
 		Element cons=new Element("constraint");
 		
 		String gccLowerBounds=" ",gccUpperBounds=" ";
 		Random random= new SecureRandom();
 		
-		//Create random uniform upper bound
-		for(int i=1;i<=valuesArity;i++)
-		{
-			gccLowerBounds = gccLowerBounds + lower+" ";
-			int nextUpper = random.nextInt(upper-lower+1) + lower;
-			gccUpperBounds = gccUpperBounds + nextUpper +" ";
+		switch(kind) {
+		
+			case 0:{
+				
+				//create safe upper bound
+				for(int i=1;i<=valuesArity;i++){
+					gccLowerBounds = gccLowerBounds + lower+" ";
+					gccUpperBounds = gccUpperBounds + upper+" ";
+				}	
+			}
+			break;
+		
+			
+			case 1:{
+				
+				//Create random uniform upper bound
+				for(int i=1;i<=valuesArity;i++){
+					
+					gccLowerBounds = gccLowerBounds + lower+" ";
+					int nextUpper = random.nextInt(upper-lower+1) + lower;
+					gccUpperBounds = gccUpperBounds + nextUpper +" ";
+				}
+				
+			}
+			break;
 		}
+		
+		
 		
 		//Set GCC body
 		String body="[ "+ variables +"] [ "+ domain +"] ["+gccLowerBounds+"] ["+gccUpperBounds+"]";

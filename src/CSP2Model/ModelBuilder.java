@@ -111,7 +111,7 @@ public abstract class ModelBuilder {
 		///////////////////////////////////////////////////////////////
 		System.out.println("CSP instance generator is running");
 		XCSPgenerator CSPgenerator = new XCSPgenerator(reader, rb, sym);
-		CSPgenerator.generateXCSP(CSPInstanceFile);
+		CSPgenerator.generateXCSP(CSPInstanceFile,1);
 				
 		timeCounter=(System.nanoTime()-timeBegin)/1000000;
 		System.out.println("\t[OK] CSP istance generation time = "+ timeCounter+ " (ms)");
@@ -165,7 +165,7 @@ public abstract class ModelBuilder {
 		/////////////////////////////////////////////////////////
 		System.out.println("CSP instance generator is running");
 	    XCSPgenerator CSPgenerator = new XCSPgenerator(reader, this.configfilereader, sym);
-		CSPgenerator.generateXCSP(CSPInstanceFile);
+		CSPgenerator.generateXCSP(CSPInstanceFile,1);
 				
 		duree=(System.nanoTime()-debut)/1000000;
 		System.out.println("\t[OK] CSP instance generation time = "+ duree+ " ms");
@@ -195,7 +195,7 @@ public abstract class ModelBuilder {
 		bufferedreader=executeAbsconSolver(CSPInstanceFile,sol);
 		findAllSolutions(bufferedreader);
 	}
-	
+		
 	public int computeMaxDomain() {
 		int max=0;
 		for(Integer i: classSizes) {
@@ -269,6 +269,11 @@ public abstract class ModelBuilder {
 	protected void CSP2CHR(ArrayList<Integer> values, String outputFileName) throws IOException{
 		
 		///////////////////////////////////////
+		// Generate safe CSPs
+		///////////////////////////////////////
+		SafeCSPGenerator(outputFileName);
+				
+		///////////////////////////////////////
 		// Move the xcsp file and config file
 		///////////////////////////////////////
 		String configFilePath = reader.getConfigFileReader().getConfigFilePath();
@@ -291,12 +296,27 @@ public abstract class ModelBuilder {
 		String chromosome= ArrayList2CHR(values);
 		printwriter.write(chromosome+"\n");
 		printwriter.write(outputFileName +".xml\n");
+		printwriter.write(outputFileName +"-safe.xml\n");
 		printwriter.write(outputFileName +".grimm\n");
 		printwriter.write(reader.getMetamodel()+"\n");
 		printwriter.write(root+"\n");
 		printwriter.close();
 		
 		System.out.println("\t[OK] chromosome generated >> "+outputFileName +".chr");
+	}
+	
+	/**
+	 * This method generates a safe CSP when chr is generated
+	 * 
+	 * @param fileName
+	 */
+	public void SafeCSPGenerator(String fileName){
+		
+		System.out.println("Safe CSP instance generation ...");
+		XCSPgenerator CSPgenerator = new XCSPgenerator(reader, this.configfilereader, 0);
+		CSPgenerator.generateXCSP(fileName+"-safe.xml",0);
+		
+		System.out.println("\t[OK] safe csp generated >> "+ fileName +"-safe.xml");
 	}
 	
 	/**

@@ -65,14 +65,15 @@ public class XCSPgenerator {
 	 * This is the main method. It generates the CSP instance
 	 * 
 	 * @param file: filepath of CSP document (instance.xml)
+	 * @param kind: indicates the random function to use for gcc diversity
 	 * @return
 	 */
-	public void generateXCSP(String file){
+	public void generateXCSP(String file, int kind){
 		
 		createFakeVariable();
 		genenerateClassDomains();
 		GenRefsDomainsJokers();
-		GenVars();
+		GenVars(kind);
 		Element orderPredicate = CSPconstraint.createOrderingPredicate();
 		predicates.addContent(orderPredicate);
 		numberOfPredicates++;
@@ -390,7 +391,7 @@ public class XCSPgenerator {
 	 * 		- variables of references
 	 *      - variables of EOpposite references
 	 */
-	public void GenVars(){
+	private void GenVars(int kind){
 		
 		int i=1;
 		for(EClass c: listOfClasses){
@@ -554,9 +555,8 @@ public class XCSPgenerator {
 
 						//Create GCC for EOpposite Reference
 						if(!varsGcc.equals("")) {	
-							Element gccconstraint = CSPconstraint.createGcc(ref.getName()+"_"+ref.getEOpposite().getName(),
-								arityGcc,valsArityGcc,varsGcc,valsGcc,
-								ref.getEOpposite().getLowerBound(),upperBound);
+							Element gccconstraint = CSPconstraint.createGcc(ref.getName()+"_"+ref.getEOpposite().getName(), arityGcc, valsArityGcc, varsGcc, valsGcc,
+								ref.getEOpposite().getLowerBound(),upperBound, kind);
 							numberOfConstraints++;
 							constraints.addContent(gccconstraint);
 						}
