@@ -1,0 +1,6 @@
+package root
+
+context Student
+inv : age < (2 * 3)
+
+endpackage

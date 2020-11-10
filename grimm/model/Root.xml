@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<instance>
+  <presentation name="?" maxConstraintArity="2" format="XCSP 2.0" />
+  <domains nbDomains="1">
+    <domain name="First">-1</domain>
+    <domain name="D_Student" nbValues="2">1..2</domain>
+    <domain name="D_Professor" nbValues="2">3..4</domain>
+    <domain name="D_Root" nbValues="1">5</domain>
+  </domains>
+  <variables nbVariables="1">
+    <variable domain="First" name="First" />
+  </variables>
+  <predicates nbPredicates="1">
+    <predicate name="inf">
+      <parameters>int v1 int v2</parameters>
+      <expression>
+        <functional>lt(v1,v2)</functional>
+      </expression>
+    </predicate>
+  </predicates>
+  <constraints nbConstraints="0" />
+</instance>

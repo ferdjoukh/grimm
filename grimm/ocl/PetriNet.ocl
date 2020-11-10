@@ -1,0 +1,15 @@
+package PetriNet
+
+context Place
+inv : marking >= 5
+
+context Arc
+inv : weight > 0
+
+context PetriNet
+inv : nodes->forAll(n1, n2 | n1.name <> n2.name)
+
+context Arc
+inv : source.oclType() <> target.oclType()
+
+endpackage

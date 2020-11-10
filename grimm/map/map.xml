@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<instance>
+  <presentation name="?" maxConstraintArity="2" format="XCSP 2.0" />
+  <domains nbDomains="7">
+    <domain name="First">-1</domain>
+    <domain name="D_map" nbValues="1">1</domain>
+    <domain name="D_Street" nbValues="2">2..3</domain>
+    <domain name="D_Boulevard" nbValues="2">4..5</domain>
+    <domain name="D_Pedestrian" nbValues="5">6..10</domain>
+    <domain name="D_Garden" nbValues="1">11</domain>
+    <domain name="D_Square" nbValues="2">12..13</domain>
+    <domain name="DCRJ_1_2" nbValues="3">11..11 12..13</domain>
+    <domain name="DCRJ2_1_2" nbValues="6">11..11 12..13 14..17</domain>
+    <domain name="DCRJ_2_2" nbValues="9">2..3 4..5 6..10</domain>
+    <domain name="DCRJ2_2_2" nbValues="12">2..3 4..5 6..10 14..17</domain>
+    <domain name="DCRJ_1_3" nbValues="3">11..11 12..13</domain>
+    <domain name="DCRJ2_1_3" nbValues="6">11..11 12..13 14..17</domain>
+    <domain name="DCRJ_2_3" nbValues="9">2..3 4..5 6..10</domain>
+    <domain name="DCRJ2_2_3" nbValues="12">2..3 4..5 6..10 14..17</domain>
+    <domain name="DCRJ_1_4" nbValues="3">11..11 12..13</domain>
+    <domain name="DCRJ2_1_4" nbValues="6">11..11 12..13 14..17</domain>
+    <domain name="DCRJ_2_4" nbValues="9">2..3 4..5 6..10</domain>
+    <domain name="DCRJ2_2_4" nbValues="12">2..3 4..5 6..10 14..17</domain>
+  </domains>
+  <variables nbVariables="55">
+    <variable domain="First" name="First" />
+    <variable domain="DCRJ2_1_2" name="Id_Street_2_border_1" />
+    <variable domain="DCRJ2_1_2" name="Id_Street_2_border_2" />
+    <variable domain="DCRJ2_1_2" name="Id_Street_2_border_3" />
+    <variable domain="DCRJ2_2_2" name="Id_Street_2_meet_1" />
+    <variable domain="DCRJ2_2_2" name="Id_Street_2_meet_2" />
+    <variable domain="DCRJ2_2_2" name="Id_Street_2_meet_3" />
+    <variable domain="DCRJ2_1_2" name="Id_Street_3_border_1" />
+    <variable domain="DCRJ2_1_2" name="Id_Street_3_border_2" />
+    <variable domain="DCRJ2_1_2" name="Id_Street_3_border_3" />
+    <variable domain="DCRJ2_2_2" name="Id_Street_3_meet_1" />
+    <variable domain="DCRJ2_2_2" name="Id_Street_3_meet_2" />
+    <variable domain="DCRJ2_2_2" name="Id_Street_3_meet_3" />
+    <variable domain="DCRJ2_1_3" name="Id_Boulevard_4_border_1" />
+    <variable domain="DCRJ2_1_3" name="Id_Boulevard_4_border_2" />
+    <variable domain="DCRJ2_1_3" name="Id_Boulevard_4_border_3" />
+    <variable domain="DCRJ2_2_3" name="Id_Boulevard_4_meet_1" />
+    <variable domain="DCRJ2_2_3" name="Id_Boulevard_4_meet_2" />
+    <variable domain="DCRJ2_2_3" name="Id_Boulevard_4_meet_3" />
+    <variable domain="DCRJ2_1_3" name="Id_Boulevard_5_border_1" />
+    <variable domain="DCRJ2_1_3" name="Id_Boulevard_5_border_2" />
+    <variable domain="DCRJ2_1_3" name="Id_Boulevard_5_border_3" />
+    <variable domain="DCRJ2_2_3" name="Id_Boulevard_5_meet_1" />
+    <variable domain="DCRJ2_2_3" name="Id_Boulevard_5_meet_2" />
+    <variable domain="DCRJ2_2_3" name="Id_Boulevard_5_meet_3" />
+    <variable domain="DCRJ2_1_4" name="Id_Pedestrian_6_border_1" />
+    <variable domain="DCRJ2_1_4" name="Id_Pedestrian_6_border_2" />
+    <variable domain="DCRJ2_1_4" name="Id_Pedestrian_6_border_3" />
+    <variable domain="DCRJ2_2_4" name="Id_Pedestrian_6_meet_1" />
+    <variable domain="DCRJ2_2_4" name="Id_Pedestrian_6_meet_2" />
+    <variable domain="DCRJ2_2_4" name="Id_Pedestrian_6_meet_3" />
+    <variable domain="DCRJ2_1_4" name="Id_Pedestrian_7_border_1" />
+    <variable domain="DCRJ2_1_4" name="Id_Pedestrian_7_border_2" />
+    <variable domain="DCRJ2_1_4" name="Id_Pedestrian_7_border_3" />
+    <variable domain="DCRJ2_2_4" name="Id_Pedestrian_7_meet_1" />
+    <variable domain="DCRJ2_2_4" name="Id_Pedestrian_7_meet_2" />
+    <variable domain="DCRJ2_2_4" name="Id_Pedestrian_7_meet_3" />
+    <variable domain="DCRJ2_1_4" name="Id_Pedestrian_8_border_1" />
+    <variable domain="DCRJ2_1_4" name="Id_Pedestrian_8_border_2" />
+    <variable domain="DCRJ2_1_4" name="Id_Pedestrian_8_border_3" />
+    <variable domain="DCRJ2_2_4" name="Id_Pedestrian_8_meet_1" />
+    <variable domain="DCRJ2_2_4" name="Id_Pedestrian_8_meet_2" />
+    <variable domain="DCRJ2_2_4" name="Id_Pedestrian_8_meet_3" />
+    <variable domain="DCRJ2_1_4" name="Id_Pedestrian_9_border_1" />
+    <variable domain="DCRJ2_1_4" name="Id_Pedestrian_9_border_2" />
+    <variable domain="DCRJ2_1_4" name="Id_Pedestrian_9_border_3" />
+    <variable domain="DCRJ2_2_4" name="Id_Pedestrian_9_meet_1" />
+    <variable domain="DCRJ2_2_4" name="Id_Pedestrian_9_meet_2" />
+    <variable domain="DCRJ2_2_4" name="Id_Pedestrian_9_meet_3" />
+    <variable domain="DCRJ2_1_4" name="Id_Pedestrian_10_border_1" />
+    <variable domain="DCRJ2_1_4" name="Id_Pedestrian_10_border_2" />
+    <variable domain="DCRJ2_1_4" name="Id_Pedestrian_10_border_3" />
+    <variable domain="DCRJ2_2_4" name="Id_Pedestrian_10_meet_1" />
+    <variable domain="DCRJ2_2_4" name="Id_Pedestrian_10_meet_2" />
+    <variable domain="DCRJ2_2_4" name="Id_Pedestrian_10_meet_3" />
+  </variables>
+  <predicates nbPredicates="1">
+    <predicate name="inf">
+      <parameters>int v1 int v2</parameters>
+      <expression>
+        <functional>lt(v1,v2)</functional>
+      </expression>
+    </predicate>
+  </predicates>
+  <constraints nbConstraints="36">
+    <constraint name="ConsId_Street_2_border_2Id_Street_2_border_1" arity="2" scope="Id_Street_2_border_2 Id_Street_2_border_1" reference="inf">
+      <parameters>Id_Street_2_border_1 Id_Street_2_border_2</parameters>
+    </constraint>
+    <constraint name="ConsId_Street_2_border_3Id_Street_2_border_2" arity="2" scope="Id_Street_2_border_3 Id_Street_2_border_2" reference="inf">
+      <parameters>Id_Street_2_border_2 Id_Street_2_border_3</parameters>
+    </constraint>
+    <constraint name="ConsId_Street_2_meet_2Id_Street_2_meet_1" arity="2" scope="Id_Street_2_meet_2 Id_Street_2_meet_1" reference="inf">
+      <parameters>Id_Street_2_meet_1 Id_Street_2_meet_2</parameters>
+    </constraint>
+    <constraint name="ConsId_Street_2_meet_3Id_Street_2_meet_2" arity="2" scope="Id_Street_2_meet_3 Id_Street_2_meet_2" reference="inf">
+      <parameters>Id_Street_2_meet_2 Id_Street_2_meet_3</parameters>
+    </constraint>
+    <constraint name="ConsId_Street_3_border_2Id_Street_3_border_1" arity="2" scope="Id_Street_3_border_2 Id_Street_3_border_1" reference="inf">
+      <parameters>Id_Street_3_border_1 Id_Street_3_border_2</parameters>
+    </constraint>
+    <constraint name="ConsId_Street_3_border_3Id_Street_3_border_2" arity="2" scope="Id_Street_3_border_3 Id_Street_3_border_2" reference="inf">
+      <parameters>Id_Street_3_border_2 Id_Street_3_border_3</parameters>
+    </constraint>
+    <constraint name="ConsId_Street_3_meet_2Id_Street_3_meet_1" arity="2" scope="Id_Street_3_meet_2 Id_Street_3_meet_1" reference="inf">
+      <parameters>Id_Street_3_meet_1 Id_Street_3_meet_2</parameters>
+    </constraint>
+    <constraint name="ConsId_Street_3_meet_3Id_Street_3_meet_2" arity="2" scope="Id_Street_3_meet_3 Id_Street_3_meet_2" reference="inf">
+      <parameters>Id_Street_3_meet_2 Id_Street_3_meet_3</parameters>
+    </constraint>
+    <constraint name="ConsId_Boulevard_4_border_2Id_Boulevard_4_border_1" arity="2" scope="Id_Boulevard_4_border_2 Id_Boulevard_4_border_1" reference="inf">
+      <parameters>Id_Boulevard_4_border_1 Id_Boulevard_4_border_2</parameters>
+    </constraint>
+    <constraint name="ConsId_Boulevard_4_border_3Id_Boulevard_4_border_2" arity="2" scope="Id_Boulevard_4_border_3 Id_Boulevard_4_border_2" reference="inf">
+      <parameters>Id_Boulevard_4_border_2 Id_Boulevard_4_border_3</parameters>
+    </constraint>
+    <constraint name="ConsId_Boulevard_4_meet_2Id_Boulevard_4_meet_1" arity="2" scope="Id_Boulevard_4_meet_2 Id_Boulevard_4_meet_1" reference="inf">
+      <parameters>Id_Boulevard_4_meet_1 Id_Boulevard_4_meet_2</parameters>
+    </constraint>
+    <constraint name="ConsId_Boulevard_4_meet_3Id_Boulevard_4_meet_2" arity="2" scope="Id_Boulevard_4_meet_3 Id_Boulevard_4_meet_2" reference="inf">
+      <parameters>Id_Boulevard_4_meet_2 Id_Boulevard_4_meet_3</parameters>
+    </constraint>
+    <constraint name="ConsId_Boulevard_5_border_2Id_Boulevard_5_border_1" arity="2" scope="Id_Boulevard_5_border_2 Id_Boulevard_5_border_1" reference="inf">
+      <parameters>Id_Boulevard_5_border_1 Id_Boulevard_5_border_2</parameters>
+    </constraint>
+    <constraint name="ConsId_Boulevard_5_border_3Id_Boulevard_5_border_2" arity="2" scope="Id_Boulevard_5_border_3 Id_Boulevard_5_border_2" reference="inf">
+      <parameters>Id_Boulevard_5_border_2 Id_Boulevard_5_border_3</parameters>
+    </constraint>
+    <constraint name="ConsId_Boulevard_5_meet_2Id_Boulevard_5_meet_1" arity="2" scope="Id_Boulevard_5_meet_2 Id_Boulevard_5_meet_1" reference="inf">
+      <parameters>Id_Boulevard_5_meet_1 Id_Boulevard_5_meet_2</parameters>
+    </constraint>
+    <constraint name="ConsId_Boulevard_5_meet_3Id_Boulevard_5_meet_2" arity="2" scope="Id_Boulevard_5_meet_3 Id_Boulevard_5_meet_2" reference="inf">
+      <parameters>Id_Boulevard_5_meet_2 Id_Boulevard_5_meet_3</parameters>
+    </constraint>
+    <constraint name="ConsId_Pedestrian_6_border_2Id_Pedestrian_6_border_1" arity="2" scope="Id_Pedestrian_6_border_2 Id_Pedestrian_6_border_1" reference="inf">
+      <parameters>Id_Pedestrian_6_border_1 Id_Pedestrian_6_border_2</parameters>
+    </constraint>
+    <constraint name="ConsId_Pedestrian_6_border_3Id_Pedestrian_6_border_2" arity="2" scope="Id_Pedestrian_6_border_3 Id_Pedestrian_6_border_2" reference="inf">
+      <parameters>Id_Pedestrian_6_border_2 Id_Pedestrian_6_border_3</parameters>
+    </constraint>
+    <constraint name="ConsId_Pedestrian_6_meet_2Id_Pedestrian_6_meet_1" arity="2" scope="Id_Pedestrian_6_meet_2 Id_Pedestrian_6_meet_1" reference="inf">
+      <parameters>Id_Pedestrian_6_meet_1 Id_Pedestrian_6_meet_2</parameters>
+    </constraint>
+    <constraint name="ConsId_Pedestrian_6_meet_3Id_Pedestrian_6_meet_2" arity="2" scope="Id_Pedestrian_6_meet_3 Id_Pedestrian_6_meet_2" reference="inf">
+      <parameters>Id_Pedestrian_6_meet_2 Id_Pedestrian_6_meet_3</parameters>
+    </constraint>
+    <constraint name="ConsId_Pedestrian_7_border_2Id_Pedestrian_7_border_1" arity="2" scope="Id_Pedestrian_7_border_2 Id_Pedestrian_7_border_1" reference="inf">
+      <parameters>Id_Pedestrian_7_border_1 Id_Pedestrian_7_border_2</parameters>
+    </constraint>
+    <constraint name="ConsId_Pedestrian_7_border_3Id_Pedestrian_7_border_2" arity="2" scope="Id_Pedestrian_7_border_3 Id_Pedestrian_7_border_2" reference="inf">
+      <parameters>Id_Pedestrian_7_border_2 Id_Pedestrian_7_border_3</parameters>
+    </constraint>
+    <constraint name="ConsId_Pedestrian_7_meet_2Id_Pedestrian_7_meet_1" arity="2" scope="Id_Pedestrian_7_meet_2 Id_Pedestrian_7_meet_1" reference="inf">
+      <parameters>Id_Pedestrian_7_meet_1 Id_Pedestrian_7_meet_2</parameters>
+    </constraint>
+    <constraint name="ConsId_Pedestrian_7_meet_3Id_Pedestrian_7_meet_2" arity="2" scope="Id_Pedestrian_7_meet_3 Id_Pedestrian_7_meet_2" reference="inf">
+      <parameters>Id_Pedestrian_7_meet_2 Id_Pedestrian_7_meet_3</parameters>
+    </constraint>
+    <constraint name="ConsId_Pedestrian_8_border_2Id_Pedestrian_8_border_1" arity="2" scope="Id_Pedestrian_8_border_2 Id_Pedestrian_8_border_1" reference="inf">
+      <parameters>Id_Pedestrian_8_border_1 Id_Pedestrian_8_border_2</parameters>
+    </constraint>
+    <constraint name="ConsId_Pedestrian_8_border_3Id_Pedestrian_8_border_2" arity="2" scope="Id_Pedestrian_8_border_3 Id_Pedestrian_8_border_2" reference="inf">
+      <parameters>Id_Pedestrian_8_border_2 Id_Pedestrian_8_border_3</parameters>
+    </constraint>
+    <constraint name="ConsId_Pedestrian_8_meet_2Id_Pedestrian_8_meet_1" arity="2" scope="Id_Pedestrian_8_meet_2 Id_Pedestrian_8_meet_1" reference="inf">
+      <parameters>Id_Pedestrian_8_meet_1 Id_Pedestrian_8_meet_2</parameters>
+    </constraint>
+    <constraint name="ConsId_Pedestrian_8_meet_3Id_Pedestrian_8_meet_2" arity="2" scope="Id_Pedestrian_8_meet_3 Id_Pedestrian_8_meet_2" reference="inf">
+      <parameters>Id_Pedestrian_8_meet_2 Id_Pedestrian_8_meet_3</parameters>
+    </constraint>
+    <constraint name="ConsId_Pedestrian_9_border_2Id_Pedestrian_9_border_1" arity="2" scope="Id_Pedestrian_9_border_2 Id_Pedestrian_9_border_1" reference="inf">
+      <parameters>Id_Pedestrian_9_border_1 Id_Pedestrian_9_border_2</parameters>
+    </constraint>
+    <constraint name="ConsId_Pedestrian_9_border_3Id_Pedestrian_9_border_2" arity="2" scope="Id_Pedestrian_9_border_3 Id_Pedestrian_9_border_2" reference="inf">
+      <parameters>Id_Pedestrian_9_border_2 Id_Pedestrian_9_border_3</parameters>
+    </constraint>
+    <constraint name="ConsId_Pedestrian_9_meet_2Id_Pedestrian_9_meet_1" arity="2" scope="Id_Pedestrian_9_meet_2 Id_Pedestrian_9_meet_1" reference="inf">
+      <parameters>Id_Pedestrian_9_meet_1 Id_Pedestrian_9_meet_2</parameters>
+    </constraint>
+    <constraint name="ConsId_Pedestrian_9_meet_3Id_Pedestrian_9_meet_2" arity="2" scope="Id_Pedestrian_9_meet_3 Id_Pedestrian_9_meet_2" reference="inf">
+      <parameters>Id_Pedestrian_9_meet_2 Id_Pedestrian_9_meet_3</parameters>
+    </constraint>
+    <constraint name="ConsId_Pedestrian_10_border_2Id_Pedestrian_10_border_1" arity="2" scope="Id_Pedestrian_10_border_2 Id_Pedestrian_10_border_1" reference="inf">
+      <parameters>Id_Pedestrian_10_border_1 Id_Pedestrian_10_border_2</parameters>
+    </constraint>
+    <constraint name="ConsId_Pedestrian_10_border_3Id_Pedestrian_10_border_2" arity="2" scope="Id_Pedestrian_10_border_3 Id_Pedestrian_10_border_2" reference="inf">
+      <parameters>Id_Pedestrian_10_border_2 Id_Pedestrian_10_border_3</parameters>
+    </constraint>
+    <constraint name="ConsId_Pedestrian_10_meet_2Id_Pedestrian_10_meet_1" arity="2" scope="Id_Pedestrian_10_meet_2 Id_Pedestrian_10_meet_1" reference="inf">
+      <parameters>Id_Pedestrian_10_meet_1 Id_Pedestrian_10_meet_2</parameters>
+    </constraint>
+    <constraint name="ConsId_Pedestrian_10_meet_3Id_Pedestrian_10_meet_2" arity="2" scope="Id_Pedestrian_10_meet_3 Id_Pedestrian_10_meet_2" reference="inf">
+      <parameters>Id_Pedestrian_10_meet_2 Id_Pedestrian_10_meet_3</parameters>
+    </constraint>
+  </constraints>
+</instance>

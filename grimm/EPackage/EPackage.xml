@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<instance>
+  <presentation name="?" maxConstraintArity="2" format="XCSP 2.0" />
+  <domains nbDomains="14">
+    <domain name="First">-1</domain>
+    <domain name="D_EAttribute" nbValues="2">1..2</domain>
+    <domain name="D_EAnnotation" nbValues="1">3</domain>
+    <domain name="D_EClass" nbValues="2">4..5</domain>
+    <domain name="D_EDataType" nbValues="2">6..7</domain>
+    <domain name="D_EEnum" nbValues="1">8</domain>
+    <domain name="D_EEnumLiteral" nbValues="1">9</domain>
+    <domain name="D_EFactory" nbValues="1">10</domain>
+    <domain name="D_EObject" nbValues="1">11</domain>
+    <domain name="D_EOperation" nbValues="1">12</domain>
+    <domain name="D_EPackage" nbValues="1">13</domain>
+    <domain name="D_EParameter" nbValues="1">14</domain>
+    <domain name="D_EReference" nbValues="1">15</domain>
+    <domain name="D_EStringToStringMapEntry" nbValues="1">16</domain>
+    <domain name="D_EGenericType" nbValues="2">17..18</domain>
+    <domain name="D_ETypeParameter" nbValues="2">19..20</domain>
+    <domain name="DCRJ_1_1" nbValues="5">4..5 6..7 8..8</domain>
+    <domain name="DCRJ2_1_1" nbValues="8">4..5 6..7 8..8 21..24</domain>
+    <domain name="DCRJ_1_2" nbValues="16">1..2 3..3 4..5 6..7 8..8 9..9 10..10 12..12 13..13 14..14 15..15 19..20</domain>
+    <domain name="DCRJ2_1_2" nbValues="19">1..2 3..3 4..5 6..7 8..8 9..9 10..10 12..12 13..13 14..14 15..15 19..20 21..24</domain>
+    <domain name="DCRJ_2_2" nbValues="1">11..11</domain>
+    <domain name="DCRJ2_2_2" nbValues="4">11..11 21..24</domain>
+    <domain name="DCRJ_1_3" nbValues="2">4..5</domain>
+    <domain name="DCRJ2_1_3" nbValues="5">4..5 21..24</domain>
+    <domain name="DCRJ_1_7" nbValues="1">13..13</domain>
+    <domain name="DCRJ2_1_7" nbValues="4">13..13 21..24</domain>
+    <domain name="DCRJ_1_9" nbValues="5">4..5 6..7 8..8</domain>
+    <domain name="DCRJ2_1_9" nbValues="8">4..5 6..7 8..8 21..24</domain>
+    <domain name="DCRJ_2_9" nbValues="5">4..5 6..7 8..8</domain>
+    <domain name="DCRJ2_2_9" nbValues="8">4..5 6..7 8..8 21..24</domain>
+    <domain name="DCRJ_1_11" nbValues="5">4..5 6..7 8..8</domain>
+    <domain name="DCRJ2_1_11" nbValues="8">4..5 6..7 8..8 21..24</domain>
+    <domain name="DCRJ_1_12" nbValues="5">4..5 6..7 8..8</domain>
+    <domain name="DCRJ2_1_12" nbValues="8">4..5 6..7 8..8 21..24</domain>
+    <domain name="DCRJ_2_12" nbValues="1">15..15</domain>
+    <domain name="DCRJ2_2_12" nbValues="4">15..15 21..24</domain>
+    <domain name="DCRJ_3_12" nbValues="2">1..2</domain>
+    <domain name="DCRJ2_3_12" nbValues="5">1..2 21..24</domain>
+    <domain name="DCRJ_1_14" nbValues="2">19..20</domain>
+    <domain name="DCRJ2_1_14" nbValues="5">19..20 21..24</domain>
+    <domain name="DCRJ_2_14" nbValues="5">4..5 6..7 8..8</domain>
+    <domain name="DCRJ2_2_14" nbValues="8">4..5 6..7 8..8 21..24</domain>
+  </domains>
+  <variables nbVariables="28">
+    <variable domain="First" name="First" />
+    <variable domain="DCRJ2_1_1" name="Id_EAttribute_1_eType_1" />
+    <variable domain="DCRJ2_1_1" name="Id_EAttribute_2_eType_1" />
+    <variable domain="DCRJ2_1_2" name="Id_EAnnotation_3_eModelElement_1" />
+    <variable domain="DCRJ2_2_2" name="Id_EAnnotation_3_references_1" />
+    <variable domain="DCRJ2_2_2" name="Id_EAnnotation_3_references_2" />
+    <variable domain="DCRJ2_2_2" name="Id_EAnnotation_3_references_3" />
+    <variable domain="DCRJ2_1_3" name="Id_EClass_4_eSuperTypes_1" />
+    <variable domain="DCRJ2_1_3" name="Id_EClass_4_eSuperTypes_2" />
+    <variable domain="DCRJ2_1_3" name="Id_EClass_4_eSuperTypes_3" />
+    <variable domain="DCRJ2_1_3" name="Id_EClass_5_eSuperTypes_1" />
+    <variable domain="DCRJ2_1_3" name="Id_EClass_5_eSuperTypes_2" />
+    <variable domain="DCRJ2_1_3" name="Id_EClass_5_eSuperTypes_3" />
+    <variable domain="DCRJ_1_7" name="Id_EFactory_10_ePackage_1" />
+    <variable domain="DCRJ2_1_9" name="Id_EOperation_12_eType_1" />
+    <variable domain="DCRJ2_2_9" name="Id_EOperation_12_eExceptions_1" />
+    <variable domain="DCRJ2_2_9" name="Id_EOperation_12_eExceptions_2" />
+    <variable domain="DCRJ2_2_9" name="Id_EOperation_12_eExceptions_3" />
+    <variable domain="DCRJ2_1_11" name="Id_EParameter_14_eType_1" />
+    <variable domain="DCRJ2_1_12" name="Id_EReference_15_eType_1" />
+    <variable domain="DCRJ2_2_12" name="Id_EReference_15_eOpposite_1" />
+    <variable domain="DCRJ2_3_12" name="Id_EReference_15_eKeys_1" />
+    <variable domain="DCRJ2_3_12" name="Id_EReference_15_eKeys_2" />
+    <variable domain="DCRJ2_3_12" name="Id_EReference_15_eKeys_3" />
+    <variable domain="DCRJ2_1_14" name="Id_EGenericType_17_eTypeParameter_1" />
+    <variable domain="DCRJ2_2_14" name="Id_EGenericType_17_eClassifier_1" />
+    <variable domain="DCRJ2_1_14" name="Id_EGenericType_18_eTypeParameter_1" />
+    <variable domain="DCRJ2_2_14" name="Id_EGenericType_18_eClassifier_1" />
+  </variables>
+  <predicates nbPredicates="1">
+    <predicate name="inf">
+      <parameters>int v1 int v2</parameters>
+      <expression>
+        <functional>lt(v1,v2)</functional>
+      </expression>
+    </predicate>
+  </predicates>
+  <constraints nbConstraints="11">
+    <constraint name="ConsId_EAnnotation_3_references_2Id_EAnnotation_3_references_1" arity="2" scope="Id_EAnnotation_3_references_2 Id_EAnnotation_3_references_1" reference="inf">
+      <parameters>Id_EAnnotation_3_references_1 Id_EAnnotation_3_references_2</parameters>
+    </constraint>
+    <constraint name="ConsId_EAnnotation_3_references_3Id_EAnnotation_3_references_2" arity="2" scope="Id_EAnnotation_3_references_3 Id_EAnnotation_3_references_2" reference="inf">
+      <parameters>Id_EAnnotation_3_references_2 Id_EAnnotation_3_references_3</parameters>
+    </constraint>
+    <constraint name="ConsId_EClass_4_eSuperTypes_2Id_EClass_4_eSuperTypes_1" arity="2" scope="Id_EClass_4_eSuperTypes_2 Id_EClass_4_eSuperTypes_1" reference="inf">
+      <parameters>Id_EClass_4_eSuperTypes_1 Id_EClass_4_eSuperTypes_2</parameters>
+    </constraint>
+    <constraint name="ConsId_EClass_4_eSuperTypes_3Id_EClass_4_eSuperTypes_2" arity="2" scope="Id_EClass_4_eSuperTypes_3 Id_EClass_4_eSuperTypes_2" reference="inf">
+      <parameters>Id_EClass_4_eSuperTypes_2 Id_EClass_4_eSuperTypes_3</parameters>
+    </constraint>
+    <constraint name="ConsId_EClass_5_eSuperTypes_2Id_EClass_5_eSuperTypes_1" arity="2" scope="Id_EClass_5_eSuperTypes_2 Id_EClass_5_eSuperTypes_1" reference="inf">
+      <parameters>Id_EClass_5_eSuperTypes_1 Id_EClass_5_eSuperTypes_2</parameters>
+    </constraint>
+    <constraint name="ConsId_EClass_5_eSuperTypes_3Id_EClass_5_eSuperTypes_2" arity="2" scope="Id_EClass_5_eSuperTypes_3 Id_EClass_5_eSuperTypes_2" reference="inf">
+      <parameters>Id_EClass_5_eSuperTypes_2 Id_EClass_5_eSuperTypes_3</parameters>
+    </constraint>
+    <constraint name="ePackage_eFactoryInstance" arity="1" scope="Id_EFactory_10_ePackage_1 " reference="global:globalCardinality">
+      <parameters>[ Id_EFactory_10_ePackage_1 ] [ 13 ] [ 1 ] [ 1 ]</parameters>
+    </constraint>
+    <constraint name="ConsId_EOperation_12_eExceptions_2Id_EOperation_12_eExceptions_1" arity="2" scope="Id_EOperation_12_eExceptions_2 Id_EOperation_12_eExceptions_1" reference="inf">
+      <parameters>Id_EOperation_12_eExceptions_1 Id_EOperation_12_eExceptions_2</parameters>
+    </constraint>
+    <constraint name="ConsId_EOperation_12_eExceptions_3Id_EOperation_12_eExceptions_2" arity="2" scope="Id_EOperation_12_eExceptions_3 Id_EOperation_12_eExceptions_2" reference="inf">
+      <parameters>Id_EOperation_12_eExceptions_2 Id_EOperation_12_eExceptions_3</parameters>
+    </constraint>
+    <constraint name="ConsId_EReference_15_eKeys_2Id_EReference_15_eKeys_1" arity="2" scope="Id_EReference_15_eKeys_2 Id_EReference_15_eKeys_1" reference="inf">
+      <parameters>Id_EReference_15_eKeys_1 Id_EReference_15_eKeys_2</parameters>
+    </constraint>
+    <constraint name="ConsId_EReference_15_eKeys_3Id_EReference_15_eKeys_2" arity="2" scope="Id_EReference_15_eKeys_3 Id_EReference_15_eKeys_2" reference="inf">
+      <parameters>Id_EReference_15_eKeys_2 Id_EReference_15_eKeys_3</parameters>
+    </constraint>
+  </constraints>
+</instance>

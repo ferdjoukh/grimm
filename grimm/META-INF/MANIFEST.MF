@@ -1,0 +1,16 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: grimmGen
+Bundle-SymbolicName: grimm
+Bundle-Version: 1.0.0.qualifier
+Export-Package: org.grimm,
+ org.grimm.CSP2Model,
+ org.grimm.Ecore,
+ org.grimm.Ecore2CSP,
+ org.grimm.exception,
+ org.grimm.genetics,
+ org.grimm.gui,
+ org.grimm.test,
+ org.grimm.utils,
+ org.grimm.utils.ocl,
+ org.grimm.utils.ocl.exceptions

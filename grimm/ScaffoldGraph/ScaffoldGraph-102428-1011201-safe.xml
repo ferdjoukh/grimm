@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<instance>
+  <presentation name="?" maxConstraintArity="2" format="XCSP 2.0" />
+  <domains nbDomains="2">
+    <domain name="First">-1</domain>
+    <domain name="D_ScaffoldGraph" nbValues="1">1</domain>
+    <domain name="D_Contig" nbValues="35">2..36</domain>
+    <domain name="D_Edge" nbValues="100">37..136</domain>
+    <domain name="D_Vertex" nbValues="70">137..206</domain>
+    <domain name="DCRJ_1_3" nbValues="70">137..206</domain>
+    <domain name="DCRJ2_1_3" nbValues="80">137..206 207..217</domain>
+  </domains>
+  <variables nbVariables="201">
+    <variable domain="First" name="First" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_37_vertices_1" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_37_vertices_2" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_38_vertices_1" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_38_vertices_2" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_39_vertices_1" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_39_vertices_2" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_40_vertices_1" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_40_vertices_2" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_41_vertices_1" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_41_vertices_2" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_42_vertices_1" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_42_vertices_2" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_43_vertices_1" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_43_vertices_2" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_44_vertices_1" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_44_vertices_2" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_45_vertices_1" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_45_vertices_2" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_46_vertices_1" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_46_vertices_2" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_47_vertices_1" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_47_vertices_2" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_48_vertices_1" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_48_vertices_2" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_49_vertices_1" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_49_vertices_2" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_50_vertices_1" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_50_vertices_2" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_51_vertices_1" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_51_vertices_2" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_52_vertices_1" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_52_vertices_2" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_53_vertices_1" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_53_vertices_2" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_54_vertices_1" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_54_vertices_2" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_55_vertices_1" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_55_vertices_2" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_56_vertices_1" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_56_vertices_2" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_57_vertices_1" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_57_vertices_2" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_58_vertices_1" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_58_vertices_2" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_59_vertices_1" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_59_vertices_2" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_60_vertices_1" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_60_vertices_2" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_61_vertices_1" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_61_vertices_2" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_62_vertices_1" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_62_vertices_2" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_63_vertices_1" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_63_vertices_2" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_64_vertices_1" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_64_vertices_2" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_65_vertices_1" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_65_vertices_2" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_66_vertices_1" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_66_vertices_2" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_67_vertices_1" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_67_vertices_2" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_68_vertices_1" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_68_vertices_2" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_69_vertices_1" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_69_vertices_2" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_70_vertices_1" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_70_vertices_2" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_71_vertices_1" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_71_vertices_2" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_72_vertices_1" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_72_vertices_2" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_73_vertices_1" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_73_vertices_2" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_74_vertices_1" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_74_vertices_2" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_75_vertices_1" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_75_vertices_2" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_76_vertices_1" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_76_vertices_2" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_77_vertices_1" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_77_vertices_2" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_78_vertices_1" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_78_vertices_2" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_79_vertices_1" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_79_vertices_2" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_80_vertices_1" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_80_vertices_2" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_81_vertices_1" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_81_vertices_2" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_82_vertices_1" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_82_vertices_2" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_83_vertices_1" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_83_vertices_2" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_84_vertices_1" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_84_vertices_2" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_85_vertices_1" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_85_vertices_2" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_86_vertices_1" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_86_vertices_2" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_87_vertices_1" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_87_vertices_2" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_88_vertices_1" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_88_vertices_2" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_89_vertices_1" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_89_vertices_2" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_90_vertices_1" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_90_vertices_2" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_91_vertices_1" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_91_vertices_2" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_92_vertices_1" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_92_vertices_2" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_93_vertices_1" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_93_vertices_2" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_94_vertices_1" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_94_vertices_2" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_95_vertices_1" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_95_vertices_2" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_96_vertices_1" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_96_vertices_2" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_97_vertices_1" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_97_vertices_2" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_98_vertices_1" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_98_vertices_2" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_99_vertices_1" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_99_vertices_2" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_100_vertices_1" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_100_vertices_2" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_101_vertices_1" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_101_vertices_2" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_102_vertices_1" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_102_vertices_2" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_103_vertices_1" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_103_vertices_2" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_104_vertices_1" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_104_vertices_2" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_105_vertices_1" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_105_vertices_2" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_106_vertices_1" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_106_vertices_2" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_107_vertices_1" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_107_vertices_2" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_108_vertices_1" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_108_vertices_2" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_109_vertices_1" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_109_vertices_2" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_110_vertices_1" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_110_vertices_2" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_111_vertices_1" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_111_vertices_2" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_112_vertices_1" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_112_vertices_2" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_113_vertices_1" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_113_vertices_2" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_114_vertices_1" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_114_vertices_2" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_115_vertices_1" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_115_vertices_2" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_116_vertices_1" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_116_vertices_2" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_117_vertices_1" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_117_vertices_2" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_118_vertices_1" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_118_vertices_2" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_119_vertices_1" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_119_vertices_2" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_120_vertices_1" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_120_vertices_2" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_121_vertices_1" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_121_vertices_2" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_122_vertices_1" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_122_vertices_2" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_123_vertices_1" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_123_vertices_2" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_124_vertices_1" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_124_vertices_2" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_125_vertices_1" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_125_vertices_2" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_126_vertices_1" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_126_vertices_2" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_127_vertices_1" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_127_vertices_2" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_128_vertices_1" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_128_vertices_2" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_129_vertices_1" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_129_vertices_2" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_130_vertices_1" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_130_vertices_2" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_131_vertices_1" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_131_vertices_2" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_132_vertices_1" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_132_vertices_2" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_133_vertices_1" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_133_vertices_2" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_134_vertices_1" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_134_vertices_2" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_135_vertices_1" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_135_vertices_2" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_136_vertices_1" />
+    <variable domain="DCRJ_1_3" name="Id_Edge_136_vertices_2" />
+  </variables>
+  <predicates nbPredicates="1">
+    <predicate name="inf">
+      <parameters>int v1 int v2</parameters>
+      <expression>
+        <functional>lt(v1,v2)</functional>
+      </expression>
+    </predicate>
+  </predicates>
+  <constraints nbConstraints="1">
+    <constraint name="vertices_edges" arity="200" scope="Id_Edge_37_vertices_1 Id_Edge_37_vertices_2 Id_Edge_38_vertices_1 Id_Edge_38_vertices_2 Id_Edge_39_vertices_1 Id_Edge_39_vertices_2 Id_Edge_40_vertices_1 Id_Edge_40_vertices_2 Id_Edge_41_vertices_1 Id_Edge_41_vertices_2 Id_Edge_42_vertices_1 Id_Edge_42_vertices_2 Id_Edge_43_vertices_1 Id_Edge_43_vertices_2 Id_Edge_44_vertices_1 Id_Edge_44_vertices_2 Id_Edge_45_vertices_1 Id_Edge_45_vertices_2 Id_Edge_46_vertices_1 Id_Edge_46_vertices_2 Id_Edge_47_vertices_1 Id_Edge_47_vertices_2 Id_Edge_48_vertices_1 Id_Edge_48_vertices_2 Id_Edge_49_vertices_1 Id_Edge_49_vertices_2 Id_Edge_50_vertices_1 Id_Edge_50_vertices_2 Id_Edge_51_vertices_1 Id_Edge_51_vertices_2 Id_Edge_52_vertices_1 Id_Edge_52_vertices_2 Id_Edge_53_vertices_1 Id_Edge_53_vertices_2 Id_Edge_54_vertices_1 Id_Edge_54_vertices_2 Id_Edge_55_vertices_1 Id_Edge_55_vertices_2 Id_Edge_56_vertices_1 Id_Edge_56_vertices_2 Id_Edge_57_vertices_1 Id_Edge_57_vertices_2 Id_Edge_58_vertices_1 Id_Edge_58_vertices_2 Id_Edge_59_vertices_1 Id_Edge_59_vertices_2 Id_Edge_60_vertices_1 Id_Edge_60_vertices_2 Id_Edge_61_vertices_1 Id_Edge_61_vertices_2 Id_Edge_62_vertices_1 Id_Edge_62_vertices_2 Id_Edge_63_vertices_1 Id_Edge_63_vertices_2 Id_Edge_64_vertices_1 Id_Edge_64_vertices_2 Id_Edge_65_vertices_1 Id_Edge_65_vertices_2 Id_Edge_66_vertices_1 Id_Edge_66_vertices_2 Id_Edge_67_vertices_1 Id_Edge_67_vertices_2 Id_Edge_68_vertices_1 Id_Edge_68_vertices_2 Id_Edge_69_vertices_1 Id_Edge_69_vertices_2 Id_Edge_70_vertices_1 Id_Edge_70_vertices_2 Id_Edge_71_vertices_1 Id_Edge_71_vertices_2 Id_Edge_72_vertices_1 Id_Edge_72_vertices_2 Id_Edge_73_vertices_1 Id_Edge_73_vertices_2 Id_Edge_74_vertices_1 Id_Edge_74_vertices_2 Id_Edge_75_vertices_1 Id_Edge_75_vertices_2 Id_Edge_76_vertices_1 Id_Edge_76_vertices_2 Id_Edge_77_vertices_1 Id_Edge_77_vertices_2 Id_Edge_78_vertices_1 Id_Edge_78_vertices_2 Id_Edge_79_vertices_1 Id_Edge_79_vertices_2 Id_Edge_80_vertices_1 Id_Edge_80_vertices_2 Id_Edge_81_vertices_1 Id_Edge_81_vertices_2 Id_Edge_82_vertices_1 Id_Edge_82_vertices_2 Id_Edge_83_vertices_1 Id_Edge_83_vertices_2 Id_Edge_84_vertices_1 Id_Edge_84_vertices_2 Id_Edge_85_vertices_1 Id_Edge_85_vertices_2 Id_Edge_86_vertices_1 Id_Edge_86_vertices_2 Id_Edge_87_vertices_1 Id_Edge_87_vertices_2 Id_Edge_88_vertices_1 Id_Edge_88_vertices_2 Id_Edge_89_vertices_1 Id_Edge_89_vertices_2 Id_Edge_90_vertices_1 Id_Edge_90_vertices_2 Id_Edge_91_vertices_1 Id_Edge_91_vertices_2 Id_Edge_92_vertices_1 Id_Edge_92_vertices_2 Id_Edge_93_vertices_1 Id_Edge_93_vertices_2 Id_Edge_94_vertices_1 Id_Edge_94_vertices_2 Id_Edge_95_vertices_1 Id_Edge_95_vertices_2 Id_Edge_96_vertices_1 Id_Edge_96_vertices_2 Id_Edge_97_vertices_1 Id_Edge_97_vertices_2 Id_Edge_98_vertices_1 Id_Edge_98_vertices_2 Id_Edge_99_vertices_1 Id_Edge_99_vertices_2 Id_Edge_100_vertices_1 Id_Edge_100_vertices_2 Id_Edge_101_vertices_1 Id_Edge_101_vertices_2 Id_Edge_102_vertices_1 Id_Edge_102_vertices_2 Id_Edge_103_vertices_1 Id_Edge_103_vertices_2 Id_Edge_104_vertices_1 Id_Edge_104_vertices_2 Id_Edge_105_vertices_1 Id_Edge_105_vertices_2 Id_Edge_106_vertices_1 Id_Edge_106_vertices_2 Id_Edge_107_vertices_1 Id_Edge_107_vertices_2 Id_Edge_108_vertices_1 Id_Edge_108_vertices_2 Id_Edge_109_vertices_1 Id_Edge_109_vertices_2 Id_Edge_110_vertices_1 Id_Edge_110_vertices_2 Id_Edge_111_vertices_1 Id_Edge_111_vertices_2 Id_Edge_112_vertices_1 Id_Edge_112_vertices_2 Id_Edge_113_vertices_1 Id_Edge_113_vertices_2 Id_Edge_114_vertices_1 Id_Edge_114_vertices_2 Id_Edge_115_vertices_1 Id_Edge_115_vertices_2 Id_Edge_116_vertices_1 Id_Edge_116_vertices_2 Id_Edge_117_vertices_1 Id_Edge_117_vertices_2 Id_Edge_118_vertices_1 Id_Edge_118_vertices_2 Id_Edge_119_vertices_1 Id_Edge_119_vertices_2 Id_Edge_120_vertices_1 Id_Edge_120_vertices_2 Id_Edge_121_vertices_1 Id_Edge_121_vertices_2 Id_Edge_122_vertices_1 Id_Edge_122_vertices_2 Id_Edge_123_vertices_1 Id_Edge_123_vertices_2 Id_Edge_124_vertices_1 Id_Edge_124_vertices_2 Id_Edge_125_vertices_1 Id_Edge_125_vertices_2 Id_Edge_126_vertices_1 Id_Edge_126_vertices_2 Id_Edge_127_vertices_1 Id_Edge_127_vertices_2 Id_Edge_128_vertices_1 Id_Edge_128_vertices_2 Id_Edge_129_vertices_1 Id_Edge_129_vertices_2 Id_Edge_130_vertices_1 Id_Edge_130_vertices_2 Id_Edge_131_vertices_1 Id_Edge_131_vertices_2 Id_Edge_132_vertices_1 Id_Edge_132_vertices_2 Id_Edge_133_vertices_1 Id_Edge_133_vertices_2 Id_Edge_134_vertices_1 Id_Edge_134_vertices_2 Id_Edge_135_vertices_1 Id_Edge_135_vertices_2 Id_Edge_136_vertices_1 Id_Edge_136_vertices_2 " reference="global:globalCardinality">
+      <parameters>[ Id_Edge_37_vertices_1 Id_Edge_37_vertices_2 Id_Edge_38_vertices_1 Id_Edge_38_vertices_2 Id_Edge_39_vertices_1 Id_Edge_39_vertices_2 Id_Edge_40_vertices_1 Id_Edge_40_vertices_2 Id_Edge_41_vertices_1 Id_Edge_41_vertices_2 Id_Edge_42_vertices_1 Id_Edge_42_vertices_2 Id_Edge_43_vertices_1 Id_Edge_43_vertices_2 Id_Edge_44_vertices_1 Id_Edge_44_vertices_2 Id_Edge_45_vertices_1 Id_Edge_45_vertices_2 Id_Edge_46_vertices_1 Id_Edge_46_vertices_2 Id_Edge_47_vertices_1 Id_Edge_47_vertices_2 Id_Edge_48_vertices_1 Id_Edge_48_vertices_2 Id_Edge_49_vertices_1 Id_Edge_49_vertices_2 Id_Edge_50_vertices_1 Id_Edge_50_vertices_2 Id_Edge_51_vertices_1 Id_Edge_51_vertices_2 Id_Edge_52_vertices_1 Id_Edge_52_vertices_2 Id_Edge_53_vertices_1 Id_Edge_53_vertices_2 Id_Edge_54_vertices_1 Id_Edge_54_vertices_2 Id_Edge_55_vertices_1 Id_Edge_55_vertices_2 Id_Edge_56_vertices_1 Id_Edge_56_vertices_2 Id_Edge_57_vertices_1 Id_Edge_57_vertices_2 Id_Edge_58_vertices_1 Id_Edge_58_vertices_2 Id_Edge_59_vertices_1 Id_Edge_59_vertices_2 Id_Edge_60_vertices_1 Id_Edge_60_vertices_2 Id_Edge_61_vertices_1 Id_Edge_61_vertices_2 Id_Edge_62_vertices_1 Id_Edge_62_vertices_2 Id_Edge_63_vertices_1 Id_Edge_63_vertices_2 Id_Edge_64_vertices_1 Id_Edge_64_vertices_2 Id_Edge_65_vertices_1 Id_Edge_65_vertices_2 Id_Edge_66_vertices_1 Id_Edge_66_vertices_2 Id_Edge_67_vertices_1 Id_Edge_67_vertices_2 Id_Edge_68_vertices_1 Id_Edge_68_vertices_2 Id_Edge_69_vertices_1 Id_Edge_69_vertices_2 Id_Edge_70_vertices_1 Id_Edge_70_vertices_2 Id_Edge_71_vertices_1 Id_Edge_71_vertices_2 Id_Edge_72_vertices_1 Id_Edge_72_vertices_2 Id_Edge_73_vertices_1 Id_Edge_73_vertices_2 Id_Edge_74_vertices_1 Id_Edge_74_vertices_2 Id_Edge_75_vertices_1 Id_Edge_75_vertices_2 Id_Edge_76_vertices_1 Id_Edge_76_vertices_2 Id_Edge_77_vertices_1 Id_Edge_77_vertices_2 Id_Edge_78_vertices_1 Id_Edge_78_vertices_2 Id_Edge_79_vertices_1 Id_Edge_79_vertices_2 Id_Edge_80_vertices_1 Id_Edge_80_vertices_2 Id_Edge_81_vertices_1 Id_Edge_81_vertices_2 Id_Edge_82_vertices_1 Id_Edge_82_vertices_2 Id_Edge_83_vertices_1 Id_Edge_83_vertices_2 Id_Edge_84_vertices_1 Id_Edge_84_vertices_2 Id_Edge_85_vertices_1 Id_Edge_85_vertices_2 Id_Edge_86_vertices_1 Id_Edge_86_vertices_2 Id_Edge_87_vertices_1 Id_Edge_87_vertices_2 Id_Edge_88_vertices_1 Id_Edge_88_vertices_2 Id_Edge_89_vertices_1 Id_Edge_89_vertices_2 Id_Edge_90_vertices_1 Id_Edge_90_vertices_2 Id_Edge_91_vertices_1 Id_Edge_91_vertices_2 Id_Edge_92_vertices_1 Id_Edge_92_vertices_2 Id_Edge_93_vertices_1 Id_Edge_93_vertices_2 Id_Edge_94_vertices_1 Id_Edge_94_vertices_2 Id_Edge_95_vertices_1 Id_Edge_95_vertices_2 Id_Edge_96_vertices_1 Id_Edge_96_vertices_2 Id_Edge_97_vertices_1 Id_Edge_97_vertices_2 Id_Edge_98_vertices_1 Id_Edge_98_vertices_2 Id_Edge_99_vertices_1 Id_Edge_99_vertices_2 Id_Edge_100_vertices_1 Id_Edge_100_vertices_2 Id_Edge_101_vertices_1 Id_Edge_101_vertices_2 Id_Edge_102_vertices_1 Id_Edge_102_vertices_2 Id_Edge_103_vertices_1 Id_Edge_103_vertices_2 Id_Edge_104_vertices_1 Id_Edge_104_vertices_2 Id_Edge_105_vertices_1 Id_Edge_105_vertices_2 Id_Edge_106_vertices_1 Id_Edge_106_vertices_2 Id_Edge_107_vertices_1 Id_Edge_107_vertices_2 Id_Edge_108_vertices_1 Id_Edge_108_vertices_2 Id_Edge_109_vertices_1 Id_Edge_109_vertices_2 Id_Edge_110_vertices_1 Id_Edge_110_vertices_2 Id_Edge_111_vertices_1 Id_Edge_111_vertices_2 Id_Edge_112_vertices_1 Id_Edge_112_vertices_2 Id_Edge_113_vertices_1 Id_Edge_113_vertices_2 Id_Edge_114_vertices_1 Id_Edge_114_vertices_2 Id_Edge_115_vertices_1 Id_Edge_115_vertices_2 Id_Edge_116_vertices_1 Id_Edge_116_vertices_2 Id_Edge_117_vertices_1 Id_Edge_117_vertices_2 Id_Edge_118_vertices_1 Id_Edge_118_vertices_2 Id_Edge_119_vertices_1 Id_Edge_119_vertices_2 Id_Edge_120_vertices_1 Id_Edge_120_vertices_2 Id_Edge_121_vertices_1 Id_Edge_121_vertices_2 Id_Edge_122_vertices_1 Id_Edge_122_vertices_2 Id_Edge_123_vertices_1 Id_Edge_123_vertices_2 Id_Edge_124_vertices_1 Id_Edge_124_vertices_2 Id_Edge_125_vertices_1 Id_Edge_125_vertices_2 Id_Edge_126_vertices_1 Id_Edge_126_vertices_2 Id_Edge_127_vertices_1 Id_Edge_127_vertices_2 Id_Edge_128_vertices_1 Id_Edge_128_vertices_2 Id_Edge_129_vertices_1 Id_Edge_129_vertices_2 Id_Edge_130_vertices_1 Id_Edge_130_vertices_2 Id_Edge_131_vertices_1 Id_Edge_131_vertices_2 Id_Edge_132_vertices_1 Id_Edge_132_vertices_2 Id_Edge_133_vertices_1 Id_Edge_133_vertices_2 Id_Edge_134_vertices_1 Id_Edge_134_vertices_2 Id_Edge_135_vertices_1 Id_Edge_135_vertices_2 Id_Edge_136_vertices_1 Id_Edge_136_vertices_2 ] [ 137 138 139 140 141 142 143 144 145 146 147 148 149 150 151 152 153 154 155 156 157 158 159 160 161 162 163 164 165 166 167 168 169 170 171 172 173 174 175 176 177 178 179 180 181 182 183 184 185 186 187 188 189 190 191 192 193 194 195 196 197 198 199 200 201 202 203 204 205 206 ] [ 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 ] [ 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 ]</parameters>
+    </constraint>
+  </constraints>
+</instance>

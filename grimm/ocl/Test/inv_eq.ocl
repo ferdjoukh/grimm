@@ -1,0 +1,6 @@
+package root
+
+context Student
+inv : age = 0
+
+endpackage

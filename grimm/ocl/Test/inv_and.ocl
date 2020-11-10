@@ -1,0 +1,6 @@
+package root
+
+context Student
+inv : (age > -6) and (age < 6)
+
+endpackage

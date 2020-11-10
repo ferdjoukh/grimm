@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="ASCII"?>
+<scaffolds:ScaffoldGraph xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:scaffolds="scaffolds" xsi:schemaLocation="scaffolds meta-models/ScaffoldGraph.ecore">
+  <contigs length="68" multiplicity="7">
+    <vertices edges="//@edges.31 //@edges.49 //@edges.53" num="161"/>
+    <vertices num="194"/>
+  </contigs>
+  <contigs length="98" multiplicity="1">
+    <vertices edges="//@edges.13 //@edges.48 //@edges.95" num="167"/>
+    <vertices edges="//@edges.6 //@edges.10 //@edges.47 //@edges.58 //@edges.96" num="168"/>
+  </contigs>
+  <contigs length="60" multiplicity="7">
+    <vertices edges="//@edges.31 //@edges.74" num="186"/>
+    <vertices edges="//@edges.56" num="162"/>
+  </contigs>
+  <contigs length="80" multiplicity="1">
+    <vertices edges="//@edges.9 //@edges.45 //@edges.67" num="155"/>
+    <vertices edges="//@edges.10 //@edges.18 //@edges.55" num="198"/>
+  </contigs>
+  <contigs length="55" multiplicity="9">
+    <vertices edges="//@edges.34 //@edges.38 //@edges.55 //@edges.59 //@edges.94" num="156"/>
+    <vertices edges="//@edges.37" num="164"/>
+  </contigs>
+  <contigs length="92" multiplicity="1">
+    <vertices edges="//@edges.62" num="163"/>
+    <vertices edges="//@edges.13 //@edges.65 //@edges.68" num="176"/>
+  </contigs>
+  <contigs length="17" multiplicity="2">
+    <vertices edges="//@edges.11 //@edges.35 //@edges.61 //@edges.74" num="205"/>
+    <vertices edges="//@edges.25 //@edges.27 //@edges.69 //@edges.85" num="197"/>
+  </contigs>
+  <contigs length="63" multiplicity="1">
+    <vertices edges="//@edges.5 //@edges.66" num="146"/>
+    <vertices edges="//@edges.15 //@edges.79 //@edges.89 //@edges.90" num="148"/>
+  </contigs>
+  <contigs length="4" multiplicity="1">
+    <vertices edges="//@edges.2" num="185"/>
+    <vertices edges="//@edges.3 //@edges.63 //@edges.70 //@edges.83 //@edges.87" num="139"/>
+  </contigs>
+  <contigs length="32" multiplicity="1">
+    <vertices edges="//@edges.44" num="172"/>
+    <vertices edges="//@edges.46 //@edges.79" num="178"/>
+  </contigs>
+  <contigs length="53" multiplicity="1">
+    <vertices edges="//@edges.6 //@edges.21" num="152"/>
+    <vertices edges="//@edges.7" num="149"/>
+  </contigs>
+  <contigs length="40" multiplicity="1">
+    <vertices edges="//@edges.57 //@edges.85" num="175"/>
+    <vertices edges="//@edges.16 //@edges.41 //@edges.97" num="140"/>
+  </contigs>
+  <contigs length="6" multiplicity="1">
+    <vertices edges="//@edges.0 //@edges.22 //@edges.52 //@edges.61" num="206"/>
+    <vertices edges="//@edges.50 //@edges.57 //@edges.69 //@edges.80 //@edges.92" num="153"/>
+  </contigs>
+  <contigs length="10" multiplicity="7">
+    <vertices edges="//@edges.19 //@edges.27" num="174"/>
+    <vertices edges="//@edges.12 //@edges.32 //@edges.47 //@edges.78 //@edges.86 //@edges.99" num="170"/>
+  </contigs>
+  <contigs length="54" multiplicity="1">
+    <vertices edges="//@edges.50 //@edges.51 //@edges.60" num="196"/>
+    <vertices edges="//@edges.16 //@edges.24 //@edges.39 //@edges.81 //@edges.88" num="142"/>
+  </contigs>
+  <contigs length="60" multiplicity="1">
+    <vertices edges="//@edges.4 //@edges.26 //@edges.45 //@edges.73 //@edges.99" num="145"/>
+    <vertices edges="//@edges.88 //@edges.91" num="151"/>
+  </contigs>
+  <contigs length="39" multiplicity="9">
+    <vertices edges="//@edges.0 //@edges.23 //@edges.28 //@edges.39 //@edges.71 //@edges.80" num="189"/>
+    <vertices edges="//@edges.54 //@edges.56" num="165"/>
+  </contigs>
+  <contigs length="61" multiplicity="1">
+    <vertices edges="//@edges.23 //@edges.44 //@edges.58 //@edges.93" num="191"/>
+    <vertices edges="//@edges.19 //@edges.59" num="147"/>
+  </contigs>
+  <contigs length="53" multiplicity="2">
+    <vertices num="166"/>
+    <vertices edges="//@edges.11 //@edges.36 //@edges.81 //@edges.82 //@edges.84 //@edges.89" num="192"/>
+  </contigs>
+  <contigs length="25" multiplicity="1">
+    <vertices num="195"/>
+    <vertices edges="//@edges.14 //@edges.92" num="141"/>
+  </contigs>
+  <contigs length="70" multiplicity="1">
+    <vertices edges="//@edges.29 //@edges.65 //@edges.78 //@edges.98" num="201"/>
+    <vertices edges="//@edges.3 //@edges.71" num="193"/>
+  </contigs>
+  <contigs length="98" multiplicity="1">
+    <vertices edges="//@edges.2 //@edges.33 //@edges.64 //@edges.94" num="173"/>
+    <vertices edges="//@edges.12 //@edges.33 //@edges.36" num="154"/>
+  </contigs>
+  <contigs length="14" multiplicity="9">
+    <vertices num="179"/>
+    <vertices edges="//@edges.7" num="158"/>
+  </contigs>
+  <contigs length="89" multiplicity="1">
+    <vertices edges="//@edges.30 //@edges.46 //@edges.68 //@edges.70 //@edges.72" num="144"/>
+    <vertices edges="//@edges.8 //@edges.14 //@edges.62" num="184"/>
+  </contigs>
+  <contigs length="24" multiplicity="1">
+    <vertices edges="//@edges.1 //@edges.66 //@edges.73" num="143"/>
+    <vertices edges="//@edges.17" num="157"/>
+  </contigs>
+  <contigs length="30" multiplicity="4">
+    <vertices edges="//@edges.35" num="199"/>
+    <vertices edges="//@edges.29" num="187"/>
+  </contigs>
+  <contigs length="20" multiplicity="1">
+    <vertices edges="//@edges.21 //@edges.43 //@edges.97" num="137"/>
+    <vertices edges="//@edges.42 //@edges.60 //@edges.72 //@edges.75 //@edges.76 //@edges.90" num="169"/>
+  </contigs>
+  <contigs length="75" multiplicity="1">
+    <vertices edges="//@edges.24 //@edges.87" num="171"/>
+    <vertices edges="//@edges.76 //@edges.77 //@edges.91 //@edges.95" num="188"/>
+  </contigs>
+  <contigs length="87" multiplicity="1">
+    <vertices edges="//@edges.20 //@edges.49 //@edges.86" num="200"/>
+    <vertices num="181"/>
+  </contigs>
+  <contigs length="69" multiplicity="4">
+    <vertices edges="//@edges.22" num="160"/>
+    <vertices edges="//@edges.25 //@edges.26 //@edges.37 //@edges.41 //@edges.42 //@edges.98" num="190"/>
+  </contigs>
+  <contigs length="43" multiplicity="1">
+    <vertices edges="//@edges.1 //@edges.40" num="204"/>
+    <vertices edges="//@edges.9 //@edges.30" num="182"/>
+  </contigs>
+  <contigs length="53" multiplicity="1">
+    <vertices edges="//@edges.51 //@edges.67" num="138"/>
+    <vertices edges="//@edges.4 //@edges.53 //@edges.63 //@edges.93" num="183"/>
+  </contigs>
+  <contigs length="60" multiplicity="1">
+    <vertices edges="//@edges.5 //@edges.17 //@edges.34 //@edges.75 //@edges.77" num="177"/>
+    <vertices edges="//@edges.8 //@edges.28" num="180"/>
+  </contigs>
+  <contigs length="76" multiplicity="5">
+    <vertices edges="//@edges.18 //@edges.20 //@edges.43 //@edges.52 //@edges.54 //@edges.64" num="150"/>
+  </contigs>
+  <contigs length="5" multiplicity="1">
+    <vertices edges="//@edges.15 //@edges.83 //@edges.84" num="202"/>
+    <vertices edges="//@edges.40 //@edges.48" num="159"/>
+  </contigs>
+  <edges vertices="//@contigs.16/@vertices.0 //@contigs.12/@vertices.0" weight="14" distance="-58"/>
+  <edges vertices="//@contigs.30/@vertices.0 //@contigs.24/@vertices.0" weight="24" distance="97"/>
+  <edges vertices="//@contigs.8/@vertices.0 //@contigs.21/@vertices.0" weight="27" distance="-50"/>
+  <edges vertices="//@contigs.20/@vertices.1 //@contigs.8/@vertices.1" weight="43" distance="25"/>
+  <edges vertices="//@contigs.15/@vertices.0 //@contigs.31/@vertices.1" weight="93" distance="64"/>
+  <edges vertices="//@contigs.32/@vertices.0 //@contigs.7/@vertices.0" weight="22" distance="-79"/>
+  <edges vertices="//@contigs.10/@vertices.0 //@contigs.1/@vertices.1" weight="27" distance="39"/>
+  <edges vertices="//@contigs.10/@vertices.1 //@contigs.22/@vertices.1" weight="18" distance="80"/>
+  <edges vertices="//@contigs.32/@vertices.1 //@contigs.23/@vertices.1" weight="78" distance="-64"/>
+  <edges vertices="//@contigs.3/@vertices.0 //@contigs.30/@vertices.1" weight="62" distance="-73"/>
+  <edges vertices="//@contigs.1/@vertices.1 //@contigs.3/@vertices.1" weight="90" distance="23"/>
+  <edges vertices="//@contigs.6/@vertices.0 //@contigs.18/@vertices.1" weight="82" distance="32"/>
+  <edges vertices="//@contigs.21/@vertices.1 //@contigs.13/@vertices.1" weight="1" distance="93"/>
+  <edges vertices="//@contigs.1/@vertices.0 //@contigs.5/@vertices.1" weight="90" distance="96"/>
+  <edges vertices="//@contigs.19/@vertices.1 //@contigs.23/@vertices.1" weight="35" distance="-97"/>
+  <edges vertices="//@contigs.34/@vertices.0 //@contigs.7/@vertices.1" weight="8" distance="-100"/>
+  <edges vertices="//@contigs.11/@vertices.1 //@contigs.14/@vertices.1" weight="1" distance="54"/>
+  <edges vertices="//@contigs.24/@vertices.1 //@contigs.32/@vertices.0" weight="98" distance="47"/>
+  <edges vertices="//@contigs.33/@vertices.0 //@contigs.3/@vertices.1" weight="79" distance="78"/>
+  <edges vertices="//@contigs.17/@vertices.1 //@contigs.13/@vertices.0" weight="72" distance="13"/>
+  <edges vertices="//@contigs.28/@vertices.0 //@contigs.33/@vertices.0" weight="60" distance="-91"/>
+  <edges vertices="//@contigs.26/@vertices.0 //@contigs.10/@vertices.0" weight="93" distance="-46"/>
+  <edges vertices="//@contigs.12/@vertices.0 //@contigs.29/@vertices.0" weight="60" distance="25"/>
+  <edges vertices="//@contigs.16/@vertices.0 //@contigs.17/@vertices.0" weight="69" distance="-14"/>
+  <edges vertices="//@contigs.27/@vertices.0 //@contigs.14/@vertices.1" weight="38" distance="-20"/>
+  <edges vertices="//@contigs.6/@vertices.1 //@contigs.29/@vertices.1" weight="68" distance="-69"/>
+  <edges vertices="//@contigs.29/@vertices.1 //@contigs.15/@vertices.0" weight="92" distance="72"/>
+  <edges vertices="//@contigs.13/@vertices.0 //@contigs.6/@vertices.1" weight="42" distance="87"/>
+  <edges vertices="//@contigs.16/@vertices.0 //@contigs.32/@vertices.1" weight="39" distance="91"/>
+  <edges vertices="//@contigs.25/@vertices.1 //@contigs.20/@vertices.0" weight="24" distance="50"/>
+  <edges vertices="//@contigs.23/@vertices.0 //@contigs.30/@vertices.1" weight="67" distance="-73"/>
+  <edges vertices="//@contigs.2/@vertices.0 //@contigs.0/@vertices.0" weight="3" distance="19"/>
+  <edges vertices="//@contigs.13/@vertices.1" weight="67" distance="-56"/>
+  <edges vertices="//@contigs.21/@vertices.0 //@contigs.21/@vertices.1" weight="58" distance="30"/>
+  <edges vertices="//@contigs.4/@vertices.0 //@contigs.32/@vertices.0" weight="39" distance="-78"/>
+  <edges vertices="//@contigs.25/@vertices.0 //@contigs.6/@vertices.0" weight="95" distance="54"/>
+  <edges vertices="//@contigs.21/@vertices.1 //@contigs.18/@vertices.1" weight="79" distance="42"/>
+  <edges vertices="//@contigs.29/@vertices.1 //@contigs.4/@vertices.1" weight="78" distance="16"/>
+  <edges vertices="//@contigs.4/@vertices.0" weight="63" distance="59"/>
+  <edges vertices="//@contigs.14/@vertices.1 //@contigs.16/@vertices.0" weight="3" distance="-9"/>
+  <edges vertices="//@contigs.34/@vertices.1 //@contigs.30/@vertices.0" weight="20" distance="-65"/>
+  <edges vertices="//@contigs.11/@vertices.1 //@contigs.29/@vertices.1" weight="89" distance="-83"/>
+  <edges vertices="//@contigs.29/@vertices.1 //@contigs.26/@vertices.1" weight="63" distance="23"/>
+  <edges vertices="//@contigs.33/@vertices.0 //@contigs.26/@vertices.0" weight="4" distance="-4"/>
+  <edges vertices="//@contigs.9/@vertices.0 //@contigs.17/@vertices.0" weight="28" distance="-67"/>
+  <edges vertices="//@contigs.3/@vertices.0 //@contigs.15/@vertices.0" weight="80" distance="32"/>
+  <edges vertices="//@contigs.9/@vertices.1 //@contigs.23/@vertices.0" weight="78" distance="71"/>
+  <edges vertices="//@contigs.13/@vertices.1 //@contigs.1/@vertices.1" weight="42" distance="-52"/>
+  <edges vertices="//@contigs.1/@vertices.0 //@contigs.34/@vertices.1" weight="43" distance="23"/>
+  <edges vertices="//@contigs.28/@vertices.0 //@contigs.0/@vertices.0" weight="31" distance="-38"/>
+  <edges vertices="//@contigs.12/@vertices.1 //@contigs.14/@vertices.0" weight="81" distance="87"/>
+  <edges vertices="//@contigs.14/@vertices.0 //@contigs.31/@vertices.0" weight="5" distance="86"/>
+  <edges vertices="//@contigs.33/@vertices.0 //@contigs.12/@vertices.0" weight="11" distance="49"/>
+  <edges vertices="//@contigs.31/@vertices.1 //@contigs.0/@vertices.0" weight="9" distance="-80"/>
+  <edges vertices="//@contigs.33/@vertices.0 //@contigs.16/@vertices.1" weight="51" distance="50"/>
+  <edges vertices="//@contigs.3/@vertices.1 //@contigs.4/@vertices.0" weight="16" distance="29"/>
+  <edges vertices="//@contigs.16/@vertices.1 //@contigs.2/@vertices.1" weight="39" distance="-16"/>
+  <edges vertices="//@contigs.12/@vertices.1 //@contigs.11/@vertices.0" weight="79" distance="13"/>
+  <edges vertices="//@contigs.1/@vertices.1 //@contigs.17/@vertices.0" weight="82" distance="-42"/>
+  <edges vertices="//@contigs.17/@vertices.1 //@contigs.4/@vertices.0" weight="73" distance="-25"/>
+  <edges vertices="//@contigs.14/@vertices.0 //@contigs.26/@vertices.1" weight="32" distance="-91"/>
+  <edges vertices="//@contigs.6/@vertices.0 //@contigs.12/@vertices.0" weight="14" distance="-3"/>
+  <edges vertices="//@contigs.23/@vertices.1 //@contigs.5/@vertices.0" weight="28" distance="41"/>
+  <edges vertices="//@contigs.8/@vertices.1 //@contigs.31/@vertices.1" weight="97" distance="-61"/>
+  <edges vertices="//@contigs.21/@vertices.0 //@contigs.33/@vertices.0" weight="91" distance="67"/>
+  <edges vertices="//@contigs.20/@vertices.0 //@contigs.5/@vertices.1" weight="14" distance="-46"/>
+  <edges vertices="//@contigs.7/@vertices.0 //@contigs.24/@vertices.0" weight="53" distance="-80"/>
+  <edges vertices="//@contigs.3/@vertices.0 //@contigs.31/@vertices.0" weight="36" distance="4"/>
+  <edges vertices="//@contigs.23/@vertices.0 //@contigs.5/@vertices.1" weight="69" distance="-32"/>
+  <edges vertices="//@contigs.12/@vertices.1 //@contigs.6/@vertices.1" weight="92" distance="11"/>
+  <edges vertices="//@contigs.23/@vertices.0 //@contigs.8/@vertices.1" weight="47" distance="-66"/>
+  <edges vertices="//@contigs.16/@vertices.0 //@contigs.20/@vertices.1" weight="42" distance="81"/>
+  <edges vertices="//@contigs.26/@vertices.1 //@contigs.23/@vertices.0" distance="-98"/>
+  <edges vertices="//@contigs.15/@vertices.0 //@contigs.24/@vertices.0" weight="83" distance="22"/>
+  <edges vertices="//@contigs.6/@vertices.0 //@contigs.2/@vertices.0" weight="83" distance="-12"/>
+  <edges vertices="//@contigs.26/@vertices.1 //@contigs.32/@vertices.0" weight="77" distance="-57"/>
+  <edges vertices="//@contigs.26/@vertices.1 //@contigs.27/@vertices.1" weight="35" distance="8"/>
+  <edges vertices="//@contigs.27/@vertices.1 //@contigs.32/@vertices.0" weight="79" distance="-81"/>
+  <edges vertices="//@contigs.20/@vertices.0 //@contigs.13/@vertices.1" weight="56" distance="17"/>
+  <edges vertices="//@contigs.9/@vertices.1 //@contigs.7/@vertices.1" weight="77" distance="-36"/>
+  <edges vertices="//@contigs.12/@vertices.1 //@contigs.16/@vertices.0" weight="93" distance="14"/>
+  <edges vertices="//@contigs.18/@vertices.1 //@contigs.14/@vertices.1" weight="71" distance="-59"/>
+  <edges vertices="//@contigs.18/@vertices.1" weight="60" distance="-26"/>
+  <edges vertices="//@contigs.34/@vertices.0 //@contigs.8/@vertices.1" weight="18" distance="82"/>
+  <edges vertices="//@contigs.34/@vertices.0 //@contigs.18/@vertices.1" weight="70" distance="-93"/>
+  <edges vertices="//@contigs.11/@vertices.0 //@contigs.6/@vertices.1" weight="87" distance="49"/>
+  <edges vertices="//@contigs.28/@vertices.0 //@contigs.13/@vertices.1" weight="5" distance="-1"/>
+  <edges vertices="//@contigs.27/@vertices.0 //@contigs.8/@vertices.1" weight="25" distance="-39"/>
+  <edges vertices="//@contigs.15/@vertices.1 //@contigs.14/@vertices.1" weight="35" distance="11"/>
+  <edges vertices="//@contigs.18/@vertices.1 //@contigs.7/@vertices.1" weight="16" distance="-77"/>
+  <edges vertices="//@contigs.26/@vertices.1 //@contigs.7/@vertices.1" weight="88" distance="-7"/>
+  <edges vertices="//@contigs.27/@vertices.1 //@contigs.15/@vertices.1" weight="50" distance="-63"/>
+  <edges vertices="//@contigs.12/@vertices.1 //@contigs.19/@vertices.1" weight="87" distance="-98"/>
+  <edges vertices="//@contigs.17/@vertices.0 //@contigs.31/@vertices.1" weight="86" distance="-87"/>
+  <edges vertices="//@contigs.4/@vertices.0 //@contigs.21/@vertices.0" weight="20" distance="34"/>
+  <edges vertices="//@contigs.27/@vertices.1 //@contigs.1/@vertices.0" weight="82" distance="-40"/>
+  <edges vertices="//@contigs.1/@vertices.1" weight="79" distance="-55"/>
+  <edges vertices="//@contigs.11/@vertices.1 //@contigs.26/@vertices.0" weight="63" distance="51"/>
+  <edges vertices="//@contigs.20/@vertices.0 //@contigs.29/@vertices.1" weight="1" distance="-82"/>
+  <edges vertices="//@contigs.13/@vertices.1 //@contigs.15/@vertices.0" weight="52" distance="95"/>
+</scaffolds:ScaffoldGraph>

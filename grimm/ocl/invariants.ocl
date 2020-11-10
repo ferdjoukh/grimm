@@ -1,0 +1,16 @@
+-- @model{../model/simple.uml}
+package root
+
+-- The age of Person can not be negative.
+context Student
+inv : not(age < (-5 + 11))
+
+-- Students should be 16 or older.
+--context Student
+--inv : age> 16
+
+-- Profesors should be at least 30.
+--context Professor
+--inv: not(age< 30 and age < 40) and true
+
+endpackage

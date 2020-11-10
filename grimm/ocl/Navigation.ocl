@@ -1,0 +1,6 @@
+package Navigation
+
+context A
+inv : r1.r2.t > 5
+
+endpackage
