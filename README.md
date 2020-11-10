@@ -1,3 +1,5 @@
+![Java CI with Maven](https://github.com/ferdjoukh/grimm/workflows/Java%20CI%20with%20Maven/badge.svg)
+
 # Table of contents
 
 1. [Introduction](#grimm)
