@@ -23,6 +23,7 @@ jobs:
     - name: Build with Maven
       run: |
         cd grimm 
+        ./publishJars.sh
         mvn clean install
     - name: package executable version of grimm
       run: |
