@@ -21,6 +21,15 @@ jobs:
       with:
         java-version: 1.8
     - name: Build with Maven
-      run: mvn -B package --file pom.xml
+      run: |
+        cd grimm 
+        mvn clean install
     - name: package executable version of grimm
-      run: ./createExecutableGrimm.sh
+      run: |
+        cd grimm 
+        ./createExecutableGrimm.sh
+    - name: Deploy artifacts
+      uses: actions/upload-artifact@v2
+      with:
+         name: grimm-exeuctable
+         path: grimm/grimm-executable/
